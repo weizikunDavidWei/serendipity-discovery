@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>词库管理 · SERENDIPITY</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/admin.css"><script type="module" src="assets/admin.js"></script></head>
+<body class="admin"><header class="masthead"><a class="wordmark" href="./">SERENDIPITY<span class="brand-dot">®</span></a><a href="./">返回探索 ↗</a></header>
+<main><div class="admin-title"><div><p class="eyebrow">LOCAL WORKSPACE / 001</p><h1>词库工作台</h1></div><span id="stats" class="mono">正在加载…</span></div>
+<aside class="notice"><strong>本地草稿 ≠ 线上已发布数据</strong><p>编辑仅保存在当前浏览器。导出 keywords.json，替换仓库中的 data/keywords.json 并部署，才会更新所有访客的公开词库。清理浏览器数据会丢失草稿，请定期导出备份。</p></aside>
+<div id="workspace" hidden>
+<div class="toolbar"><button id="export-json" class="solid">导出 JSON</button><button id="export-csv">导出 CSV</button><label class="file-button">导入 JSON / CSV<input id="import" type="file" accept=".json,.csv,application/json,text/csv"></label><button id="validate">校验数据</button><button id="dedupe">全库去重</button><button id="restore-public">恢复公开版本</button></div>
+<div class="backup-bar"><label for="backups">导入前历史备份</label><select id="backups"><option value="">暂无备份</option></select><button id="restore-backup">恢复所选备份</button></div>
+<label class="search-label" for="search">搜索全库</label><input id="search" type="search" placeholder="搜索主题或关键词…" autocomplete="off">
+<div class="editor"><section class="topics-pane" aria-label="主题"><div class="pane-heading"><h2>主题</h2><button id="add-topic">＋ 新建</button></div><nav id="topics" aria-label="选择编辑主题"></nav></section>
+<section class="keywords-pane" aria-label="关键词编辑"><form id="rename-form" class="topic-heading"><label for="topic-name" class="sr-only">主题名称</label><input id="topic-name" maxlength="24" required><button>重命名</button><button id="delete-topic" type="button" class="danger">删除主题</button></form>
+<p id="topic-info" class="muted"></p><form id="add-form" class="inline-form"><label for="new-word" class="sr-only">新关键词</label><input id="new-word" maxlength="100" required placeholder="添加一个关键词"><button class="solid">添加</button></form>
+<details><summary>批量粘贴导入</summary><form id="bulk-form"><label for="bulk">每行一个关键词；自动跳过全库重复项。</label><textarea id="bulk" rows="5" placeholder="每行输入一个关键词" maxlength="500000"></textarea><button>导入当前主题</button></form></details>
+<div id="words" class="words"></div></section></div></div>
+<p id="admin-status" role="status">正在加载公开词库…</p><p id="save-state" class="muted" aria-live="polite"></p>
+</main><footer><span>LOCAL FIRST / NO SECRETS / NO ACCOUNT</span><a href="README.md">使用说明 ↗</a></footer></body></html>
