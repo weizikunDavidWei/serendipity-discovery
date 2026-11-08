@@ -12,3 +12,17 @@
 @media(max-width:700px){.edge-brand{top:max(22px,env(safe-area-inset-top));left:max(20px,env(safe-area-inset-left));font-size:20px}.device-label{font-size:7px;letter-spacing:1px;margin-top:7px}.edge-controls{top:max(17px,env(safe-area-inset-top));right:max(20px,env(safe-area-inset-right));font-size:11px}.edge-controls .mono{font-size:8px}.edge-note{left:max(20px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom));font-size:9px;max-width:54vw}.status{font-size:9px}.random-arrow{right:max(20px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom));gap:7px}.direction{font-size:83px}.arrow-label{font-size:10px}.orb .number{font-size:8px;letter-spacing:.8px}.masthead{height:76px}footer{font-size:9px;flex-wrap:wrap;gap:14px}}
 @media(max-height:480px){.edge-brand{top:16px}.device-label{display:none}.edge-controls{top:10px;flex-direction:row;align-items:center;gap:20px}.edge-controls .mono{display:none}.edge-note{bottom:14px}.random-arrow{bottom:14px}.direction{font-size:64px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.orb{will-change:auto}}
+/* Non-interactive instrument overlay. White difference ink works on both orb and stage. */
+#crosshair-toggle{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1px}
+.crosshair{position:fixed;inset:0;z-index:10;pointer-events:none;mix-blend-mode:difference;color:#fff;overflow:hidden}
+.crosshair[hidden],.crosshair-lock[hidden]{display:none}
+.crosshair-active,.crosshair-active *{cursor:none!important}
+.crosshair-h,.crosshair-v,.crosshair-dot{position:absolute;left:0;top:0;background:currentColor}
+.crosshair-h{width:100%;height:1px;opacity:.22}.crosshair-v{height:100%;width:1px;opacity:.22}
+.crosshair-dot{width:3px;height:3px;margin:-1.5px;border-radius:50%}
+.crosshair-lock{position:absolute;left:0;top:0;opacity:.8}
+.crosshair-lock i{position:absolute;width:12px;height:12px;border:solid currentColor;border-width:1px 0 0 1px}
+.crosshair-lock i:nth-child(1){left:0;top:0}.crosshair-lock i:nth-child(2){right:0;top:0;transform:rotate(90deg)}
+.crosshair-lock i:nth-child(3){right:0;bottom:0;transform:rotate(180deg)}.crosshair-lock i:nth-child(4){left:0;bottom:0;transform:rotate(270deg)}
+.crosshair-lock span{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);font:9px ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;letter-spacing:1px}
+@media(prefers-reduced-motion:reduce){.crosshair{display:none}.crosshair-active,.crosshair-active *{cursor:auto!important}}
