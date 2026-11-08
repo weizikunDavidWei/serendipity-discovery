@@ -2,10 +2,10 @@
 
 更新日期：2026-11-08（America/Toronto）
 
-状态：**第一阶段已备份到公开 GitHub 仓库，并完成 GitHub Pages 正式部署与线上验收。未进入第二阶段。**
+状态：**第一阶段首页视觉与物理交互迭代完成；Safari、Chrome 和内置浏览器各 41 项验收通过。已通过现有 GitHub Pages 正式部署并完成线上验证，不进入第二阶段。**
 
-公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)  
-正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)  
+公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
+正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)
 管理页面：[admin.html](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)
 
 发布设置：`main` 分支 / `/ (root)`，Deploy from a branch，HTTPS。
@@ -13,15 +13,31 @@
 ## 已完成
 
 - 原生 HTML / CSS / JavaScript 静态项目，无依赖、无需构建，兼容 GitHub Pages 子路径。
-- 黑白主题、实时系统色彩模式、不同尺寸的缓慢漂浮圆圈、悬停与按下反馈、键盘支持与 reduced-motion。
-- 桌面 8 主题，手机 6 主题；无重叠响应式网格。换组与完全随机探索。
+- 全屏黑白几何空间；移除 Hero、分隔线、固定网格与底部信息条。SERENDIPITY™、小型边缘控件和大型 ↘ 随机入口。
+- 桌面随机 5–9 主题、小屏通常 5–6 主题；巨大与小圆并置、随机聚集与可见间隙，不使用网格。换组与完全随机探索。
+- 固定时间步的二维圆形碰撞：面积质量、动量、恢复系数、分离、阻尼、限速和微弱流场；支持鼠标/触摸拖动、推动其他圆与释放惯性。
+- 可靠区分点击与拖动；后台暂停，reduced-motion 静态，键盘聚焦暂停漂移。布局、物理与渲染分离，参数集中管理。
 - 等概率随机候选、内存中近期去重、中文 URL 编码、用户点击时同步新标签页跳转。
 - 独立 JSON 词库：16 个领域 / 240 个全库唯一关键词。
 - 管理页：主题和关键词增删改、批量粘贴、搜索统计、去重校验、JSON/CSV 导入导出。
 - 本地自动草稿、最近 8 个历史备份、恢复公开版本、存储失败反馈、跨标签页编辑冲突提示。
 - 本地 Git 仓库及稳定提交；README、真实测试报告、可运行浏览器验收套件、交付 ZIP 与 Git bundle。
 
-## 实际测试
+## 当前视觉与物理交互验收
+
+- Safari 27.2、Google Chrome 156.0.8078.81 和内置浏览器分别执行 **41 项通过 / 0 项失败**。
+- 5 / 7 / 9 圈各 20 种子，大中小比例、间隙、面积质量、对称碰撞、密集分离、连续拖动、释放限速、控件避让和五分钟物理时间稳定性。
+- 390×844、320×568、768×1024、844×390 的布置，以及真实页面 1440 → 390 → 1440 的边界恢复。
+- 浅深色、动态偏好切换、后台暂停、鼠标/触摸事件分流、同步搜索、近期去重、原管理系统回归。
+- Safari 真实鼠标连续拖动后未误触搜索；正常点击实际打开 Bilibili 中文搜索“乳酸菌发酵”。
+- 物理求解 36,000 步约 309–349ms，短时 rAF 中位间隔约 16.7–17ms；不是跨设备性能保证或数小时堆内存测试。
+- 独立实现提交 `2506643`，保留先前全部提交；关键词 JSON、数据工具模块与管理业务逻辑未改动。管理页仅同步品牌 ™。
+
+- 正式更新已部署成功：[本轮 Pages 运行](https://github.com/weizikunDavidWei/serendipity-discovery/actions/runs/42498012079)。线上 11 项生产资源与本地一致；实际点击打开中文搜索“丝绸之路”。
+
+完整变化、测试方法与限制见 `docs/PHYSICS_TEST_REPORT.md`。仓库和正式网址不变。
+
+## 首次交付实际测试（历史记录）
 
 - 2026-11-08，Codex 内置浏览器运行 `tests/`：**23 项通过 / 0 项失败**。
 - 布局验证：1440、768、390、320px；管理页 390px。
@@ -32,7 +48,7 @@
 
 详见 `docs/TEST_REPORT.md`。
 
-## GitHub 发布与线上验收（2026-11-08）
+## 首次 GitHub 发布与线上验收（历史记录）
 
 - 指定解压目录与第一阶段源码一致；恢复为独立本地 Git 仓库，保留原始提交 `0cdf38c`、`44911b6`。
 - 审核两个历史提交和当前发布文件，未发现访问令牌、私钥、真实账号凭据或需要上传的用户草稿。作者邮箱为项目占位邮箱。
@@ -41,15 +57,17 @@
 - 正式首页、管理页、全部生产 JS/CSS 与 `data/keywords.json` 返回 HTTP 200，内容与第一阶段源码字节一致。
 - 内置浏览器实际打开正式首页：黑白实心圆圈、`float` 动画与主题文字正常；管理页显示 16 个主题 / 240 个关键词。
 - 实际点击正式首页“手作之物”，同步打开 Bilibili 搜索“螺钿”，中文编码正确。
-- 本次仅增加发布记录与文档，不修改页面视觉、交互源码或词库；未进入第二阶段。
+- 首次发布任务仅增加发布记录与文档；随后视觉物理迭代见上方当前验收记录。
 
 详见 `docs/DEPLOYMENT_REPORT.md`。
 
 ## 已知限制
 
-- GitHub 插件已安装，但本次会话未暴露仓库操作工具；已使用本机 GitHub Desktop 现有授权完成公开仓库创建、历史推送，并通过 GitHub 网页配置 Pages。仓库与正式站点均已核实。
-- 当前完成的是内置浏览器测试；独立 Safari、Chrome、Edge 与 iOS/Android 真机测试尚未执行。
-- 浅深色验收通过同源测试 iframe 的 CSS 媒体规则切换模拟，不等同于每款浏览器的系统设置联动实机验证。
+- GitHub 插件现已提供仓库工具，已确认当前用户拥有 push/admin 权限。沿用本机 GitHub Desktop 授权推送完整本地历史；仓库 Public、main 根目录 Pages 配置保持不变。
+- Safari、Chrome 和内置浏览器已实测；Edge 本机未安装、iOS/Android 真机未执行。触摸事件模拟不能代替真机验证。
+- 浅深色与 reduced-motion 通过测试 iframe 模拟规则/媒体事件，不等同于实际操作各系统偏好；未擅自修改用户系统设置。
+- 未执行数小时内存剖析。已检查重复换组对象上限、五分钟物理模拟与短时动画采样，不据此宣称所有设备永不掉帧或泄漏。
+- 极短视口可能降为少于 5 圈，窗口过渡中可能短暂相交，过渡结束恢复物理间隙。
 - Bilibili 页面内容、第三方服务可达性及弹窗策略由第三方和浏览器决定；已验证真实新标签页 URL，未将外部搜索内容列为受控验收项。
 - 草稿和历史仅存在当前来源和当前浏览器。编辑和导出均不会自动改变公开词库。修改词条需要点击行内“保存”。
 - 空主题可本地暂存，但导出前必须补充或删除；全部整库导入要求先解决重复数据。
@@ -58,5 +76,5 @@
 
 1. 先阅读本文件与 README，确认只处理用户新授权的范围。
 2. 已完成上线。后续从上述公开仓库克隆，或继续使用当前独立仓库；更新通过提交、推送 `main` 自动触发 Pages。
-3. 后续可补三款浏览器及手机实机验收；不自动开始第二阶段或大规模扩词。
+3. 后续仅在用户指示时补 Edge、触屏真机与长时间性能剖析；不自动开始第二阶段或扩词。
 4. 正式仓库为当前备份来源。原 ZIP 与 bundle 保留的是第一阶段首次交付历史，未包含后续发布文档；如恢复最新状态，请克隆 GitHub 仓库。

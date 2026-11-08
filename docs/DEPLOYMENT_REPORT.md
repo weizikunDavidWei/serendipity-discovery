@@ -1,6 +1,6 @@
 # GitHub Pages 正式部署验收
 
-日期：2026-11-08（America/Toronto）。范围仅为第一阶段备份、部署与验收。
+日期：2026-11-08（America/Toronto）。本文件保留首次上线的历史记录；后续首页视觉与物理交互迭代见 [PHYSICS_TEST_REPORT.md](PHYSICS_TEST_REPORT.md)。
 
 ## 发布结果
 
