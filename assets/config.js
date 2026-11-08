@@ -5,10 +5,13 @@ export const CONFIG = Object.freeze({
   physics: {
     step: 1 / 120, maxSteps: 8, iterations: 12,
     restitution: 0.72, wallRestitution: 0.55, damping: 0.16,
-    wind: 2.8, maxSpeed: 180, dragSpeed: 520, releaseSpeed: 145,
+    wind: 2.8, maxSpeed: 180, dragSpeed: 520, releaseSpeed: 170,
+    releaseGain: 0.9, releaseDamping: 0.9, releaseDampingDuration: 2.2,
     dragResponse: 22, dragMass: 8, gapMin: 5, gapMax: 12,
   },
-  interaction: { mouseThreshold: 6, touchThreshold: 9, clickSuppression: 450 },
+  interaction: { mouseThreshold: 6, touchThreshold: 9, clickSuppression: 450,
+    sampleWindow: 100, sampleGap: 80, sampleLimit: 24, sampleMinSpan: 8, releaseStale: 80,
+  },
   transition: { shuffle: 150, resize: 320 },
 });
 export const gap = (a, b) => Math.max(CONFIG.physics.gapMin,

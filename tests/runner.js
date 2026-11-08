@@ -1,3 +1,4 @@
+import {runReleaseTests,runArrowTests,runPointerReleaseTests} from './bugfix-tests.js';
 import {runPhysicsTests} from './physics-tests.js';
 import {validate,loadPublic,searchURL,csvEncode,csvParse,randomIndex,shuffle} from '../assets/data.js';
 const $=s=>document.querySelector(s);let passed=0,failed=0,frame;
@@ -24,6 +25,8 @@ $('#run').onclick=async()=>{
  try{
  const data=await (await fetch('../data/keywords.json')).json();
  await runPhysicsTests(test,assert);
+ await runReleaseTests(test,assert);
+ await runPointerReleaseTests(data,test,assert);
  await test('初始词库：16 个领域 / 240 个关键词，全库无重复',()=>{const d=validate(data);assert(d.topics.length===16,'主题数量');assert(d.topics.flatMap(t=>t.keywords).length===240,'词条数量');});
  await test('中文及特殊字符 URL 编码往返正确',()=>{for(const s of ['中文关键词','A&B #声音 + 空间','量子纠缠']){const u=new URL(searchURL(s));assert(u.origin==='https://search.bilibili.com'&&u.searchParams.get('keyword')===s,'编码错误');}});
  await test('拒绝空值、重复、无效 ID 和控制字符；不执行 HTML',()=>{for(const change of [d=>d.topics[0].keywords.push('詹姆斯韦布空间望远镜'),d=>d.topics[0].keywords.push(' '),d=>d.topics[0].id='a/b',d=>d.topics[0].keywords.push('a\nb')]){const d=structuredClone(data);change(d);let rejected=false;try{validate(d);}catch{rejected=true;}assert(rejected,'应拒绝无效输入');}});
@@ -33,7 +36,8 @@ $('#run').onclick=async()=>{
  await test('桌面 1440：5–9 个不同圆圈，无重叠、越界或文字溢出',()=>{layout(w);const count=w.document.querySelectorAll('.orb').length;assert(count>=5&&count<=9,'数量范围错误');});
  await test('浅色模式：白底黑圆白字',async()=>{forceMedia(w,'prefers-color-scheme',false);await settle();assert(w.getComputedStyle(w.document.documentElement).getPropertyValue('--bg').trim()==='#fff','背景');const orb=w.document.querySelector('.orb');assert(w.getComputedStyle(orb).backgroundColor==='rgb(0, 0, 0)'&&w.getComputedStyle(orb).color==='rgb(255, 255, 255)','圆圈颜色');});
  await test('实时切换深色：黑底白圆黑字',async()=>{forceMedia(w,'prefers-color-scheme',true);await settle();const orb=w.document.querySelector('.orb');assert(w.getComputedStyle(w.document.documentElement).getPropertyValue('--bg').trim()==='#000','背景');assert(w.getComputedStyle(orb).backgroundColor==='rgb(255, 255, 255)'&&w.getComputedStyle(orb).color==='rgb(0, 0, 0)','圆圈颜色');});
- await test('标志与版式：™、大型↘入口、无旧Hero或网格',()=>{assert(w.document.querySelector('.brand-dot').textContent==='™','品牌符号');assert(w.document.querySelector('.direction').textContent==='↘','箭头丢失');assert(!w.document.querySelector('.intro,.field-label,footer'),'旧分区残留');assert(w.getComputedStyle(w.document.querySelector('#field')).display!=='grid','网格残留');});
+ await test('标志与版式：™、大型↘入口、无旧Hero或网格',()=>{assert(w.document.querySelector('.brand-dot').textContent==='™','品牌符号');assert(w.document.querySelector('svg.direction path'),'矢量箭头丢失');assert(!w.document.querySelector('.intro,.field-label,footer'),'旧分区残留');assert(w.getComputedStyle(w.document.querySelector('#field')).display!=='grid','网格残留');});
+ await runArrowTests(w,test,assert,forceMedia);
  await test('换组、同步中文新窗口、近期去重与完全随机',async()=>{click(w,'#shuffle');await new Promise(r=>setTimeout(r,250));let opened=[];w.open=(...args)=>opened.push(args);const button=w.document.querySelector('.orb'),topic=data.topics.find(t=>button.textContent.includes(t.name));for(let i=0;i<15;i++)button.click();const words=opened.map(a=>new URL(a[0]).searchParams.get('keyword'));assert(opened.length===15,'非同步打开');assert(new Set(words).size===15,'周期内重复');assert(words.every(x=>topic.keywords.includes(x)),'错主题');click(w,'#surprise');assert(opened.length===16,'完全随机失败');});
  await test('鼠标与触摸：小幅移动可点击，拖动后抑制搜索，键盘点击保留',async()=>{
   let opened=[];w.open=(...args)=>opened.push(args);w.HTMLElement.prototype.setPointerCapture=function(){};w.HTMLElement.prototype.hasPointerCapture=()=>false;

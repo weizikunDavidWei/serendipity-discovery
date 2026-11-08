@@ -1,6 +1,7 @@
 import { loadPublic, shuffle, randomIndex, searchURL } from './data.js';
 import { CONFIG } from './config.js';
 import { World } from './physics.js';
+import { DragVelocity } from './drag-velocity.js';
 import { arrange, countLimit } from './layout.js';
 
 const field = document.querySelector('#field');
@@ -59,29 +60,43 @@ function start() {
   field.classList.toggle('is-static', motion.matches || keyboardHold);
   if (!raf && running()) { lastTime = null; raf = requestAnimationFrame(tick); }
 }
-function cancelDrag(inertia = false) {
+function cancelDrag(inertia = false, velocity = null) {
   if (!active) return;
-  const { body, button, pointerId } = active;
-  world.release(body, inertia && !motion.matches);
+  const { body, button, pointerId, dragging } = active;
+  if (dragging) {
+    active.suppressClick();
+    world.release(body, inertia && !motion.matches, velocity);
+    if (motion.matches) world.bodies.forEach(b => { b.vx = 0; b.vy = 0; });
+  }
   button.classList.remove('is-dragging');
   active = null;
   if (button.hasPointerCapture?.(pointerId)) button.releasePointerCapture(pointerId);
 }
 function wire(button, body, topic) {
   let suppressUntil = 0;
+  function sample(e) {
+    // Some Safari releases do not expose coalesced events. Use the final event too.
+    let events = [];
+    try { events = e.getCoalescedEvents?.() || []; } catch { /* final event remains valid */ }
+    for (const point of [...events, e]) active.trail.add(point.clientX, point.clientY, point.timeStamp);
+  }
   button.addEventListener('pointerdown', e => {
     if (!e.isPrimary || e.button !== 0 || active) return;
     const rect = field.getBoundingClientRect();
     active = {
       pointerId: e.pointerId, button, body, dragging: false,
+      trail: new DragVelocity(),
+      suppressClick: () => { suppressUntil = performance.now() + CONFIG.interaction.clickSuppression; },
       x: e.clientX, y: e.clientY, type: e.pointerType,
       offsetX: e.clientX - rect.left - body.x,
       offsetY: e.clientY - rect.top - body.y,
     };
+    sample(e);
     button.setPointerCapture(e.pointerId);
   });
   button.addEventListener('pointermove', e => {
     if (!active || e.pointerId !== active.pointerId || active.button !== button) return;
+    sample(e);
     const threshold = active.type === 'touch' ? CONFIG.interaction.touchThreshold : CONFIG.interaction.mouseThreshold;
     if (!active.dragging && Math.hypot(e.clientX - active.x, e.clientY - active.y) < threshold) return;
     active.dragging = true;
@@ -99,8 +114,9 @@ function wire(button, body, topic) {
   function end(e) {
     if (!active || e.pointerId !== active.pointerId || active.button !== button) return;
     const dragged = active.dragging;
-    if (dragged) suppressUntil = performance.now() + CONFIG.interaction.clickSuppression;
-    cancelDrag(e.type === 'pointerup');
+    let velocity = null;
+    if (dragged && e.type === 'pointerup') { sample(e); velocity = active.trail.velocity(e.timeStamp); }
+    cancelDrag(dragged && e.type === 'pointerup', velocity);
     if (motion.matches) stop();
     else start();
   }
@@ -221,6 +237,7 @@ motion.addEventListener('change', () => {
 });
 const observer = new ResizeObserver(() => { try { resizeScene(); } catch (e) { showError(e); } });
 observer.observe(field);
+window.addEventListener('blur', () => { cancelDrag(false); });
 window.addEventListener('pagehide', () => { cancelDrag(false); stop(); });
 window.addEventListener('pageshow', start);
 loadPublic().then(d => {

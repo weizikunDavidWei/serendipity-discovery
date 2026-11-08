@@ -2,13 +2,26 @@
 
 更新日期：2026-11-08（America/Toronto）
 
-状态：**第一阶段首页视觉与物理交互迭代完成；Safari、Chrome 和内置浏览器各 41 项验收通过。已通过现有 GitHub Pages 正式部署并完成线上验证，不进入第二阶段。**
+状态：**已完成首页跨平台 SVG 箭头与拖动释放惯性两个局部修复；macOS Safari、Chrome 和内置浏览器分别 60 项验收通过。未进入第二阶段。**
 
 公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
 正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)
 管理页面：[admin.html](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)
 
 发布设置：`main` 分支 / `/ (root)`，Deploy from a branch，HTTPS。
+
+## 当前局部 Bug Fix（2026-11-08）
+
+- 箭头根因：U+2198 依赖系统字体回退，跨平台可能出现 Emoji 呈现。已将 macOS 原字形轮廓转为内联 SVG / currentColor，保留原按钮名称、字号、位置、点击范围与 hover / active 反馈。
+- 惯性根因：原释放逻辑仅保留接近拖动目标后可能已经很低的控制器速度，没有读取近期手势轨迹。现用最近 100ms 的有界轨迹和事件时间戳估计 CSS px/s，交给原固定步物理系统。
+- 惯性参数集中管理：倍率 0.9、释放上限 170px/s、短时附加阻尼 0.9s⁻¹ / 2.2s；默认漂浮阻尼、碰撞质量/弹性和边界反弹保持原值。
+- 静止点击不注入速度；pointercancel、丢失捕获、窗口切换不产生甩动；reduced-motion 禁止释放惯性。取消只停止当前物体，不清零其他圆圈。
+- 原 41 项 + 新增 19 项回归，共 **60 项**；macOS Safari、Chrome、内置浏览器各 **60 通过 / 0 失败**。涵盖快慢/反向/过期轨迹、单位、限速、衰减、惯性碰撞与反弹、连续甩动、mouse/touch/pen 合成事件与手机/平板/横屏尺寸模拟。
+- macOS Safari 已实际打开页面确认 SVG 几何显示，并执行鼠标拖动，未误触搜索；浅深色、SVG 点击与按钮激活均通过回归。
+- **iOS Safari、iPadOS Safari 真机未实测**；触屏、触控板及触控笔硬件未实测。合成事件和尺寸模拟不记作真机通过。
+- 关键词 JSON、管理页面/逻辑、搜索抽样/编码、布局生成器未修改。发布沿用既有仓库 `main` 和根目录 GitHub Pages。
+
+详细根因、参数和测试方法见 `docs/BUGFIX_ARROW_INERTIA.md`。
 
 ## 已完成
 
@@ -23,7 +36,7 @@
 - 本地自动草稿、最近 8 个历史备份、恢复公开版本、存储失败反馈、跨标签页编辑冲突提示。
 - 本地 Git 仓库及稳定提交；README、真实测试报告、可运行浏览器验收套件、交付 ZIP 与 Git bundle。
 
-## 当前视觉与物理交互验收
+## 视觉与物理交互迭代验收（历史记录）
 
 - Safari 27.2、Google Chrome 156.0.8078.81 和内置浏览器分别执行 **41 项通过 / 0 项失败**。
 - 5 / 7 / 9 圈各 20 种子，大中小比例、间隙、面积质量、对称碰撞、密集分离、连续拖动、释放限速、控件避让和五分钟物理时间稳定性。
