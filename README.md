@@ -2,6 +2,10 @@
 
 一个通过随机主题与关键词探索互联网的轻量网站。第一阶段包含极简首页与完全在浏览器内运行的词库工作台。无构建步骤、无第三方依赖、无账号系统。
 
+正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)  
+管理页面：[admin.html](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)  
+公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
+
 ## 本地运行
 
 在项目目录打开终端，运行：
@@ -10,7 +14,7 @@
 python3 -m http.server 8765 --bind 127.0.0.1
 ```
 
-访问 http://127.0.0.1:8765/；管理页为 http://127.0.0.1:8765/admin.html 。结束时按 Ctrl+C。需要 Python 3。也可使用任意静态 HTTP 服务器。请不要直接双击 HTML：浏览器对 file:// 下的模块与 JSON 读取有限制。
+访问 [本地首页](http://127.0.0.1:8765/)；管理页为 [本地管理页](http://127.0.0.1:8765/admin.html)。结束时按 Ctrl+C。需要 Python 3。也可使用任意静态 HTTP 服务器。请不要直接双击 HTML：浏览器对 file:// 下的模块与 JSON 读取有限制。
 
 ## 探索
 
@@ -56,20 +60,24 @@ python3 -m http.server 8765 --bind 127.0.0.1
 
 ## GitHub Pages
 
-本地仓库已建立，但当前没有连接 GitHub，**没有远程备份或在线发布**。完整 ZIP 是独立交付包。
+已于 2026-11-08 正式发布。仓库为 **Public**，默认分支为 `main`，Pages 发布源为 **Deploy from a branch → main → / (root)**，使用 GitHub 默认域名和 HTTPS。
 
-授权方式：在 Codex 的插件目录找到 GitHub，安装并连接你的账号，选择允许访问 `serendipity-discovery`。账号登录及权限授予由你完成。之后可以在后续指令中让 Codex 连接并推送本地仓库。
+- [正式网站](https://weizikundavidwei.github.io/serendipity-discovery/)
+- [管理页面](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)
+- [公开仓库](https://github.com/weizikunDavidWei/serendipity-discovery)
+- [Pages 部署记录](https://github.com/weizikunDavidWei/serendipity-discovery/actions)
 
-也可手动在 GitHub 创建或打开 `serendipity-discovery`，将以下文件按目录上传：`index.html`、`admin.html`、`assets/`、`data/`、`.nojekyll`。随后进入仓库 Settings → Pages，选择 Deploy from a branch → main → / (root)。全站使用相对路径，兼容仓库子路径。无需付费服务或后端。请不要上传任何凭据。
+原始两次 Git 提交完整保留。当前 GitHub 插件已安装，但本次对话没有仓库操作工具，因此发布沿用本机 GitHub Desktop 的既有登录授权，并在 GitHub 网页配置 Pages；没有在源码中保存令牌。`.DS_Store`、ZIP 和 Git bundle 均未上传。
 
-若已配置 Git 身份与 GitHub 凭据，可使用仓库提供的实际 HTTPS 或 SSH 地址执行：
+后续更新：修改文件并提交到 `main`，通过已登录的 GitHub Desktop 推送即可触发 Pages 自动部署。维护词库时，先从管理页导出 JSON，再替换 `data/keywords.json`、提交并推送。部署完成前访客可能仍看到旧内容；可在 Actions 查看状态。管理页本地保存不会自动推送或发布。
+
+全站使用相对路径，兼容仓库子路径，无需构建或后端。保持 `.nojekyll`。恢复项目可克隆公开仓库：
 
 ```sh
-git remote add origin <仓库地址>
-git push -u origin main
+git clone https://github.com/weizikunDavidWei/serendipity-discovery.git
 ```
 
-若远程已有提交，先获取并检查差异，勿强制覆盖。没有配置自动部署工作流；Pages 由仓库设置部署。
+首轮上线已实际核对首页、所有生产脚本和样式、`admin.html`、240 条关键词与本地源码字节一致；浏览器已验证圆圈渲染与中文 Bilibili 新标签页跳转。详见 [部署验收记录](docs/DEPLOYMENT_REPORT.md)。
 
 ## 验收与兼容性
 
@@ -79,7 +87,7 @@ git push -u origin main
 python3 -m http.server 8766 --bind 127.0.0.1
 ```
 
-打开 http://127.0.0.1:8766/tests/，点击“运行验收”。应使用独立端口并关闭该来源其他管理页；测试会暂存和恢复本地草稿，在 iframe 中验证真实应用。测试不是生产入口，不需要上传 `tests/`。
+打开 [本地验收页面](http://127.0.0.1:8766/tests/)，点击“运行验收”。应使用独立端口并关闭该来源其他管理页；测试会暂存和恢复本地草稿，在 iframe 中验证真实应用。测试不是生产入口，不需要上传 `tests/`。
 
 使用标准 ES Modules、Fetch、Web Crypto、CSS Grid、matchMedia 和 localStorage，面向现代 Safari、Chrome、Edge；本次测试环境是 Codex 内置浏览器，未宣称三款浏览器各自完成实机验证。没有使用渐变、玻璃效果、外部字体或大型框架。
 

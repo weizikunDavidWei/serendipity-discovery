@@ -2,7 +2,13 @@
 
 更新日期：2026-11-08（America/Toronto）
 
-状态：**第一阶段源码与本地验收完成，等待用户下一条指令。未进入第二阶段。**
+状态：**第一阶段已备份到公开 GitHub 仓库，并完成 GitHub Pages 正式部署与线上验收。未进入第二阶段。**
+
+公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)  
+正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)  
+管理页面：[admin.html](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)
+
+发布设置：`main` 分支 / `/ (root)`，Deploy from a branch，HTTPS。
 
 ## 已完成
 
@@ -26,9 +32,22 @@
 
 详见 `docs/TEST_REPORT.md`。
 
+## GitHub 发布与线上验收（2026-11-08）
+
+- 指定解压目录与第一阶段源码一致；恢复为独立本地 Git 仓库，保留原始提交 `0cdf38c`、`44911b6`。
+- 审核两个历史提交和当前发布文件，未发现访问令牌、私钥、真实账号凭据或需要上传的用户草稿。作者邮箱为项目占位邮箱。
+- GitHub 仓库为 Public，远程 `origin` 指向上述正式仓库。未上传 `.DS_Store`、ZIP、Git bundle 或浏览器草稿。
+- 首次 Pages 构建、状态上报和部署全部 success：[运行记录](https://github.com/weizikunDavidWei/serendipity-discovery/actions/runs/42459109307)。
+- 正式首页、管理页、全部生产 JS/CSS 与 `data/keywords.json` 返回 HTTP 200，内容与第一阶段源码字节一致。
+- 内置浏览器实际打开正式首页：黑白实心圆圈、`float` 动画与主题文字正常；管理页显示 16 个主题 / 240 个关键词。
+- 实际点击正式首页“手作之物”，同步打开 Bilibili 搜索“螺钿”，中文编码正确。
+- 本次仅增加发布记录与文档，不修改页面视觉、交互源码或词库；未进入第二阶段。
+
+详见 `docs/DEPLOYMENT_REPORT.md`。
+
 ## 已知限制
 
-- GitHub 插件未安装、账号未连接，未配置远程地址；**未上传 serendipity-discovery、未远程备份、未上线 Pages**。已交付完整 ZIP 与可恢复本地历史的 Git bundle。
+- GitHub 插件已安装，但本次会话未暴露仓库操作工具；已使用本机 GitHub Desktop 现有授权完成公开仓库创建、历史推送，并通过 GitHub 网页配置 Pages。仓库与正式站点均已核实。
 - 当前完成的是内置浏览器测试；独立 Safari、Chrome、Edge 与 iOS/Android 真机测试尚未执行。
 - 浅深色验收通过同源测试 iframe 的 CSS 媒体规则切换模拟，不等同于每款浏览器的系统设置联动实机验证。
 - Bilibili 页面内容、第三方服务可达性及弹窗策略由第三方和浏览器决定；已验证真实新标签页 URL，未将外部搜索内容列为受控验收项。
@@ -38,6 +57,6 @@
 ## 断点恢复与下一步
 
 1. 先阅读本文件与 README，确认只处理用户新授权的范围。
-2. 若用户继续要求上线，完成 GitHub 连接并确认目标仓库身份，检查远程现有内容，再推送和启用 Pages。
+2. 已完成上线。后续从上述公开仓库克隆，或继续使用当前独立仓库；更新通过提交、推送 `main` 自动触发 Pages。
 3. 后续可补三款浏览器及手机实机验收；不自动开始第二阶段或大规模扩词。
-4. 本地 Git 历史与 ZIP 可以恢复当前阶段。ZIP 中的 `serendipity-history.bundle` 可用 `git clone` 恢复仓库。
+4. 正式仓库为当前备份来源。原 ZIP 与 bundle 保留的是第一阶段首次交付历史，未包含后续发布文档；如恢复最新状态，请克隆 GitHub 仓库。
