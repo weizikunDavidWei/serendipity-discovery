@@ -1,3 +1,4 @@
+import {renderToggle} from './visual-settings.js';
 // Native adaptation inspired by React Bits Crosshair (reactbits.dev).
 // Read-only geometry: never changes the physics world or captures input.
 export const CROSSHAIR = Object.freeze({ proximity: 18, padding: 7, smoothing: 0.045 });
@@ -53,8 +54,7 @@ export function initCrosshair() {
     if (!raf) raf = requestAnimationFrame(frame);
   }
   function sync() {
-    toggle.setAttribute('aria-pressed', String(enabled));
-    toggle.textContent = '准星 / ' + (enabled ? 'ON' : 'OFF');
+    renderToggle(toggle, '准星', enabled, 'crosshair');
     toggle.title = reduce.matches ? '减少动态效果模式：准星暂停' : '启用或关闭十字准星';
     if (!allowed()) hide();
   }
@@ -66,6 +66,7 @@ export function initCrosshair() {
   window.addEventListener('blur', hide); window.addEventListener('pagehide', hide);
   document.addEventListener('visibilitychange', hide);
   fine.addEventListener('change', sync); reduce.addEventListener('change', sync);
+  window.addEventListener('visual-preferences', sync);
   hide(); sync();
 }
 initCrosshair();

@@ -1,0 +1,89 @@
+{
+  "results": [
+    {
+      "name": "WebGL draws",
+      "ok": true
+    },
+    {
+      "name": "default 22%",
+      "ok": true
+    },
+    {
+      "name": "dark white",
+      "ok": true
+    },
+    {
+      "name": "light black",
+      "ok": true
+    },
+    {
+      "name": "OFF stops GPU even on resize",
+      "ok": true
+    },
+    {
+      "name": "OFF persists",
+      "ok": true
+    },
+    {
+      "name": "OFF lazy no canvas",
+      "ok": true
+    },
+    {
+      "name": "Crosshair lock retained",
+      "ok": true
+    },
+    {
+      "name": "drag no accidental search",
+      "ok": true
+    },
+    {
+      "name": "search retained",
+      "ok": true
+    },
+    {
+      "name": "exact slider label",
+      "ok": true
+    },
+    {
+      "name": "live across tabs",
+      "ok": true
+    },
+    {
+      "name": "shared compact",
+      "ok": true
+    },
+    {
+      "name": "shared minimal",
+      "ok": true
+    },
+    {
+      "name": "shared text",
+      "ok": true
+    },
+    {
+      "name": "admin preference retained",
+      "ok": true
+    },
+    {
+      "name": "reset22%",
+      "ok": true
+    },
+    {
+      "name": "reduced motion static",
+      "ok": true
+    },
+    {
+      "name": "mobile no overflow",
+      "ok": true
+    },
+    {
+      "name": "single canvas",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "errors": []
+}

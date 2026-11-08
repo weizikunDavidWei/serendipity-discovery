@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "topolines": { "enabled": true, "speed": 0.005, "scale": 2.29, "levels": 10, "lineWidth": 1.7, "warp": 0.12, "opacity": 0.22, "maxDpr": 1.25 },
+  "toggleStyle": "text"
+}

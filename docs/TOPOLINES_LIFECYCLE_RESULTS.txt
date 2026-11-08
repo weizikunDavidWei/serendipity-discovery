@@ -1,0 +1,10 @@
+{
+  zero: true,
+  enabled: true,
+  hidden: true,
+  resume: true,
+  stable: true,
+  single: true,
+  clean: true
+}
+{ rafSamples: 120, medianMs: 16.699999999999818 }

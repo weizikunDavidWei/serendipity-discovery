@@ -1,8 +1,15 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>词库管理 · SERENDIPITY</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/admin.css"><script type="module" src="assets/admin.js"></script></head>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>词库管理 · SERENDIPITY</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/admin.css"><script type="module" src="assets/admin.js"></script><script type="module" src="assets/visual-admin.js"></script></head>
 <body class="admin"><header class="masthead"><a class="wordmark" href="./">SERENDIPITY<span class="brand-dot">™</span></a><a href="./">返回探索 ↗</a></header>
 <main><div class="admin-title"><div><p class="eyebrow">LOCAL WORKSPACE / 001</p><h1>词库工作台</h1></div><span id="stats" class="mono">正在加载…</span></div>
 <aside class="notice"><strong>本地草稿 ≠ 线上已发布数据</strong><p>编辑仅保存在当前浏览器。导出 keywords.json，替换仓库中的 data/keywords.json 并部署，才会更新所有访客的公开词库。清理浏览器数据会丢失草稿，请定期导出备份。</p></aside>
+<section class="visual-settings" aria-labelledby="visual-heading">
+<h2 id="visual-heading">视觉设置</h2><p class="muted">个人偏好仅保存在当前浏览器。公开默认值在 data/visual-defaults.json，通过仓库部署更新；这里的调整不会同步至其他设备或访客。</p>
+<div class="visual-options"><label for="terrain-opacity">等高线透明度 <output id="terrain-opacity-value" for="terrain-opacity">22%</output><input id="terrain-opacity" type="range" min="0" max="100" step="1" value="22"></label>
+<label for="toggle-style">首页开关样式<select id="toggle-style"><option value="text">文字模式</option><option value="compact">紧凑模式 · 图标＋ON/OFF</option><option value="minimal">极简模式 · 图标＋状态点</option></select></label>
+<label class="visual-enabled"><input id="terrain-enabled" type="checkbox" checked> 启用等高线</label><button id="visual-reset" type="button">恢复默认</button></div>
+<div id="terrain-preview" class="terrain-preview" aria-label="等高线实时预览"><div class="visual-toggle-preview"><button id="preview-crosshair" type="button" tabindex="-1" aria-disabled="true"></button><button id="preview-terrain" type="button" tabindex="-1" aria-disabled="true"></button></div></div>
+<p id="visual-save-status" class="muted" role="status">默认透明度 22%；支持减少动态效果，预览不影响词库草稿。</p></section>
 <div id="workspace" hidden>
 <div class="toolbar"><button id="export-json" class="solid">导出 JSON</button><button id="export-csv">导出 CSV</button><label class="file-button">导入 JSON / CSV<input id="import" type="file" accept=".json,.csv,application/json,text/csv"></label><button id="validate">校验数据</button><button id="dedupe">全库去重</button><button id="restore-public">恢复公开版本</button></div>
 <div class="backup-bar"><label for="backups">导入前历史备份</label><select id="backups"><option value="">暂无备份</option></select><button id="restore-backup">恢复所选备份</button></div>
