@@ -18,7 +18,7 @@ export function initCrosshair() {
   try { enabled = localStorage.getItem(storageKey) !== 'false'; } catch { /* private browsing */ }
   const overlay = document.createElement('div'); overlay.className = 'crosshair';
   overlay.setAttribute('aria-hidden', 'true');
-  overlay.innerHTML = '<i class="crosshair-h"></i><i class="crosshair-v"></i><i class="crosshair-dot"></i><div class="crosshair-lock"><i></i><i></i><i></i><i></i><span></span></div>';
+  overlay.innerHTML = '<i class="crosshair-h"></i><i class="crosshair-v"></i><i class="crosshair-dot"></i><div class="crosshair-lock"><i></i><i></i><i></i><i></i></div>';
   document.body.append(overlay);
   const h = overlay.children[0], v = overlay.children[1], dot = overlay.children[2], lock = overlay.children[3];
   const allowed = () => enabled && fine.matches && !reduce.matches && !document.hidden;
@@ -42,7 +42,6 @@ export function initCrosshair() {
       const b = target.box, p = CROSSHAIR.padding;
       lock.style.transform = `translate(${b.left-p}px,${b.top-p}px)`;
       lock.style.width = b.width + p*2 + 'px'; lock.style.height = b.height + p*2 + 'px';
-      lock.lastElementChild.textContent = 'Ø ' + Math.round(b.width);
     }
     overlay.classList.toggle('is-locked', !!target);
     raf = requestAnimationFrame(frame);
