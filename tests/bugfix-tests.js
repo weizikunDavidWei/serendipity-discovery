@@ -10,6 +10,14 @@ export async function runReleaseTests(test,assert) {
   await test('释放轨迹：不同事件频率都按 CSS px/s 正确估计方向和速度',()=>{
     for(const interval of [8,16,32]){const t=trail(300,-150,interval),last=t.samples.at(-1).time,v=t.velocity(last);assert(Math.abs(v.x-300)<.001&&Math.abs(v.y+150)<.001,'速度单位或频率依赖');}
   });
+  await test('真实稀疏事件：同毫秒和 1ms 移动仍有受控释放速度',()=>{
+    for(const delta of [0,1]){const t=new DragVelocity();t.add(230,400,100);t.add(525,400,100+delta);const b=body(),w=new World([b],{width:2000,height:1000});w.release(b,true,t.velocity(100+delta));assert(b.vx>500&&b.vx<=CONFIG.physics.releaseSpeed,'高速稀疏轨迹被过滤');}
+  });
+  await test('核心验收：松手后滑行超过150px并依次撞开三个小圆',()=>{
+    const bodies=[body(420,400,160),body(844,400,44),body(960,400,44),body(1075,400,44)],w=new World(bodies,{width:1280,height:800},[],{wind:0});const initial=bodies.map(b=>b.x),maximum=[0,0,0,0];w.release(bodies[0],true,{x:900,y:0});
+    for(let i=0;i<600;i++){w.step();bodies.forEach((b,j)=>maximum[j]=Math.max(maximum[j],Math.abs(b.x-initial[j])));}
+    assert(maximum[0]>150&&maximum.slice(1).every(d=>d>45),'释放后未形成三圆连锁');
+  });
   await test('轨迹只使用最近窗口，反向拖动按最近方向释放，样本数量有界',()=>{
     const t=new DragVelocity();for(let ms=0;ms<200;ms+=10)t.add(ms,0,ms);for(let ms=200;ms<=400;ms+=10)t.add(400-ms,0,ms);assert(t.velocity(400).x<0,'沿旧方向释放');for(let i=401;i<5000;i++)t.add(i,0,i);assert(t.samples.length<=CONFIG.interaction.sampleLimit,'轨迹无限增长');
   });
@@ -20,10 +28,10 @@ export async function runReleaseTests(test,assert) {
   await test('释放修复：控制器已停下仍能获得真实甩速；慢拖与快甩力度不同且限速',()=>{
     const slow=body(),fast=body(),w=new World([slow,fast],{width:1600,height:1000});slow.drag={x:slow.x,y:slow.y};fast.drag={x:fast.x,y:fast.y};
     w.release(slow,true,trail(25,0).velocity(128));w.release(fast,true,trail(1500,750).velocity(128));
-    assert(slow.vx>15&&slow.vx<30,'缓拖强度');assert(speed(fast)>150&&speed(fast)<=CONFIG.physics.releaseSpeed+.01,'快速甩动或上限');assert(Math.abs(fast.vy/fast.vx-.5)<.001,'方向失真');
+    assert(slow.vx>15&&slow.vx<35,'缓拖强度');assert(speed(fast)>150&&speed(fast)<=CONFIG.physics.releaseSpeed+.01,'快速甩动或上限');assert(Math.abs(fast.vy/fast.vx-.5)<.001,'方向失真');
   });
   await test('释放后继续移动再自然衰减，不瞬停也不持续高速漂移',()=>{
-    const b=body(),w=new World([b],{width:3000,height:2000},[],{wind:0});w.release(b,true,{x:1000,y:0});const x=b.x;for(let i=0;i<12;i++)w.step();assert(b.x-x>12,'释放即停止');for(let i=0;i<288;i++)w.step();assert(speed(b)<20,'高速持续过久');
+    const b=body(),w=new World([b],{width:3000,height:2000},[],{wind:0});w.release(b,true,{x:1000,y:0});const x=b.x;for(let i=0;i<12;i++)w.step();assert(b.x-x>12,'释放即停止');for(let i=0;i<348;i++)w.step();assert(b.x-x>350&&speed(b)<250,'滑行距离或衰减不合理');for(let i=0;i<1440;i++)w.step();assert(speed(b)<40,'高速持续过久');
   });
   await test('取消只停止当前拖动物体，不甩动、不清零其他圆圈；reduced-motion 无释放惯性',()=>{
     const a=body(),b=body(800);b.vx=17;const w=new World([a,b],{width:1600,height:1000});a.vx=400;a.drag={x:900,y:400};w.release(a,false,{x:900,y:0});assert(speed(a)===0&&!a.drag&&!a.inertiaRemaining,'取消仍甩动');assert(b.vx===17,'取消影响其他物体');
@@ -79,7 +87,7 @@ async function pointerFixture(data,reduced) {
 }
 export async function runPointerReleaseTests(data,test,assert) {
   for(const kind of ['mouse','touch','pen'])await test(kind+' 真实页面事件：按轨迹释放继续前进，拖动不搜索',async()=>{
-    const f=await pointerFixture(data,false);try{const x=f.position();f.event('pointerdown',0,1,kind);f.event('pointermove',f.sign*20,21,kind);f.event('pointermove',f.sign*40,41,kind);f.event('pointerup',f.sign*60,61,kind);f.w.testStep(80);f.w.testStep(160);assert((f.position()-x)*f.sign>8,'未将轨迹速度应用到实际模拟');f.b.dispatchEvent(new f.w.MouseEvent('click',{bubbles:true,detail:1}));assert(f.opened()===0,'拖动误触搜索');}finally{f.iframe.remove();}
+    const f=await pointerFixture(data,false);try{const x=f.position();f.event('pointerdown',0,1,kind);f.event('pointermove',f.sign*20,21,kind);f.event('pointermove',f.sign*40,41,kind);f.event('pointerup',f.sign*60,61,kind);f.b.focus();f.b.dispatchEvent(new f.w.FocusEvent('focusin',{bubbles:true}));f.w.testStep(80);f.w.testStep(160);assert((f.position()-x)*f.sign>8,'未将轨迹速度应用到实际模拟');f.b.dispatchEvent(new f.w.MouseEvent('click',{bubbles:true,detail:1}));assert(f.opened()===0,'拖动误触搜索');}finally{f.iframe.remove();}
   });
   for(const scenario of ['held','cancel','blur','reduced','click'])await test('真实页面 '+scenario+'：不产生意外释放速度',async()=>{
     const f=await pointerFixture(data,scenario==='reduced');try{const x=f.position();f.event('pointerdown',0,1,'touch');if(scenario!=='click'){f.event('pointermove',f.sign*40,21,'touch');f.event('pointermove',f.sign*60,41,'touch');}

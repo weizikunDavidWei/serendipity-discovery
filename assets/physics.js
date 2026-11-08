@@ -44,9 +44,10 @@ export class World {
         // Low-frequency force, not a repeating position animation.
         b.vx += p.wind * (Math.sin(this.time * 0.13 + b.y * 0.002 + phase) + 0.35 * Math.cos(this.time * 0.21)) * dt;
         b.vy += p.wind * (Math.cos(this.time * 0.11 + b.x * 0.002 - phase) + 0.35 * Math.sin(this.time * 0.17)) * dt;
-        const releaseDamping = b.inertiaRemaining > 0 ? p.releaseDamping : 0;
-        b.inertiaRemaining = Math.max(0, (b.inertiaRemaining || 0) - dt);
-        const damping = Math.exp(-(p.damping + releaseDamping) * dt);
+        // Smooth speed-dependent drag preserves a useful throw distance, then
+        // blends back into the original low-speed drift. No release timer.
+        const excess = Math.max(0, Math.hypot(b.vx,b.vy)-p.dampingThreshold);
+        const damping = Math.exp(-(p.damping+p.speedDamping*excess/p.releaseSpeed)*dt);
         b.vx *= damping; b.vy *= damping;
         limit(b, p.maxSpeed);
       }
@@ -135,14 +136,12 @@ export class World {
 
   release(body, motion = true, velocity = null) {
     body.drag = null;
-    body.inertiaRemaining = 0;
     if (motion) {
       if (velocity) {
         body.vx = Number.isFinite(velocity.x) ? velocity.x * this.options.releaseGain : 0;
         body.vy = Number.isFinite(velocity.y) ? velocity.y * this.options.releaseGain : 0;
       }
       limit(body, this.options.releaseSpeed);
-      body.inertiaRemaining = this.options.releaseDampingDuration;
     } else { body.vx = 0; body.vy = 0; }
   }
 }

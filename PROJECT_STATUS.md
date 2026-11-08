@@ -2,7 +2,7 @@
 
 更新日期：2026-11-08（America/Toronto）
 
-状态：**已完成首页跨平台 SVG 箭头与拖动释放惯性两个局部修复；macOS Safari、Chrome 和内置浏览器分别 60 项验收通过。未进入第二阶段。**
+状态：**已完成物理输入链路与碰撞手感重构，Safari 真实甩动/三圆连锁与真实首页观测均通过；完整回归 62 项通过。不进入第二阶段。**
 
 公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
 正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)
@@ -10,7 +10,19 @@
 
 发布设置：`main` 分支 / `/ (root)`，Deploy from a branch，HTTPS。
 
-## 当前局部 Bug Fix（2026-11-08）
+## 当前物理系统重构（2026-11-08）
+
+- 根因：原释放与碰撞速度上限偏低、释放附加阻尼过强；真实快速指针事件落在同一毫秒时被旧的最小时段过滤。此前测试的人工时间戳没有覆盖该路径。另将焦点暂停改为显式区分键盘和指针。
+- 抽出唯一 `interaction.js` 控制器，保留一个 World / rAF；连续速度阻力替代释放计时阻尼，放宽速度预算和弹性，保留面积质量与稳定接触求解。
+- Safari 原生受信任输入：释放速度 720px/s，松手后滑行约 737px，三个小圆最大位移约 242 / 218 / 179px，误搜索 0；核心场景 PASS。
+- 实际首页观测：pointerup 后约 522ms 大圆仍移动约 158.7px，未操作世界状态/时钟，PASS。
+- macOS Safari 完整自动回归 **62 通过 / 0 失败**。五分钟物理时间、边界、连续甩动、reduced-motion、SVG、搜索与管理系统均覆盖。
+- 本轮独立 Chrome/Edge、手机/iPad、触控板/触屏硬件未实测，不将旧版本结果算作本轮通过。
+- 页面 HTML/CSS、SVG、圆圈尺寸与布局生成器、关键词数据库、搜索机制及管理页未改动。参数集中管理，未引入第三方运行依赖。
+
+详细记录：`docs/PHYSICS_INPUT_REBUILD.md`；真实输入验收：`tests/throw.html` 和 `tests/home-input.html`。
+
+## 箭头与惯性局部修复（历史记录）（2026-11-08）
 
 - 箭头根因：U+2198 依赖系统字体回退，跨平台可能出现 Emoji 呈现。已将 macOS 原字形轮廓转为内联 SVG / currentColor，保留原按钮名称、字号、位置、点击范围与 hover / active 反馈。
 - 惯性根因：原释放逻辑仅保留接近拖动目标后可能已经很低的控制器速度，没有读取近期手势轨迹。现用最近 100ms 的有界轨迹和事件时间戳估计 CSS px/s，交给原固定步物理系统。

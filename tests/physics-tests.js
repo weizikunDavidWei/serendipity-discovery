@@ -21,7 +21,7 @@ export async function runPhysicsTests(test,assert) {
   }
  });
  await test('面积质量：大圆撞小圆，动量守恒且小圆反应明显',()=>{
-  const a=body(400,400,100,35),b=body(540,400,35);const w=new World([a,b],{width:1400,height:900},[],{wind:0,damping:0,restitution:1,maxSpeed:1000});
+  const a=body(400,400,100,35),b=body(540,400,35);const w=new World([a,b],{width:1400,height:900},[],{wind:0,damping:0,speedDamping:0,restitution:1,maxSpeed:1000});
   const momentum=a.r*a.r*a.vx;
   for(let i=0;i<30;i++)w.step();
   assert(b.vx>50&&a.vx>0&&a.vx<35,'质量响应不正确');assert(Math.abs(a.r*a.r*a.vx+b.r*b.r*b.vx-momentum)<.001,'动量误差');check(assert,w.bodies,1400,900);

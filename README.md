@@ -30,6 +30,8 @@ python3 -m http.server 8765 --bind 127.0.0.1
 
 ### 实现与调整
 
+当前物理输入与手感重构、真实甩动验收结果见 [PHYSICS_INPUT_REBUILD.md](docs/PHYSICS_INPUT_REBUILD.md)。
+
 `assets/config.js` 集中管理数量、尺寸、碰撞、阻尼、速度、交互阈值和过渡时间。`assets/layout.js` 负责随机邻近聚集与受限放置，失败时缩小尺寸，不接受初始重叠。`assets/physics.js` 是独立于 DOM 的确定性圆形求解器；`assets/explore.js` 负责页面渲染、Pointer Events 和探索调度。
 
 固定步长为 1/120 秒，每次显示帧最多补算 8 步。质量与半径平方相关，恢复系数 0.72，12 轮接触分离；拖动目标通过速度控制器推进，避免直接将物体传送到指针。边缘控件是不可见静态避让区；碰撞采用圆形距离与面积质量，而非矩形按钮动画。每帧只写入位置 transform，不反复读取页面布局。

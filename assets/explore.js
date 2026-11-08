@@ -1,7 +1,7 @@
 import { loadPublic, shuffle, randomIndex, searchURL } from './data.js';
 import { CONFIG } from './config.js';
 import { World } from './physics.js';
-import { DragVelocity } from './drag-velocity.js';
+import { bindDrag } from './interaction.js';
 import { arrange, countLimit } from './layout.js';
 
 const field = document.querySelector('#field');
@@ -12,6 +12,7 @@ const motion = matchMedia('(prefers-reduced-motion: reduce)');
 let data, world, shown = [], topics = [], recent = [], nodes = [];
 let raf = 0, lastTime = null, active = null, keyboardHold = false;
 let resizeTimer = 0, transitionTimer = 0, shuffling = false;
+let pointerMode = true;
 
 function pick(words) {
   const pool = words.filter(w => !recent.includes(w));
@@ -46,7 +47,7 @@ function stop() {
   if (world) world.accumulator = 0;
 }
 function running() {
-  return world && !document.hidden && !keyboardHold && !shuffling && !field.classList.contains('is-resizing') && (!motion.matches || active?.dragging);
+  return world && !document.hidden && !keyboardHold && !shuffling && !field.classList.contains('is-resizing') && (!motion.matches || active?.controller?.dragging);
 }
 function tick(time) {
   raf = 0;
@@ -60,79 +61,20 @@ function start() {
   field.classList.toggle('is-static', motion.matches || keyboardHold);
   if (!raf && running()) { lastTime = null; raf = requestAnimationFrame(tick); }
 }
-function cancelDrag(inertia = false, velocity = null) {
-  if (!active) return;
-  const { body, button, pointerId, dragging } = active;
-  if (dragging) {
-    active.suppressClick();
-    world.release(body, inertia && !motion.matches, velocity);
-    if (motion.matches) world.bodies.forEach(b => { b.vx = 0; b.vy = 0; });
-  }
-  button.classList.remove('is-dragging');
+function cancelDrag() {
+  active?.controller?.cancel();
   active = null;
-  if (button.hasPointerCapture?.(pointerId)) button.releasePointerCapture(pointerId);
 }
 function wire(button, body, topic) {
-  let suppressUntil = 0;
-  function sample(e) {
-    // Some Safari releases do not expose coalesced events. Use the final event too.
-    let events = [];
-    try { events = e.getCoalescedEvents?.() || []; } catch { /* final event remains valid */ }
-    for (const point of [...events, e]) active.trail.add(point.clientX, point.clientY, point.timeStamp);
-  }
-  button.addEventListener('pointerdown', e => {
-    if (!e.isPrimary || e.button !== 0 || active) return;
-    const rect = field.getBoundingClientRect();
-    active = {
-      pointerId: e.pointerId, button, body, dragging: false,
-      trail: new DragVelocity(),
-      suppressClick: () => { suppressUntil = performance.now() + CONFIG.interaction.clickSuppression; },
-      x: e.clientX, y: e.clientY, type: e.pointerType,
-      offsetX: e.clientX - rect.left - body.x,
-      offsetY: e.clientY - rect.top - body.y,
-    };
-    sample(e);
-    button.setPointerCapture(e.pointerId);
+  let controller;
+  controller = bindDrag(button,body,{
+    getWorld:()=>world, reduced:()=>motion.matches,
+    explore:()=>explore(topic.keywords),
+    claim:()=>{if(active)return false;active={button,controller};pointerMode=true;keyboardHold=false;start();return true;},
+    releaseClaim:()=>{active=null;},
+    wake:()=>{pointerMode=true;keyboardHold=false;start();},
+    settle:()=>{if(motion.matches){world.bodies.forEach(b=>{b.vx=0;b.vy=0;});stop();}else start();},
   });
-  button.addEventListener('pointermove', e => {
-    if (!active || e.pointerId !== active.pointerId || active.button !== button) return;
-    sample(e);
-    const threshold = active.type === 'touch' ? CONFIG.interaction.touchThreshold : CONFIG.interaction.mouseThreshold;
-    if (!active.dragging && Math.hypot(e.clientX - active.x, e.clientY - active.y) < threshold) return;
-    active.dragging = true;
-    const rect = field.getBoundingClientRect();
-    const { width, height } = world.bounds, edge = CONFIG.layout.edge;
-    body.drag = {
-      x: Math.max(body.r + edge, Math.min(width - body.r - edge, e.clientX - rect.left - active.offsetX)),
-      y: Math.max(body.r + edge, Math.min(height - body.r - edge, e.clientY - rect.top - active.offsetY)),
-    };
-    button.classList.add('is-dragging');
-    if (e.cancelable) e.preventDefault();
-    keyboardHold = false;
-    start();
-  });
-  function end(e) {
-    if (!active || e.pointerId !== active.pointerId || active.button !== button) return;
-    const dragged = active.dragging;
-    let velocity = null;
-    if (dragged && e.type === 'pointerup') { sample(e); velocity = active.trail.velocity(e.timeStamp); }
-    cancelDrag(dragged && e.type === 'pointerup', velocity);
-    if (motion.matches) stop();
-    else start();
-  }
-  button.addEventListener('pointerup', end);
-  button.addEventListener('pointercancel', end);
-  button.addEventListener('lostpointercapture', e => {
-    if (active?.button === button && e.pointerId === active.pointerId) {
-      suppressUntil = performance.now() + CONFIG.interaction.clickSuppression;
-      cancelDrag(false); start();
-    }
-  });
-  button.addEventListener('click', e => {
-    if (e.detail !== 0 && performance.now() < suppressUntil) { e.preventDefault(); return; }
-    explore(topic.keywords);
-  });
-  button.addEventListener('dragstart', e => e.preventDefault());
 }
 function createScene(nextTopics, previous = []) {
   cancelDrag(false); stop();
@@ -216,14 +158,16 @@ function showError(e) {
 }
 shuffleButton.addEventListener('click', shuffleScene);
 surprise.addEventListener('click', () => explore(data.topics.flatMap(t => t.keywords)));
+document.addEventListener('pointerdown',()=>{pointerMode=true;keyboardHold=false;start();},{capture:true});
+document.addEventListener('keydown',e=>{if(e.key==='Tab'||e.key.startsWith('Arrow'))pointerMode=false;},{capture:true});
 field.addEventListener('focusin', () => {
-  keyboardHold = document.activeElement.matches(':focus-visible');
+  keyboardHold = !pointerMode && document.activeElement.matches(':focus-visible');
   if (keyboardHold) stop();
 });
 field.addEventListener('focusout', () => {
   // Focus can move directly from one orb to another.
   queueMicrotask(() => {
-    keyboardHold = field.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
+    keyboardHold = !pointerMode && field.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
     if (!keyboardHold) start();
   });
 });
