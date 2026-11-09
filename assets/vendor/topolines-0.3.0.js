@@ -1,4 +1,4 @@
-// Topolines 0.3.0 MIT; local patch: sticky pause, hidden-tab render guard.
+// Topolines 0.3.0 MIT; local patches: sticky pause, hidden-tab guard, polar contour compression.
 // src/color.ts
 var ctx2d;
 var cache = /* @__PURE__ */ new Map();
@@ -161,21 +161,33 @@ void main() {
   // the element instead of stretching. stBase is the pre-offset, scale-applied
   // space that uMouse is expressed in.
   vec2 stN = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);
-  // Local radial displacement of the EXISTING noise domain, no ring geometry.
-  vec2 displacement = vec2(0.0);
+  // Inverse polar "core exclusion": compress a radial interval of terrain
+  // into a thin band outside the orb. Its Jacobian amplifies the radial
+  // gradient and reduces the angular gradient, so EXISTING iso-lines run
+  // tangent to the rim. No angular rotation, added rings, or new iso-levels.
+  const float coreRatio = 0.18;
+  vec2 domainOffset = vec2(0.0);
+  float totalWeight = 0.0;
   for (int i = 0; i < 9; i++) {
     if (i >= uHollowCount) break;
     vec3 source = uHollowSources[i];
     vec2 delta = stN - source.xy;
     float distance = length(delta);
     float radius = max(source.z, 0.00001);
+    // Range only: coreRatio/compression does not depend on the slider.
     float extent = radius * (0.35 + 2.65 * uHollowRange);
-    float falloff = 1.0 - smoothstep(0.0, extent, max(0.0, distance - radius));
-    // Continuous also at the center (occluded by the orb); strongest near rim.
-    displacement += delta / max(distance, radius) * radius * 0.22 * falloff;
+    float weight = 1.0 - smoothstep(0.0, extent, max(0.0, distance - radius));
+    float core = radius * coreRatio;
+    float sampleRadius = sqrt(max(0.0, (distance - radius) * (distance + radius)) + core * core);
+    vec2 normal = delta / max(distance, core);
+    domainOffset += normal * (sampleRadius - distance) * weight;
+    totalWeight += weight;
   }
-  displacement /= 1.0 + 2.0 * length(displacement);
-  vec2 stBase = (stN + displacement) * uScale;
+  // Smooth, order-independent blend where influence regions overlap. Avoid
+  // unbounded sums and the seams that a nearest-orb selection would create.
+  float excess = totalWeight - 1.0;
+  float overlap = 1.0 + 0.5 * (excess + sqrt(excess * excess + 0.0004));
+  vec2 stBase = (stN + domainOffset / overlap) * uScale;
   vec2 st = stBase + uSeed + uDrift * uTime + uScrollOff;
 
   // Domain warp \u2014 bends the field so the loops meander like real terrain

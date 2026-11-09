@@ -1,0 +1,225 @@
+{
+  "results": [
+    {
+      "name": "tangential contours r=205 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=205 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=205 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=205 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "outer terrain pixel-identical",
+      "ok": true
+    },
+    {
+      "name": "rim terrain actually changes",
+      "ok": true
+    },
+    {
+      "name": "slider changes range only",
+      "ok": true
+    },
+    {
+      "name": "close sources have no ordering seam",
+      "ok": true
+    },
+    {
+      "name": "subpixel motion changes continuously",
+      "ok": true
+    },
+    {
+      "name": "OFF / zero baseline identical",
+      "ok": true
+    },
+    {
+      "name": "one renderer / no GL error",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "gradients": [
+    {
+      "radius": 205,
+      "seed": "hollow-direction-01",
+      "off": {
+        "alignment": 0.633499320164078,
+        "radialSlope": 2.407671686465925,
+        "samples": 767
+      },
+      "on": {
+        "alignment": 0.9165537508423924,
+        "radialSlope": 5.8565586999155475,
+        "samples": 767
+      }
+    },
+    {
+      "radius": 205,
+      "seed": "hollow-direction-02",
+      "off": {
+        "alignment": 0.48767989585484095,
+        "radialSlope": 1.4327862041723876,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.9206761282419482,
+        "radialSlope": 4.770111182985867,
+        "samples": 767
+      }
+    },
+    {
+      "radius": 205,
+      "seed": "hollow-direction-03",
+      "off": {
+        "alignment": 0.7019292155989065,
+        "radialSlope": 2.9106279489084876,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.9272550323279796,
+        "radialSlope": 8.960470852125392,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 205,
+      "seed": "hollow-direction-04",
+      "off": {
+        "alignment": 0.6097816533300862,
+        "radialSlope": 2.753657398594427,
+        "samples": 767
+      },
+      "on": {
+        "alignment": 0.9446098912541611,
+        "radialSlope": 9.966832538609488,
+        "samples": 766
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-01",
+      "off": {
+        "alignment": 0.6379787570472458,
+        "radialSlope": 2.1226451281801,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.8961371786546591,
+        "radialSlope": 7.64396717795598,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-02",
+      "off": {
+        "alignment": 0.7029627220069474,
+        "radialSlope": 1.7577956563398172,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.9188384530961753,
+        "radialSlope": 4.90429964831928,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-03",
+      "off": {
+        "alignment": 0.7216084335088143,
+        "radialSlope": 2.4699868852137006,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.9447704195693999,
+        "radialSlope": 11.321947470208004,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-04",
+      "off": {
+        "alignment": 0.7291668761589405,
+        "radialSlope": 2.8346133623733083,
+        "samples": 767
+      },
+      "on": {
+        "alignment": 0.9574392055995814,
+        "radialSlope": 6.896530769703119,
+        "samples": 768
+      }
+    }
+  ],
+  "stability": {
+    "farChanged": 0,
+    "nearChanged": 22729,
+    "rangeOnly": true,
+    "orderMax": 2,
+    "largestMean": 0.6636997767857142,
+    "zeroDiff": 0,
+    "glError": 0,
+    "canvases": 1
+  },
+  "errors": []
+}

@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hollow direction fixture</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#topolines-background,#field{position:absolute;inset:0}#topolines-background{pointer-events:none}canvas{display:block;width:100%;height:100%}.orb{position:absolute;border:0;border-radius:50%;background:#000;color:#fff;font:700 20px system-ui;display:grid;place-items:center}</style>
+<div id="topolines-background"></div><div id="field"></div>
+<script type="module">
+import {TopoField} from '../assets/vendor/topolines-0.3.0.js';
+import {attachHollow} from '../assets/hollow-field.js';
+const host=document.querySelector('#topolines-background'),container=document.querySelector('#field');
+const settings={hollowEnabled:true,hollowSize:.5};
+const field=new TopoField(host,{seed:'hollow-direction-01',speed:0,scale:2.29,levels:10,lineWidth:1.7,warp:.12,opacity:.7,color:'#000',maxDpr:1});
+attachHollow(field,host,()=>settings);
+function scene(circles){container.replaceChildren();for(const [x,y,r] of circles){const orb=document.createElement('div');orb.className='orb';orb.style.cssText=`left:${x-r}px;top:${y-r}px;width:${2*r}px;height:${2*r}px`;orb.textContent=r>120?'大圆球':'小圆球';container.append(orb)}field.render();}
+window.directionFixture={field,settings,scene,render(){field.render()},setSeed(seed){field.setOptions({seed});field.render()}};
+scene([[430,410,205],[935,390,84]]);
+</script></html>

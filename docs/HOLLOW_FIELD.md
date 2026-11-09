@@ -1,5 +1,7 @@
 # Hollow Distortion Field · 2026-11-08
 
+当前方向修正：已用极坐标核区映射替换下述历史径向位移。最新原理、方向验收与限制见 [HOLLOW_DIRECTION_FIX.md](HOLLOW_DIRECTION_FIX.md)。下述为首版实现记录。
+
 研究来源：React Bits Grid Distortion https://www.reactbits.dev/backgrounds/grid-distortion 及其公开GLSL实现（局部位移场改变采样坐标）；Topolines https://github.com/idleCyrex/topolines 。没有复制 Grid Distortion 的纹理网格/React组件，没有新增渲染器、额外画布、贴图、实体圆环或后处理通道。
 
 在既有 Topolines 片元着色器的 stN→stBase 处加入径向 displacement：最多9个圆形源，屏幕短边归一化保持纵横比；球边缘附近位移最大，向外 smoothstep 衰减至0；各源向量相加后用连续限幅避免过强变形。按半径缩放，影响外延=半径×(0.35+2.65×滑块比例)，力度固定0.22×半径。滑块只改外延，不改圆球尺寸、等高线密度或时钟。0%直接传0个源，与关闭一致。它是克制的艺术性径向形变，不声称科学黑洞模拟。
