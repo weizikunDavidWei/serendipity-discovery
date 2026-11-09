@@ -1,8 +1,11 @@
+import './visual-settings.js';
 import { loadPublic, shuffle, randomIndex, searchURL } from './data.js';
 import { CONFIG } from './config.js';
 import { World } from './physics.js';
 import { bindDrag } from './interaction.js';
 import { arrange, countLimit } from './layout.js';
+import { bindSlideCommit } from './slide-commit.js';
+import { readScene, writeScene } from './scene-session.js';
 
 const field = document.querySelector('#field');
 const status = document.querySelector('#status');
@@ -12,7 +15,11 @@ const motion = matchMedia('(prefers-reduced-motion: reduce)');
 let data, world, shown = [], topics = [], recent = [], nodes = [];
 let raf = 0, lastTime = null, active = null, keyboardHold = false;
 let resizeTimer = 0, transitionTimer = 0, shuffling = false;
-let pointerMode = true;
+let pointerMode = true, confirmationHold = false, lastSaved = 0, storageAvailable = true;
+function saveScene(force = false) {
+  if (!world || (!force && performance.now() - lastSaved < 1000)) return;
+  lastSaved = performance.now();storageAvailable = writeScene(world, topics, recent);
+}
 
 function pick(words) {
   const pool = words.filter(w => !recent.includes(w));
@@ -21,6 +28,7 @@ function pick(words) {
   const word = available[randomIndex(available.length)];
   recent.push(word);
   if (recent.length > 20) recent.shift();
+  saveScene(true);
   return word;
 }
 function explore(words) {
@@ -42,13 +50,14 @@ function draw() {
     nodes[i].style.transform = `translate3d(${(body.x - body.r).toFixed(2)}px,${(body.y - body.r).toFixed(2)}px,0)`;
   });
   if(motion.matches)document.dispatchEvent(new Event('orb-geometry'));
+  saveScene();
 }
 function stop() {
   cancelAnimationFrame(raf); raf = 0; lastTime = null;
   if (world) world.accumulator = 0;
 }
 function running() {
-  return world && !document.hidden && !keyboardHold && !shuffling && !field.classList.contains('is-resizing') && (!motion.matches || active?.controller?.dragging);
+  return world && !document.hidden && !keyboardHold && !confirmationHold && !shuffling && !field.classList.contains('is-resizing') && (!motion.matches || active?.controller?.dragging);
 }
 function tick(time) {
   raf = 0;
@@ -77,18 +86,20 @@ function wire(button, body, topic) {
     settle:()=>{if(motion.matches){world.bodies.forEach(b=>{b.vx=0;b.vy=0;});stop();}else start();},
   });
 }
-function createScene(nextTopics, previous = []) {
-  cancelDrag(false); stop();
+// Prepare without mutating the current world/DOM. A failed allocation or layout
+// must never erase the exploration that the user is trying to replace.
+function prepareScene(nextTopics, previous = [], restored = null) {
   const { width, height, boxes } = geometry();
   const minimums = nextTopics.map(t => [...t.name].length > 16 ? 140 : [...t.name].length > 8 ? 110 : 0);
-  const bodies = arrange(nextTopics.length, width, height, boxes, Math.random, previous, minimums);
-  topics = nextTopics.slice(0, bodies.length);
-  world = new World(bodies, { width, height }, boxes);
+  let bodies = restored?.bodies || arrange(nextTopics.length, width, height, boxes, Math.random, previous, minimums);
+  const nextTopicsVisible = nextTopics.slice(0, bodies.length);
+  const nextWorld = new World(bodies, { width, height }, boxes);
+  if (restored) { nextWorld.time = restored.time; nextWorld.solve(false, 36); }
   if (motion.matches) for (const body of bodies) { body.vx = 0; body.vy = 0; }
-  field.replaceChildren();
-  nodes = bodies.map((body, i) => {
-    const topic = topics[i], button = document.createElement('button');
-    button.className = 'orb'; button.type = 'button';
+  const fragment = document.createDocumentFragment();
+  const nextNodes = bodies.map((body, i) => {
+    const topic = nextTopicsVisible[i], button = document.createElement('button');
+    button.className = 'orb'; button.type = 'button'; button.dataset.topicId = topic.id;
     button.style.width = button.style.height = body.r * 2 + 'px';
     button.setAttribute('aria-label', '探索' + topic.name + '，在新标签页打开 Bilibili');
     button.setAttribute('aria-description', '点击探索，或拖动推动其他主题。');
@@ -99,12 +110,36 @@ function createScene(nextTopics, previous = []) {
     const length = [...topic.name].length;
     const size = Math.max(12, Math.min(48, body.r * (length > 10 ? 0.18 : length > 4 ? 0.23 : 0.29)));
     name.style.fontSize = size + 'px';
-    button.append(number, name); field.append(button); wire(button, body, topic);
+    button.append(number, name); fragment.append(button); wire(button, body, topic);
     return button;
   });
+  return { world: nextWorld, topics: nextTopicsVisible, nodes: nextNodes, fragment };
+}
+function commitScene(next) {
+  cancelDrag(); stop();
+  world = next.world; topics = next.topics; nodes = next.nodes;
+  field.replaceChildren(next.fragment);
   shown = topics.map(t => t.id);
   document.querySelector('#theme-count').textContent = String(topics.length).padStart(2, '0') + ' / TOPICS';
-  draw(); start();
+  draw(); saveScene(true); start();
+}
+function createScene(nextTopics, previous = []) { commitScene(prepareScene(nextTopics, previous)); }
+function usable(scene) {
+  const { bodies, bounds, obstacles } = scene.world;
+  return bodies.every((a,i) => a.x>=a.r+11 && a.y>=a.r+11 && a.x<=bounds.width-a.r-11 && a.y<=bounds.height-a.r-11 &&
+    bodies.slice(i+1).every(b=>Math.hypot(a.x-b.x,a.y-b.y)>=a.r+b.r-1) &&
+    obstacles.every(box=>Math.hypot(a.x-Math.max(box.x,Math.min(box.x+box.width,a.x)),a.y-Math.max(box.y,Math.min(box.y+box.height,a.y)))>=a.r+7));
+}
+function prepareSaved(saved) {
+  const {width,height} = geometry();
+  const same = Math.abs(width-saved.width)<1 && Math.abs(height-saved.height)<1;
+  const scale = same ? 1 : Math.min(1,width/saved.width,height/saved.height);
+  const bodies = saved.bodies.map(b=>({...b,x:b.x*width/saved.width,y:b.y*height/saved.height,r:Math.max(24,b.r*scale),vx:b.vx*scale,vy:b.vy*scale}));
+  const candidate = prepareScene(saved.topics,[],{bodies,time:saved.time});
+  if (usable(candidate)) return candidate;
+  // If controls or the viewport no longer fit, retain the same topics and use
+  // the existing packing algorithm; only genuinely unfit targets may be reduced.
+  return prepareScene(saved.topics,bodies.map(b=>({x:b.x,y:b.y})));
 }
 function chooseTopics() {
   const { width, height } = geometry();
@@ -114,30 +149,42 @@ function chooseTopics() {
   return [...shuffle(data.topics.filter(t => !shown.includes(t.id))),
     ...shuffle(data.topics.filter(t => shown.includes(t.id)))].slice(0, count);
 }
-function shuffleScene() {
-  if (shuffling) return;
-  shuffling = true; cancelDrag(false); stop(); shuffleButton.disabled = true;
+async function shuffleScene(signal) {
+  if (shuffling) throw new Error('正在换一阵风');
+  // All fallible scene generation happens before the old scene is touched.
+  let next;
+  try { next = prepareScene(chooseTopics()); }
+  catch (e) { status.textContent = '未能生成新场景，当前探索已保留。'; throw e; }
+  shuffling = true; cancelDrag(); stop(); saveScene(true);
   field.classList.add('is-leaving');
-  clearTimeout(transitionTimer);
-  transitionTimer = setTimeout(() => {
-    try {
-      field.classList.remove('is-resizing');
-      createScene(chooseTopics());
-      field.classList.remove('is-leaving'); field.classList.add('is-entering');
-      status.textContent = '新的方向，新的偶然。';
-    } catch (e) { showError(e); }
-    shuffling = false; shuffleButton.disabled = false; start();
-  }, motion.matches ? 0 : CONFIG.transition.shuffle);
+  try {
+    await new Promise((resolve,reject)=>{
+      const abort=()=>{clearTimeout(transitionTimer);signal.removeEventListener('abort',abort);reject(new DOMException('已取消','AbortError'));};
+      signal.addEventListener('abort',abort,{once:true});
+      transitionTimer=setTimeout(()=>{signal.removeEventListener('abort',abort);resolve();},motion.matches?0:CONFIG.transition.shuffle);
+      if(signal.aborted)abort();
+    });
+    if (signal.aborted) throw new DOMException('已取消','AbortError');
+    const actual = geometry();
+    if (next.world.bounds.width !== actual.width || next.world.bounds.height !== actual.height) next = prepareScene(next.topics);
+    field.classList.remove('is-resizing');
+    commitScene(next);
+    field.classList.add('is-entering');
+    status.textContent = '新的方向，新的偶然。';
+  } finally {
+    field.classList.remove('is-leaving');shuffling=false;
+    try { resizeScene(); } catch { status.textContent='窗口空间不足，当前主题已保留，请增大窗口。'; }
+    start();
+  }
 }
 function resizeScene() {
   if (!world || shuffling) return;
   const { width, height } = geometry();
   if (Math.abs(width - world.bounds.width) < 1 && Math.abs(height - world.bounds.height) < 1) return;
-  const previous = world.bodies.map(b => ({ x: b.x * width / world.bounds.width, y: b.y * height / world.bounds.height }));
   const old = nodes.map(n => n.style.transform);
-  const limit = countLimit(width, height);
+  const saved = {width:world.bounds.width,height:world.bounds.height,time:world.time,topics,bodies:world.bodies.map(b=>({...b}))};
   field.classList.remove('is-entering');
-  createScene(topics.slice(0, limit), previous);
+  commitScene(prepareSaved(saved));
   stop();
   if (!motion.matches) {
     const targets = nodes.map(n => n.style.transform);
@@ -157,7 +204,12 @@ function showError(e) {
     button.onclick = () => location.reload(); field.append(button);
   }
 }
-shuffleButton.addEventListener('click', shuffleScene);
+const slide = bindSlideCommit({trigger:shuffleButton,onConfirm:shuffleScene,
+  onOpen:()=>{confirmationHold=true;cancelDrag();stop();saveScene(true);},
+  onClose:()=>{confirmationHold=false;start();}});
+document.querySelector('.edge-brand').addEventListener('click',e=>{
+  if(e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey){e.preventDefault();slide.close({focus:true});}
+});
 surprise.addEventListener('click', () => explore(data.topics.flatMap(t => t.keywords)));
 document.addEventListener('pointerdown',()=>{pointerMode=true;keyboardHold=false;start();},{capture:true});
 document.addEventListener('keydown',e=>{if(e.key==='Tab'||e.key.startsWith('Arrow'))pointerMode=false;},{capture:true});
@@ -173,7 +225,7 @@ field.addEventListener('focusout', () => {
   });
 });
 document.addEventListener('visibilitychange', () => {
-  cancelDrag(false); stop(); if (!document.hidden) start();
+  saveScene(true);cancelDrag(false); stop(); if (!document.hidden) start();
 });
 motion.addEventListener('change', () => {
   cancelDrag(false); stop();
@@ -183,10 +235,13 @@ motion.addEventListener('change', () => {
 const observer = new ResizeObserver(() => { try { resizeScene(); } catch (e) { showError(e); } });
 observer.observe(field);
 window.addEventListener('blur', () => { cancelDrag(false); });
-window.addEventListener('pagehide', () => { cancelDrag(false); stop(); });
+window.addEventListener('pagehide', () => { saveScene(true);cancelDrag(false); stop(); });
 window.addEventListener('pageshow', start);
 loadPublic().then(d => {
-  data = d; createScene(chooseTopics());
+  data = d;
+  const saved = readScene(data);let restored = false;
+  if(saved){try{commitScene(prepareSaved(saved));recent=saved.recent;saveScene(true);restored=true;}catch{/* invalid/unusable: fresh initialization below */}}
+  if(!restored)createScene(chooseTopics());
   field.setAttribute('aria-busy', 'false'); shuffleButton.disabled = false; surprise.disabled = false;
-  status.textContent = '不记录兴趣，只保留好奇。';
+  status.textContent = storageAvailable ? (restored?'已恢复当前标签页的探索现场。':'不记录兴趣，只保留好奇。') : '浏览器无法保存现场；刷新后可能重新开始探索。';
 }).catch(e => { field.setAttribute('aria-busy', 'false'); showError(e); });

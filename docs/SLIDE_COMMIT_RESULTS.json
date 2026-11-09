@@ -1,0 +1,145 @@
+{
+  "results": [
+    {
+      "name": "opens without discarding",
+      "ok": true
+    },
+    {
+      "name": "partial return and unchanged scene",
+      "ok": true
+    },
+    {
+      "name": "Escape closes",
+      "ok": true
+    },
+    {
+      "name": "End alone never resets",
+      "ok": true
+    },
+    {
+      "name": "Enter at start never resets",
+      "ok": true
+    },
+    {
+      "name": "outside closes",
+      "ok": true
+    },
+    {
+      "name": "endpoint before release preserves scene",
+      "ok": true
+    },
+    {
+      "name": "completion feedback",
+      "ok": true
+    },
+    {
+      "name": "one completed gesture one replacement",
+      "ok": true
+    },
+    {
+      "name": "confirmed new topics",
+      "ok": true
+    },
+    {
+      "name": "refresh restores exact topics sizes positions",
+      "ok": true
+    },
+    {
+      "name": "search remains synchronous and recent distinct",
+      "ok": true
+    },
+    {
+      "name": "recent de-duplication survives reload",
+      "ok": true
+    },
+    {
+      "name": "opener-created tab starts independently",
+      "ok": true
+    },
+    {
+      "name": "new tab does not overwrite parent scene",
+      "ok": true
+    },
+    {
+      "name": "brand does not silently reset",
+      "ok": true
+    },
+    {
+      "name": "keyboard explicit confirmation",
+      "ok": true
+    },
+    {
+      "name": "resize closes confirmation",
+      "ok": true
+    },
+    {
+      "name": "resize retains displayed topics",
+      "ok": true
+    },
+    {
+      "name": "resized layout usable",
+      "ok": true
+    },
+    {
+      "name": "mobile refresh retains themes",
+      "ok": true
+    },
+    {
+      "name": "invalid session safely falls back",
+      "ok": true
+    },
+    {
+      "name": "failure preserves exact scene",
+      "ok": true
+    },
+    {
+      "name": "failure permits retry",
+      "ok": true
+    },
+    {
+      "name": "retry succeeds",
+      "ok": true
+    },
+    {
+      "name": "dark track",
+      "ok": true
+    },
+    {
+      "name": "spring returns in motion mode",
+      "ok": true
+    },
+    {
+      "name": "blur aborts uncommitted transition",
+      "ok": true
+    },
+    {
+      "name": "Escape aborts pending commit",
+      "ok": true
+    },
+    {
+      "name": "touch cancel at endpoint preserves scene",
+      "ok": true
+    },
+    {
+      "name": "touch drag release confirms",
+      "ok": true
+    },
+    {
+      "name": "denied storage keeps app usable",
+      "ok": true
+    },
+    {
+      "name": "confirmed reset works without storage",
+      "ok": true
+    },
+    {
+      "name": "component destroy cleans pending work",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "errors": []
+}

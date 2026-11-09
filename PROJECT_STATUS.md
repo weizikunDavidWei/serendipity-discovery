@@ -2,7 +2,7 @@
 
 更新日期：2026-11-08（America/Toronto）
 
-状态：**已完成物理输入链路与碰撞手感重构，Safari 真实甩动/三圆连锁与真实首页观测均通过；完整回归 62 项通过。不进入第二阶段。**
+状态：**已完成 Slide Commit 探索重置确认与当前标签页现场恢复；Chrome专项35项通过，Safari实际鼠标/键盘/刷新检查通过。原套件8项历史词库基准失败仍单独记录。**
 
 公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
 正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)
@@ -151,3 +151,14 @@
 - Chrome方向与压缩24项通过；旧Shader被新增方向检查拒绝。正常像素远场变化0，OFF/0%一致；大小球、三球8px间隙、连续小幅移动均已实际绘制并检查截图。
 - 原扭曲14项、等高线21项、准星10项通过；旧完整回归仍54通过/8个相同历史词库基准失败。Safari/Edge及移动真机本轮未实测。
 - 原理、真实数据与范围限制见 docs/HOLLOW_DIRECTION_FIX.md 及相关结果文件。
+
+
+## Slide Commit 与探索现场恢复（2026-11-08）
+
+- 首页「换一阵风」保留入口，展开原生胶囊确认：拖至终点并释放才执行；弹簧回弹、覆盖文字、成功反馈/收起、取消和失败重试。
+- 键盘需End/方向键到终点后再Enter/空格确认；捕获取消/失焦/隐藏/销毁均清理，待提交事务可中止，重复输入加锁。
+- prepare/commit事务式替换旧场景，准备失败不丢DOM或原World。只有原来的主题刷新入口需确认；未新增布局重置按钮，自动窗口适配不抽新主题。
+- sessionStorage保存当前标签页主题ID、尺寸/位置/速度、物理时钟及最近词条；刷新恢复，新开标签独立。尺寸变化先适配旧场景，必要时同主题重排；存储不可用明确降级。
+- Chrome35项专项通过，包含CDP触摸模拟；Safari桌面实际原生鼠标半程/完整滑动、键盘确认/Escape和Cmd-R恢复已观察通过。手机/平板与Edge真机未实测。
+- 原准星10项、Hollow14项、等高线21项、字体/坐标15项通过；旧完整套件仍54通过/8个相同历史失败。详见docs/SLIDE_COMMIT.md及实际结果。
+- 词库、管理代码、物理求解/拖动公式、搜索算法、背景shader及SVG均未改动。仅在场景调度中接入确认与保存。

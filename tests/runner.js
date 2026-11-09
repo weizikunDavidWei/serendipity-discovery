@@ -1,11 +1,12 @@
 import {runReleaseTests,runArrowTests,runPointerReleaseTests} from './bugfix-tests.js';
+import {SCENE_KEY} from '../assets/scene-session.js';
 import {runPhysicsTests} from './physics-tests.js';
 import {validate,loadPublic,searchURL,csvEncode,csvParse,randomIndex,shuffle} from '../assets/data.js';
 const $=s=>document.querySelector(s);let passed=0,failed=0,frame;
 function assert(ok,message){if(!ok)throw new Error(message);}
 async function test(name,fn){const li=document.createElement('li');try{await fn();passed++;li.textContent='PASS · '+name;}catch(e){failed++;li.className='fail';li.textContent='FAIL · '+name+' — '+e.message;}$('#results').append(li);}
 async function wait(fn){for(let n=0;n<100;n++){if(fn())return;await new Promise(r=>setTimeout(r,25));}throw new Error('等待页面状态超时');}
-async function open(path,width=1440,fixture=false){if(frame)frame.remove();frame=document.createElement('iframe');frame.style.width=width+'px';frame.style.height='1100px';$('#preview').append(frame);const loaded=new Promise((r,j)=>{frame.onload=r;frame.onerror=j;});if(fixture){const html=await(await fetch('../index.html')).text();const bootstrap=`<script>
+async function open(path,width=1440,fixture=false){if(frame)frame.remove();sessionStorage.removeItem(SCENE_KEY);frame=document.createElement('iframe');frame.style.width=width+'px';frame.style.height='1100px';$('#preview').append(frame);const loaded=new Promise((r,j)=>{frame.onload=r;frame.onerror=j;});if(fixture){const html=await(await fetch('../index.html')).text();const bootstrap=`<script>
  const actualMedia=window.matchMedia.bind(window);const reduced=new EventTarget();reduced.matches=true;reduced.media='(prefers-reduced-motion: reduce)';
  window.matchMedia=q=>q===reduced.media?reduced:actualMedia(q);
  window.testMotion=value=>{reduced.matches=value;reduced.dispatchEvent(new Event('change'));};
@@ -13,6 +14,7 @@ async function open(path,width=1440,fixture=false){if(frame)frame.remove();frame
  window.requestAnimationFrame=fn=>actualRAF(time=>{if(last&&window.testFrames.length<180)window.testFrames.push(time-last);last=time;fn(time);});
  </scr`+`ipt>`;frame.srcdoc=html.replace('<head>','<head><base href="'+new URL('../',location.href).href+'">'+bootstrap);}else frame.src='../'+path;await loaded;await wait(()=>frame.contentDocument.querySelector(path.startsWith('admin')?'#workspace:not([hidden])':'.orb'));if(fixture)frame.scrollIntoView({block:'start'});return frame.contentWindow;}
 function click(w,s){w.document.querySelector(s).click();}
+async function confirmShuffle(w){click(w,'#shuffle');const grip=w.document.querySelector('.slide-grip');for(const key of ['End','Enter'])grip.dispatchEvent(new w.KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));await wait(()=>w.document.querySelector('.slide-panel').hidden);}
 function fill(w,s,value){const input=w.document.querySelector(s);input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}));}
 function submit(w,s){w.document.querySelector(s).dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}
 const status=w=>w.document.querySelector('#admin-status').textContent;
@@ -21,7 +23,7 @@ const mediaRules=new WeakMap();
 function forceMedia(w,feature,enabled){if(!mediaRules.has(w)){const rules=[];for(const sheet of w.document.styleSheets)for(const rule of sheet.cssRules)if(rule instanceof w.CSSMediaRule)rules.push({rule,original:rule.conditionText});mediaRules.set(w,rules);}for(const {rule,original} of mediaRules.get(w))if(original.includes(feature))rule.media.mediaText=enabled?'all':'not all';}
 const settle=()=>new Promise(r=>setTimeout(r,300));
 $('#run').onclick=async()=>{
- $('#run').disabled=true;$('#results').replaceChildren();passed=0;failed=0;const keys=['serendipity.draft.v1','serendipity.history.v1'],prior=keys.map(k=>localStorage.getItem(k));keys.forEach(k=>localStorage.removeItem(k));
+ $('#run').disabled=true;$('#results').replaceChildren();passed=0;failed=0;const priorScene=sessionStorage.getItem(SCENE_KEY);const keys=['serendipity.draft.v1','serendipity.history.v1'],prior=keys.map(k=>localStorage.getItem(k));keys.forEach(k=>localStorage.removeItem(k));
  try{
  const data=await (await fetch('../data/keywords.json')).json();
  await runPhysicsTests(test,assert);
@@ -38,7 +40,7 @@ $('#run').onclick=async()=>{
  await test('实时切换深色：黑底白圆黑字',async()=>{forceMedia(w,'prefers-color-scheme',true);await settle();const orb=w.document.querySelector('.orb');assert(w.getComputedStyle(w.document.documentElement).getPropertyValue('--bg').trim()==='#000','背景');assert(w.getComputedStyle(orb).backgroundColor==='rgb(255, 255, 255)'&&w.getComputedStyle(orb).color==='rgb(0, 0, 0)','圆圈颜色');});
  await test('标志与版式：™、大型↘入口、无旧Hero或网格',()=>{assert(w.document.querySelector('.brand-dot').textContent==='™','品牌符号');assert(w.document.querySelector('svg.direction path'),'矢量箭头丢失');assert(!w.document.querySelector('.intro,.field-label,footer'),'旧分区残留');assert(w.getComputedStyle(w.document.querySelector('#field')).display!=='grid','网格残留');});
  await runArrowTests(w,test,assert,forceMedia);
- await test('换组、同步中文新窗口、近期去重与完全随机',async()=>{w=await open('');click(w,'#shuffle');await new Promise(r=>setTimeout(r,250));let opened=[];w.open=(...args)=>opened.push(args);const button=w.document.querySelector('.orb'),topic=data.topics.find(t=>button.textContent.includes(t.name));for(let i=0;i<15;i++)button.click();const words=opened.map(a=>new URL(a[0]).searchParams.get('keyword'));assert(opened.length===15,'非同步打开');assert(new Set(words).size===15,'周期内重复');assert(words.every(x=>topic.keywords.includes(x)),'错主题');click(w,'#surprise');assert(opened.length===16,'完全随机失败');});
+ await test('换组、同步中文新窗口、近期去重与完全随机',async()=>{w=await open('');await confirmShuffle(w);let opened=[];w.open=(...args)=>opened.push(args);const button=w.document.querySelector('.orb'),topic=data.topics.find(t=>button.textContent.includes(t.name));for(let i=0;i<15;i++)button.click();const words=opened.map(a=>new URL(a[0]).searchParams.get('keyword'));assert(opened.length===15,'非同步打开');assert(new Set(words).size===15,'周期内重复');assert(words.every(x=>topic.keywords.includes(x)),'错主题');click(w,'#surprise');assert(opened.length===16,'完全随机失败');});
  await test('鼠标与触摸：小幅移动可点击，拖动后抑制搜索，键盘点击保留',async()=>{
   let opened=[];w.open=(...args)=>opened.push(args);w.HTMLElement.prototype.setPointerCapture=function(){};w.HTMLElement.prototype.hasPointerCapture=()=>false;
   const b=w.document.querySelector('.orb');
@@ -55,7 +57,7 @@ $('#run').onclick=async()=>{
   Object.defineProperty(w.document,'hidden',{configurable:true,get:()=>false});w.document.dispatchEvent(new w.Event('visibilitychange'));await new Promise(r=>setTimeout(r,300));layout(w);
  });
  await test('动画采样与重复换组：对象数量有界，窗口无滚动条',async()=>{
-  for(let i=0;i<12;i++){click(w,'#shuffle');await new Promise(r=>setTimeout(r,190));assert(w.document.querySelectorAll('.orb').length<=6,'DOM对象增长');}
+  for(let i=0;i<12;i++){await confirmShuffle(w);assert(w.document.querySelectorAll('.orb').length<=6,'DOM对象增长');}
   layout(w);const times=w.testFrames.filter(t=>t>0&&t<100);times.sort((a,b)=>a-b);document.querySelector('#benchmark').textContent+='；实际 rAF 样本 '+times.length+'，中位间隔 '+(times[Math.floor(times.length/2)]||0).toFixed(1)+'ms（非跨设备性能保证）';
  });
  w=await open('admin.html');w.confirm=()=>true;w.prompt=()=> '验收主题';
@@ -71,5 +73,5 @@ $('#run').onclick=async()=>{
  await test('CSV 文件导入、校验、去重、恢复公开版本',async()=>{await importFile('topic,keyword\nCSV主题,CSV词条甲\nCSV主题,CSV词条乙','test.csv');assert(status(w).includes('导入成功'),'CSV导入失败');click(w,'#validate');assert(status(w).includes('校验通过'),'校验失败');click(w,'#dedupe');assert(status(w).includes('移除 0'),'去重失败');click(w,'#restore-public');assert(w.document.querySelector('#stats').textContent.includes('240'),'公开恢复失败');});
  await test('管理页删除主题及备份恢复',()=>{click(w,'#delete-topic');assert(w.document.querySelector('#stats').textContent.includes('15 个主题'),'删除失败');click(w,'#restore-backup');assert(w.document.querySelector('#stats').textContent.includes('16 个主题'),'恢复失败');});
  await test('管理页 390px 手机布局可用，无水平溢出',async()=>{w=await open('admin.html',390);assert(w.document.documentElement.scrollWidth<=390,'管理页水平溢出');});
- }catch(e){await test('测试执行环境',()=>{throw e;});}finally{if(frame){frame.remove();frame=null;}keys.forEach((k,i)=>{if(prior[i]===null)localStorage.removeItem(k);else localStorage.setItem(k,prior[i]);});$('#summary').textContent=passed+' 项通过 / '+failed+' 项失败 · 测试前存储已恢复';$('#run').disabled=false;}
+ }catch(e){await test('测试执行环境',()=>{throw e;});}finally{if(frame){frame.remove();frame=null;}if(priorScene===null)sessionStorage.removeItem(SCENE_KEY);else sessionStorage.setItem(SCENE_KEY,priorScene);keys.forEach((k,i)=>{if(prior[i]===null)localStorage.removeItem(k);else localStorage.setItem(k,prior[i]);});$('#summary').textContent=passed+' 项通过 / '+failed+' 项失败 · 测试前存储已恢复';$('#run').disabled=false;}
 };
