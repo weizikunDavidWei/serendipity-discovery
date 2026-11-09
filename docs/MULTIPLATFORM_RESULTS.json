@@ -1,0 +1,177 @@
+{
+  "results": [
+    {
+      "name": "default bilibili",
+      "ok": true
+    },
+    {
+      "name": "special character adapters",
+      "ok": true
+    },
+    {
+      "name": "youtube checked immediately",
+      "ok": true
+    },
+    {
+      "name": "youtube all search entrances",
+      "ok": true
+    },
+    {
+      "name": "youtube scene unchanged",
+      "ok": true
+    },
+    {
+      "name": "google checked immediately",
+      "ok": true
+    },
+    {
+      "name": "google all search entrances",
+      "ok": true
+    },
+    {
+      "name": "google scene unchanged",
+      "ok": true
+    },
+    {
+      "name": "bilibili checked immediately",
+      "ok": true
+    },
+    {
+      "name": "bilibili all search entrances",
+      "ok": true
+    },
+    {
+      "name": "bilibili scene unchanged",
+      "ok": true
+    },
+    {
+      "name": "same orb canvas crosshair objects",
+      "ok": true
+    },
+    {
+      "name": "platform restored on refresh",
+      "ok": true
+    },
+    {
+      "name": "scene restored on refresh",
+      "ok": true
+    },
+    {
+      "name": "accessible labels match mode",
+      "ok": true
+    },
+    {
+      "name": "keyboard Home bilibili",
+      "ok": true
+    },
+    {
+      "name": "keyboard next YouTube",
+      "ok": true
+    },
+    {
+      "name": "drag paints immediately without animation lag",
+      "ok": true
+    },
+    {
+      "name": "stationary release snaps nearest slot",
+      "ok": true
+    },
+    {
+      "name": "rapid switches settle consistently",
+      "ok": true
+    },
+    {
+      "name": "light fits beside arrow",
+      "ok": true
+    },
+    {
+      "name": "dark fits beside arrow",
+      "ok": true
+    },
+    {
+      "name": "touch drag to Google",
+      "ok": true
+    },
+    {
+      "name": "touch cancel retains current mode",
+      "ok": true
+    },
+    {
+      "name": "mobile no overlap or scroll",
+      "ok": true
+    },
+    {
+      "name": "320px slots fit text",
+      "ok": true
+    },
+    {
+      "name": "running world velocities clock and objects unaffected by switching",
+      "ok": true
+    },
+    {
+      "name": "physics keeps advancing after switching",
+      "ok": true
+    },
+    {
+      "name": "cross-tab selection stays synchronized",
+      "ok": true
+    },
+    {
+      "name": "invalid saved platform safely defaults to bilibili",
+      "ok": true
+    },
+    {
+      "name": "768x1024 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "701x900 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "844x390 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "1024x768 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "date": "2026-11-09",
+  "browser": "Installed Google Chrome via Playwright; CDP touch simulation",
+  "performance": {
+    "samples": 180,
+    "medianMs": 16.699999999999932,
+    "p95Ms": 16.799999999999955,
+    "maxMs": 33.30000000000001,
+    "orbCount": 9,
+    "canvasCount": 1,
+    "platforms": 3
+  },
+  "safari": {
+    "method": "native macOS Safari UI via CUA",
+    "passed": [
+      "click YouTube",
+      "drag active thumb to Google",
+      "keyboard Left to YouTube",
+      "Cmd-R restores YouTube and same topics",
+      "full page visual inspection"
+    ]
+  },
+  "externalSearch": {
+    "bilibili": "real popup loaded Chinese result title",
+    "youtube": "real popup correct encoded results URL; content not verified",
+    "google": "real popup accepted encoded query then Google CAPTCHA; results content not verified"
+  },
+  "notTested": [
+    "Edge",
+    "iOS/iPadOS real devices",
+    "physical touchscreen",
+    "high-refresh-rate hardware"
+  ]
+}

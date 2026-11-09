@@ -1,5 +1,7 @@
+import {searchURL,platformInfo} from './search-platforms.js';
+import {getPlatform} from './mode-controller.js';
 import './visual-settings.js';
-import { loadPublic, shuffle, randomIndex, searchURL } from './data.js';
+import { loadPublic, shuffle, randomIndex } from './data.js';
 import { CONFIG } from './config.js';
 import { World } from './physics.js';
 import { bindDrag } from './interaction.js';
@@ -35,8 +37,8 @@ function pick(words) {
 function explore(words) {
   // Keep window.open in the original trusted click, without an await or timer.
   const word = pick(words);
-  window.open(searchURL(word), '_blank', 'noopener,noreferrer');
-  status.textContent = '已打开「' + word + '」 · 在 Bilibili 偶然发现';
+  window.open(searchURL(word,getPlatform()), '_blank', 'noopener,noreferrer');
+  status.textContent = '已打开「' + word + '」 · 在 '+platformInfo(getPlatform()).label+' 偶然发现';
 }
 function geometry() {
   const rect = field.getBoundingClientRect();
@@ -102,7 +104,7 @@ function prepareScene(nextTopics, previous = [], restored = null) {
     const topic = nextTopicsVisible[i], button = document.createElement('button');
     button.className = 'orb'; button.type = 'button'; button.dataset.topicId = topic.id;
     button.style.width = button.style.height = body.r * 2 + 'px';
-    button.setAttribute('aria-label', '探索' + topic.name + '，在新标签页打开 Bilibili');
+    button.setAttribute('aria-label', '探索' + topic.name + '，在新标签页打开 '+platformInfo(getPlatform()).label);
     button.setAttribute('aria-description', '点击探索，或拖动推动其他主题。');
     const number = document.createElement('span'); number.className = 'number';
     number.textContent = String(i + 1).padStart(2, '0') + ' / ↗';
@@ -211,6 +213,8 @@ const slide = bindSlideCommit({trigger:shuffleButton,onConfirm:shuffleScene,
 document.querySelector('.edge-brand').addEventListener('click',e=>{
   if(e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey){e.preventDefault();slide.close({focus:true});}
 });
+function updateSearchLabels(){nodes.forEach((node,i)=>node.setAttribute('aria-label','探索'+topics[i].name+'，在新标签页打开 '+platformInfo(getPlatform()).label));surprise.setAttribute('aria-label','完全随机探索，在新标签页打开 '+platformInfo(getPlatform()).label);}
+window.addEventListener('search-platform-change',updateSearchLabels);updateSearchLabels();
 surprise.addEventListener('click', () => explore(data.topics.flatMap(t => t.keywords)));
 document.addEventListener('pointerdown',()=>{pointerMode=true;keyboardHold=false;start();},{capture:true});
 document.addEventListener('keydown',e=>{if(e.key==='Tab'||e.key.startsWith('Arrow'))pointerMode=false;},{capture:true});

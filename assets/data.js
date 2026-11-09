@@ -21,7 +21,8 @@ export function validate(raw, {draft=false}={}) {
 export async function loadPublic(){const r=await fetch('./data/keywords.json',{cache:'no-cache'});if(!r.ok)throw new Error('公开词库加载失败（'+r.status+'）');return validate(await r.json());}
 export function randomIndex(length){if(!Number.isInteger(length)||length<1)throw new Error('随机池为空');const max=4294967296,limit=max-max%length,a=new Uint32Array(1);do{crypto.getRandomValues(a);}while(a[0]>=limit);return a[0]%length;}
 export function shuffle(items){const out=[...items];for(let i=out.length-1;i>0;i--){const j=randomIndex(i+1);[out[i],out[j]]=[out[j],out[i]];}return out;}
-export const searchURL = word => 'https://search.bilibili.com/all?keyword='+encodeURIComponent(word);
+// Backwards-compatible pure adapter export; all URLs live in one module.
+export {searchURL} from './search-platforms.js';
 export function csvEncode(data){return '\uFEFFtopic,keyword\r\n'+data.topics.flatMap(t=>t.keywords.map(w=>[t.name,w].map(s=>'"'+(/^[=+\-@\t\r]/.test(s)?"'"+s:s).replace(/"/g,'""')+'"').join(','))).join('\r\n');}
 export function csvParse(text){
   text=text.replace(/^\uFEFF/,'');const rows=[];let row=[],cell='',quoted=false,closed=false;

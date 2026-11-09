@@ -177,3 +177,14 @@
 - 最大实际影响外延由3R降至1.5R（减半），滑块仍显示0–100%，固定切向压缩比例不变。
 - 公开默认、离线fallback、后台初值及恢复默认统一为1%；保留用户已保存的个人选择。
 - Chrome交互15项与方向/压缩24项通过；100%设置远场像素验证通过。Safari/Edge与实体设备未实测。详情docs/HOLLOW_RANGE_TUNING.md。
+
+
+## 多平台搜索与 RubberSegment（2026-11-09）
+
+- 集中Bilibili/YouTube/Google URL适配，默认bilibili；圆球与完全随机探索共用当前平台，保留关键词抽样和近期去重。
+- 原生双边界弹簧切换器置于右下箭头左侧，黑白自动反转；拖动即时跟手，释放按最近轨迹估速吸附；鼠标、触摸模拟、键盘、取消和reduced-motion均覆盖。无React或新运行依赖。
+- 平台偏好localStorage保存并跨同源标签页同步；切换不改World、速度/时钟、主题、背景或准星对象。三个平台暂共用既有界面。词库、管理系统、物理算法、SVG和背景shader未改动。
+- Chrome35项专项通过；原滑轨22、Hollow15、Topolines21、准星10项通过。旧通用套件仍54通过/8相同历史词库基准及链式断言失败。实际输出见docs/MULTIPLATFORM_RESULTS.json与MULTIPLATFORM_REGRESSION.txt。
+- 已检查桌面明暗和移动完整页面，补701–820px窄平板底部留白避免文字重叠。macOS Safari原生点击、拖动、键盘及刷新恢复已实测。Edge、实体移动设备及高刷新率硬件未实测。
+- 真实搜索新标签页已打开；Bilibili结果标题正常，YouTube结果内容未核验，Google进入第三方验证码页，未计为搜索内容验证通过。180帧本机连续切换中位16.7ms，不代表所有设备。
+- 推送与Pages验证结果以本次交付报告为准；详细实现、运行和范围见docs/MULTIPLATFORM.md。

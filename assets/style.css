@@ -43,3 +43,15 @@ html[data-font-weight=bold] .wordmark{font-weight:900!important}
 .edge-controls .slide-grip:focus-visible{outline:0}.edge-controls .slide-grip:focus-visible i{outline:1px solid var(--bg);outline-offset:2px}
 .shuffle-control[data-phase=dragging] .slide-grip{cursor:grabbing}.shuffle-control[data-phase=pending] .slide-grip{cursor:wait}
 @media(max-width:700px){.shuffle-control{width:112px}}
+/* Platform routing is independent of the exploration scene. */
+.explore{--platform-edge:32px;--platform-arrow:112px;--platform-gap:24px}
+.platform-switch{position:absolute;z-index:2;right:calc(max(var(--platform-edge),env(safe-area-inset-right)) + var(--platform-arrow) + var(--platform-gap));bottom:max(28px,env(safe-area-inset-bottom));width:258px;height:36px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:1px;background:var(--fg);color:var(--bg);border-radius:24px;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.platform-option,.platform-copy{display:flex;align-items:center;justify-content:center;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1px;white-space:nowrap}
+.platform-option{position:relative;height:44px;min-width:0;margin:-5px 0;padding:0 4px;border:0;border-radius:22px;background:transparent;color:var(--bg);touch-action:pan-y;outline-offset:2px}
+.platform-option[aria-checked=true]{cursor:grab}.platform-option[data-pressed]{transform:scale(.97)}.platform-switch[data-held] .platform-option{cursor:grabbing}
+.platform-option:focus-visible{outline:1px solid var(--fg);outline-offset:3px}
+.rubber-thumb{position:absolute;inset:1px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--bg);color:var(--fg);clip-path:inset(0 var(--rubber-right,66.666%) 0 var(--rubber-left,0px) round 22px);pointer-events:none}
+@media(max-width:700px){.explore{--platform-edge:20px;--platform-arrow:83px;--platform-gap:12px}.platform-switch{width:min(240px,calc(100vw - 130px));bottom:max(22px,env(safe-area-inset-bottom))}.platform-option,.platform-copy{font-size:10px}.edge-note{bottom:max(78px,calc(env(safe-area-inset-bottom) + 56px))}}
+@media(min-width:701px) and (max-width:820px){.edge-note{bottom:max(84px,calc(env(safe-area-inset-bottom) + 56px))}}
+@media(max-width:350px){.platform-option,.platform-copy{font-size:9px}}
+@media(max-height:480px){.explore{--platform-arrow:64px}.platform-switch{bottom:max(14px,env(safe-area-inset-bottom))}.edge-note{bottom:68px}}
