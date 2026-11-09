@@ -1,116 +1,231 @@
-# SERENDIPITY
+# SERENDIPITY™
 
-一个通过随机主题与关键词探索互联网的轻量网站。第一阶段包含极简首页与完全在浏览器内运行的词库工作台。无构建步骤、无第三方依赖、无账号系统。
+**A LITTLE OUT OF YOUR ORBIT.**
 
-正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)
-管理页面：[admin.html](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)
-公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
+**离开熟悉的轨道，遇见意料之外的世界。**
 
-## 本地运行
+SERENDIPITY 是一个以随机探索为核心的交互式互联网发现网站。
 
-在项目目录打开终端，运行：
+在这里，没有根据个人画像生成的内容推荐，没有需要维护的兴趣标签，也没有无穷无尽的信息流。
 
-```sh
-python3 -m http.server 8765 --bind 127.0.0.1
-```
+你只需要选择一个主题，点击圆球，就能走向一段未知的探索旅程。
 
-访问 [本地首页](http://127.0.0.1:8765/)；管理页为 [本地管理页](http://127.0.0.1:8765/admin.html)。结束时按 Ctrl+C。需要 Python 3。也可使用任意静态 HTTP 服务器。请不要直接双击 HTML：浏览器对 file:// 下的模块与 JSON 读取有限制。
+**让好奇心决定下一站。**
 
-## 探索与物理交互
+[**开始探索 SERENDIPITY**](https://weizikundavidwei.github.io/serendipity-discovery/)
 
-首页是一片全屏黑白圆圈场，没有 Hero、网格或底部操作栏。SERENDIPITY™ 位于边缘，大型 ↘ 是“完全随机探索”入口；“换一阵风”重新抽取主题、尺寸与构图。
+[词库管理工作台](https://weizikundavidwei.github.io/serendipity-discovery/admin.html) · [GitHub 仓库](https://github.com/weizikunDavidWei/serendipity-discovery)
 
-- 桌面随机展示 5–9 个不同主题，小屏通常 5–6 个；极短的分屏窗口空间不足时继续减少数量，优先保留可用目标。桌面最大圆约 350–500px，和明显较小的圆圈并置；实际大小由可用空间决定。
-- 点击主题立即在新标签页打开对应 Bilibili 搜索；完全随机从全库抽取。搜索使用原有编码和近期去重逻辑。
-- 鼠标与触摸均可拖动圆圈并推动其他圆圈；释放后保留有限惯性。鼠标移动超过 6px、触摸超过 9px 才视为拖动，拖动释放不触发搜索。
-- 使用 Tab 选择原生按钮，Enter / Space 探索。键盘焦点位于圆圈中时暂停漂移，便于操作。系统 reduced-motion 下无自主运动与惯性；用户仍可主动拖动。
-- 跟随系统浅深色实时变化，没有产品主题切换按钮。页面进入后台停止动画，恢复时不补算后台经过的时间。
-- Web Crypto 拒绝采样与 Fisher–Yates 保留。近 20 条关键词只在当前页面内存中，候选集中均匀抽取；主题词条耗尽后允许复用，多词条时排除紧邻上一次的词条。没有用户画像、埋点或兴趣存储。
-- 搜索请求由 Bilibili 接收，本项目不控制第三方结果、登录要求或可达性。
+---
 
-### 实现与调整
+## 01 — THE IDEA
 
-当前物理输入与手感重构、真实甩动验收结果见 [PHYSICS_INPUT_REBUILD.md](docs/PHYSICS_INPUT_REBUILD.md)。
+### 重新发现互联网的偶然性
 
-`assets/config.js` 集中管理数量、尺寸、碰撞、阻尼、速度、交互阈值和过渡时间。`assets/layout.js` 负责随机邻近聚集与受限放置，失败时缩小尺寸，不接受初始重叠。`assets/physics.js` 是独立于 DOM 的确定性圆形求解器；`assets/explore.js` 负责页面渲染、Pointer Events 和探索调度。
+互联网拥有近乎无限的信息，而推荐算法让我们越来越容易停留在熟悉的内容之中。
 
-固定步长为 1/120 秒，每次显示帧最多补算 8 步。质量与半径平方相关，恢复系数 0.72，12 轮接触分离；拖动目标通过速度控制器推进，避免直接将物体传送到指针。边缘控件是不可见静态避让区；碰撞采用圆形距离与面积质量，而非矩形按钮动画。每帧只写入位置 transform，不反复读取页面布局。
+SERENDIPITY 希望提供另一种探索方式。
 
-## 管理词库
+它不尝试预测你喜欢什么，也不需要知道你的兴趣、身份或浏览习惯。
 
-`admin.html` 可创建、重命名、删除主题，逐条增删改词条，按行批量粘贴，搜索全库，查看统计，执行去重与校验，并导入导出 JSON/CSV。
+每次进入网站，随机生成的主题都会组成一片不同的探索空间。你可能遇见建筑、科学、自然、艺术、历史，也可能遇见一个从未听说过的陌生领域。
 
-**本地草稿不是线上发布。** 编辑只写入当前站点来源的 localStorage。localhost、GitHub Pages 和不同端口之间的草稿互不共享。首页始终读取 `data/keywords.json`，不会读取管理草稿。
+点击其中一个圆球，系统就会从对应主题中随机抽取关键词，开启一次 Bilibili 搜索。
 
-1. 编辑并点击对应的“添加”“保存”“重命名”或批量导入按钮，成功后自动保存草稿。
-2. 点击“校验数据”。空主题可暂存为草稿，但导入公开词库和导出时要求每个主题至少一个词条。
-3. 导出 JSON，手动替换仓库的 `data/keywords.json`。
-4. 提交并部署，访客才能获得新的公开词库。文件名必须是 `keywords.json`。
+你无法提前知道会遇见什么。
 
-整库导入是**替换**，不是合并；粘贴批量导入才是追加到当前主题。无效文件会被拒绝且保留当前草稿。整库 JSON/CSV 导入要求全库无重复；批量粘贴自动跳过重复词条。
+这种意料之外的发现，就是 **Serendipity**。
 
-保留最近 8 个替换或删除主题前的本地历史备份。“恢复公开版本”使用管理页本次打开时加载的公开数据；要取得刚更新的线上版本，先导出草稿再刷新。浏览器存储不可用时会显示失败提示，不会声称已保存。清除浏览器数据将丢失草稿与历史，请保留下载文件。检测到其他标签页修改草稿时会暂停本页编辑，仍允许导出当前版本，避免无提示覆盖。
+---
 
-## 数据结构与约束
+## 02 — THE EXPERIENCE
 
-```json
-{
-  "schemaVersion": 1,
-  "updatedAt": "2026-11-08T00:00:00Z",
-  "topics": [
-    { "id": "stable-topic-id", "name": "主题名称", "keywords": ["关键词"] }
-  ]
-}
-```
+### 一片可以触碰的探索空间
 
-- ID 为稳定标识；只允许 1–80 位英文字母、数字、下划线和连字符，重命名不改变 ID。
-- 主题名称不重复，最多 24 个 UTF-16 代码单元；关键词最多 100 个代码单元。统一 NFKC、首尾空格与连续空格，忽略大小写判断重复。
-- 1–200 个主题，每主题最多 5,000 个关键词，全库最多 20,000 个；文件导入上限 5 MB。这些是容量限制，**本阶段实际只有 240 个关键词**。
-- CSV 为 UTF-8，表头严格使用 `topic,keyword`，支持 BOM、双引号与逗号转义。CSV 不携带稳定 ID；需要保留 ID 时用 JSON。
-- CSV 导出为公式前缀加保护，重新导入时移除该保护；面向表格软件和交换的复杂场景优先保存 JSON 主备份。
-- 用户输入通过文本节点或输入控件呈现，不插入 HTML；项目不需要 GitHub 令牌，也不在前端保存秘密。
+SERENDIPITY 将传统搜索界面转化为一片不断变化的几何场。
 
-## GitHub Pages
+巨大的黑白圆球漂浮在屏幕之中，每个圆球代表一个独立主题。
 
-已于 2026-11-08 正式发布。仓库为 **Public**，默认分支为 `main`，Pages 发布源为 **Deploy from a branch → main → / (root)**，使用 GitHub 默认域名和 HTTPS。
+没有固定排列，没有标准化卡片，也没有预先规划的探索路线。
 
-- [正式网站](https://weizikundavidwei.github.io/serendipity-discovery/)
-- [管理页面](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)
-- [公开仓库](https://github.com/weizikunDavidWei/serendipity-discovery)
-- [Pages 部署记录](https://github.com/weizikunDavidWei/serendipity-discovery/actions)
+**你可以：**
 
-原始两次 Git 提交完整保留。当前 GitHub 插件已安装，但本次对话没有仓库操作工具，因此发布沿用本机 GitHub Desktop 的既有登录授权，并在 GitHub 网页配置 Pages；没有在源码中保存令牌。`.DS_Store`、ZIP 和 Git bundle 均未上传。
+- **点击圆球** — 通过随机关键词探索当前主题。
+- **拖动与推动** — 让圆球在屏幕中运动、碰撞和重新排列。
+- **换一阵风** — 重新生成主题组合与空间构图。
+- **完全随机探索** — 跳过主题选择，让未知直接决定目的地。
+- **使用准星** — 通过精密的 Crosshair 交互锁定感兴趣的圆球。
 
-后续更新：修改文件并提交到 `main`，通过已登录的 GitHub Desktop 推送即可触发 Pages 自动部署。维护词库时，先从管理页导出 JSON，再替换 `data/keywords.json`、提交并推送。部署完成前访客可能仍看到旧内容；可在 Actions 查看状态。管理页本地保存不会自动推送或发布。
+每一次进入，都可能遇见不同的内容与布局。
 
-全站使用相对路径，兼容仓库子路径，无需构建或后端。保持 `.nojekyll`。恢复项目可克隆公开仓库：
+### 具有真实物理感的交互
 
-```sh
-git clone https://github.com/weizikunDavidWei/serendipity-discovery.git
-```
+圆球拥有独立的运动状态、惯性与弹性碰撞。
 
-首轮上线已实际核对首页、所有生产脚本和样式、`admin.html`、240 条关键词与本地源码字节一致；浏览器已验证圆圈渲染与中文 Bilibili 新标签页跳转。详见 [部署验收记录](docs/DEPLOYMENT_REPORT.md)。
+它们可以被拖动、推动，也会彼此影响。大小不同的圆球具有不同的质量感，运动与碰撞遵循统一的物理规则。
 
-## 验收与兼容性
+整个探索过程因此具有可感知的空间关系。
 
-首次交付记录见 [docs/TEST_REPORT.md](docs/TEST_REPORT.md)，当前迭代见 [docs/PHYSICS_TEST_REPORT.md](docs/PHYSICS_TEST_REPORT.md)。附带可重复运行的浏览器验收页面：
+这里的每个主题，都可以被真正地触碰。
 
-```sh
-python3 -m http.server 8766 --bind 127.0.0.1
-```
+---
 
-打开 [本地验收页面](http://127.0.0.1:8766/tests/)，点击“运行验收”。应使用独立端口并关闭该来源其他管理页；测试会暂存和恢复本地草稿，在 iframe 中验证真实应用。测试不是生产入口；仓库保留 `tests/` 以便重复验证。需要核查 5 / 7 / 9 个圆圈和手机构图时，可访问本地 `tests/preview.html`。该页面的数量和颜色控制仅用于测试，不属于产品首页。
+## 03 — THE VISUAL WORLD
 
-使用标准 ES Modules、Fetch、Web Crypto、CSS Grid、matchMedia 和 localStorage，面向现代 Safari、Chrome、Edge；本次视觉迭代已在 Safari 27.2、Chrome 156 和内置浏览器各运行 41 项验收，通过全部检查；Edge 与触屏真机未实测。详见 [视觉与物理交互验收](docs/PHYSICS_TEST_REPORT.md)。没有使用渐变、玻璃效果、外部字体或大型框架。
+### 几何、地形与空间
 
-## 文件与恢复
+SERENDIPITY 的视觉语言建立在黑、白、灰三种颜色之上。
 
-`PROJECT_STATUS.md` 保存本阶段进度、限制及后续待办。本地 Git 保存稳定开发记录。交付 ZIP 包含源码、文档、测试和一个可恢复本地提交历史的 Git bundle，不包含用户浏览器草稿。
+设计受到几何极简主义、瑞士国际主义平面设计以及精密仪器界面的启发。
 
-恢复 Git 历史（在解压目录以外的新目录执行）：
+清晰的字体、强烈的尺度对比、克制的控制元素与大量留白，共同构成网站的视觉身份。
 
-```sh
-git clone serendipity-history.bundle serendipity-recovered
-```
+### Dynamic Topography — 动态等高线
 
-本轮仅第一阶段，不含后端、账号、推荐系统或 5,000 词条扩充。
+圆球背后是一片持续演化的程序化等高线场。
+
+线条缓慢流动，形成类似抽象地形图的空间纹理。
+
+它不会重复播放固定的背景动画，而是随着程序化场的变化持续生成新的形态。
+
+### Hollow Distortion Field — 空洞空间扭曲场
+
+圆球不仅存在于地形之上，也会改变周围的视觉空间。
+
+靠近圆球边缘时，等高线会沿圆周产生自然弯曲与局部压缩，形成类似引力透镜的空间形变。
+
+不同尺寸的圆球拥有不同的影响范围。当圆球移动时，周围的扭曲场也随之改变。
+
+这种效果不依赖粒子、霓虹或复杂的光效，而是直接通过线条的几何变化表达空间关系。
+
+### Light & Dark — 明暗双主题
+
+网站自动适配系统的浅色与深色外观。
+
+浅色模式使用黑色圆球与深色地形线；深色模式则呈现白色圆球与浅色地形线。
+
+两种模式共享相同的视觉原则与交互体验。
+
+---
+
+## 04 — YOUR OWN DISCOVERY SPACE
+
+### 不只是随机探索，也可以建立自己的词库
+
+SERENDIPITY 配备独立的浏览器端词库管理工作台。
+
+用户可以创建自己的探索主题，添加感兴趣的关键词，并整理属于自己的内容分类。
+
+工作台支持：
+
+- 创建、重命名和删除主题。
+- 添加、编辑、删除与批量导入关键词。
+- 搜索词库、检查重复内容及校验数据。
+- 导入、导出 JSON 和 CSV。
+- 本地草稿保存与历史备份。
+
+管理工作台无需注册账号，编辑数据保存在当前浏览器中。
+
+**词库编辑不会自动修改公开网站。** 如需更新部署的公共词库，需要导出数据并通过仓库重新发布。
+
+[打开词库管理工作台](https://weizikundavidwei.github.io/serendipity-discovery/admin.html)
+
+### 可调节的视觉体验
+
+除了管理关键词，用户还可以通过后台管理相关视觉效果。
+
+例如调整动态等高线的透明度，以及控制空间扭曲场的启用状态与影响范围。
+
+复杂的视觉参数被整理为直观的开关和滑块，让个性化调整无需修改源代码。
+
+---
+
+## 05 — DISCOVERY WITHOUT PROFILING
+
+### 探索不需要被记录成兴趣档案
+
+SERENDIPITY 不建立个人推荐画像，也不根据用户的探索历史推测兴趣。
+
+随机主题与关键词由浏览器端程序选择，网站不提供账号系统，也不运行自己的推荐算法。
+
+为减少连续重复，系统只在当前页面运行期间保留少量近期关键词记录。
+
+关闭页面后，这些临时记录不会被用于未来的个性化推荐。
+
+**好奇心无需被算法定义。**
+
+点击探索后，搜索将在 Bilibili 打开；搜索结果与第三方服务由相应平台提供。
+
+---
+
+## 06 — THE DESIGN PHILOSOPHY
+
+### Less Interface. More Discovery.
+
+SERENDIPITY 遵循三个设计原则。
+
+**01 / Randomness is the feature.**
+
+随机性是产品体验的核心。每一次探索都应该保留未知和意外，而非追求越来越精准的推荐。
+
+**02 / Interaction should feel physical.**
+
+界面不只是承载内容的容器。运动、惯性、碰撞和空间形变，共同构成探索过程。
+
+**03 / Simplicity is intentional.**
+
+网站尽量减少不必要的界面层级、装饰与操作步骤，让主题、运动和发现成为视觉中心。
+
+---
+
+## 07 — BUILT FOR THE OPEN WEB
+
+SERENDIPITY 是一个开放源码的轻量级静态网站。
+
+它使用 HTML、CSS 和 JavaScript 构建，不需要账号、独立后端服务或复杂的构建流程。
+
+项目采用模块化结构，将页面交互、物理模拟、空间布局、词库数据和视觉效果进行组织。
+
+网站通过 GitHub Pages 公开发布，支持现代桌面与移动浏览器，并尊重系统的减少动态效果设置。
+
+源代码与相关开发文档均可在公开仓库中查看。
+
+[查看 GitHub 源代码](https://github.com/weizikunDavidWei/serendipity-discovery)
+
+---
+
+## 08 — ORIGIN & INSPIRATION
+
+### 从一个关于信息茧房的想法开始
+
+SERENDIPITY 的最初灵感，来自一位独立开发者制作的反信息茧房随机搜索网站。
+
+那个作品通过轻松、有趣的交互方式，让用户接触算法推荐之外的陌生内容。
+
+这种探索精神启发了 SERENDIPITY。
+
+在此基础上，项目逐渐发展出自己的设计方向：几何化的主题空间、物理驱动的交互、程序化等高线、空间扭曲以及可自定义的词库管理系统。
+
+SERENDIPITY 希望延续最初的好奇心，同时探索随机发现还能拥有怎样的形式。
+
+---
+
+## 09 — START EXPLORING
+
+你不需要制定计划，也不需要输入搜索词。
+
+打开网站，选择一个圆球。
+
+或者直接点击那枚巨大的箭头。
+
+让下一次发现，发生在熟悉轨道之外。
+
+### [SERENDIPITY — ENTER THE UNKNOWN ↗](https://weizikundavidwei.github.io/serendipity-discovery/)
+
+---
+
+**SERENDIPITY™**
+
+*A LITTLE OUT OF YOUR ORBIT.*
+
+Created with curiosity. Built for discovery.
