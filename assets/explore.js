@@ -41,6 +41,7 @@ function draw() {
   world.bodies.forEach((body, i) => {
     nodes[i].style.transform = `translate3d(${(body.x - body.r).toFixed(2)}px,${(body.y - body.r).toFixed(2)}px,0)`;
   });
+  if(motion.matches)document.dispatchEvent(new Event('orb-geometry'));
 }
 function stop() {
   cancelAnimationFrame(raf); raf = 0; lastTime = null;

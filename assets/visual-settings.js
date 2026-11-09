@@ -1,5 +1,5 @@
 const KEY = 'serendipity.visual.preferences.v1';
-const fallback = {schemaVersion:1,topolines:{enabled:true,speed:.005,scale:2.29,levels:10,lineWidth:1.7,warp:.12,opacity:.22,maxDpr:1.25},toggleStyle:'text',fontWeight:'bold'};
+const fallback = {schemaVersion:1,topolines:{enabled:true,speed:.005,scale:2.29,levels:10,lineWidth:1.7,warp:.12,opacity:.22,maxDpr:1.25},toggleStyle:'text',fontWeight:'bold',hollowEnabled:true,hollowSize:.5};
 export let defaults = fallback;
 try {
   const r = await fetch(new URL('../data/visual-defaults.json',import.meta.url));
@@ -8,7 +8,7 @@ try {
   if(d.schemaVersion===1) defaults={...fallback, ...d,topolines:{...fallback.topolines,...d.topolines}};
 } catch { /* Offline: use the same bundled public defaults. */ }
 function sanitize(p) {
-  return {fontWeight:['regular','bold'].includes(p?.fontWeight)?p.fontWeight:defaults.fontWeight,opacity:typeof p?.opacity==='number'&&Number.isFinite(p.opacity)?Math.min(1,Math.max(0,p.opacity)):defaults.topolines.opacity,
+  return {hollowEnabled:typeof p?.hollowEnabled==='boolean'?p.hollowEnabled:defaults.hollowEnabled,hollowSize:typeof p?.hollowSize==='number'&&Number.isFinite(p.hollowSize)?Math.max(0,Math.min(1,p.hollowSize)):defaults.hollowSize,fontWeight:['regular','bold'].includes(p?.fontWeight)?p.fontWeight:defaults.fontWeight,opacity:typeof p?.opacity==='number'&&Number.isFinite(p.opacity)?Math.min(1,Math.max(0,p.opacity)):defaults.topolines.opacity,
     enabled:typeof p?.enabled==='boolean'?p.enabled:defaults.topolines.enabled,
     toggleStyle:['text','compact','minimal'].includes(p?.toggleStyle)?p.toggleStyle:defaults.toggleStyle};
 }

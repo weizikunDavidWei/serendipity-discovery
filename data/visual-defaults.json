@@ -11,5 +11,7 @@
     "maxDpr": 1.25
   },
   "toggleStyle": "text",
-  "fontWeight": "bold"
+  "fontWeight": "bold",
+  "hollowEnabled": true,
+  "hollowSize": 0.5
 }

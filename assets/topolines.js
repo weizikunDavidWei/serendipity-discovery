@@ -1,3 +1,4 @@
+import {attachHollow} from './hollow-field.js';
 import {TopoField} from './vendor/topolines-0.3.0.js';
 import {defaults,preferences,savePreferences,renderToggle} from './visual-settings.js';
 export function mountTerrain(host) {
@@ -12,15 +13,18 @@ export function mountTerrain(host) {
     if(!field){
       field=new TopoField(host,{...defaults.topolines,seed,opacity:p.opacity,color:dark.matches?'#ffffff':'#000000',interactive:false});
       if(!field.ok){host.dataset.supported='false';host.textContent='';return;}
+      attachHollow(field,host,preferences);
       host.dataset.supported='true';field.setClock(clock);
     }
-    field.setOptions({opacity:p.opacity,color:dark.matches?'#ffffff':'#000000'});field.play();
+    field.setOptions({opacity:p.opacity,color:dark.matches?'#ffffff':'#000000'});field.play();if(!field.running)field.render();
   }
+  const geometry=()=>{const p=preferences();if(p.hollowEnabled&&p.hollowSize>0&&field&&!field.running&&!field.paused&&!document.hidden)field.render();};
+  document.addEventListener('orb-geometry',geometry);
   function suspend(){if(field){clock=field.clock;field.destroy();field=null;}}
   dark.addEventListener('change',sync);window.addEventListener('visual-preferences',sync);
   document.addEventListener('visibilitychange',sync);window.addEventListener('pagehide',suspend);window.addEventListener('pageshow',sync);
   sync();
-  return {sync, get field(){return field;},destroy(){disposed=true;suspend();dark.removeEventListener('change',sync);window.removeEventListener('visual-preferences',sync);document.removeEventListener('visibilitychange',sync);window.removeEventListener('pagehide',suspend);window.removeEventListener('pageshow',sync);}};
+  return {sync, get field(){return field;},destroy(){document.removeEventListener('orb-geometry',geometry);disposed=true;suspend();dark.removeEventListener('change',sync);window.removeEventListener('visual-preferences',sync);document.removeEventListener('visibilitychange',sync);window.removeEventListener('pagehide',suspend);window.removeEventListener('pageshow',sync);}};
 }
 const host=document.querySelector('#topolines-background');
 if(host){

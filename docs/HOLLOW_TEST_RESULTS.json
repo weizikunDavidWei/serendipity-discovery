@@ -1,0 +1,65 @@
+{
+  "results": [
+    {
+      "name": "default on / 50%",
+      "ok": true
+    },
+    {
+      "name": "actual geometry pixels change",
+      "ok": true
+    },
+    {
+      "name": "OFF restores exact deterministic field",
+      "ok": true
+    },
+    {
+      "name": "all ball centers and scaled radii",
+      "ok": true
+    },
+    {
+      "name": "slider live across tabs",
+      "ok": true
+    },
+    {
+      "name": "exact85% label",
+      "ok": true
+    },
+    {
+      "name": "persisted",
+      "ok": true
+    },
+    {
+      "name": "OFF removes all sources",
+      "ok": true
+    },
+    {
+      "name": "zero no sources",
+      "ok": true
+    },
+    {
+      "name": "reset50%",
+      "ok": true
+    },
+    {
+      "name": "dragging and moving sources track",
+      "ok": true
+    },
+    {
+      "name": "mobile fits",
+      "ok": true
+    },
+    {
+      "name": "one canvas",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "pixelComparison": {
+    "changed": 347167,
+    "restoreDiff": 0
+  },
+  "errors": []
+}

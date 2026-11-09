@@ -70,6 +70,9 @@ var FRAG = `
 #extension GL_OES_standard_derivatives : enable
 precision highp float;
 
+uniform int uHollowCount;
+uniform vec3 uHollowSources[9]; // aspect-correct centers and radii
+uniform float uHollowRange;
 uniform vec2  uRes;
 uniform float uTime;
 uniform vec2  uSeed;
@@ -158,7 +161,21 @@ void main() {
   // the element instead of stretching. stBase is the pre-offset, scale-applied
   // space that uMouse is expressed in.
   vec2 stN = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);
-  vec2 stBase = stN * uScale;
+  // Local radial displacement of the EXISTING noise domain, no ring geometry.
+  vec2 displacement = vec2(0.0);
+  for (int i = 0; i < 9; i++) {
+    if (i >= uHollowCount) break;
+    vec3 source = uHollowSources[i];
+    vec2 delta = stN - source.xy;
+    float distance = length(delta);
+    float radius = max(source.z, 0.00001);
+    float extent = radius * (0.35 + 2.65 * uHollowRange);
+    float falloff = 1.0 - smoothstep(0.0, extent, max(0.0, distance - radius));
+    // Continuous also at the center (occluded by the orb); strongest near rim.
+    displacement += delta / max(distance, radius) * radius * 0.22 * falloff;
+  }
+  displacement /= 1.0 + 2.0 * length(displacement);
+  vec2 stBase = (stN + displacement) * uScale;
   vec2 st = stBase + uSeed + uDrift * uTime + uScrollOff;
 
   // Domain warp \u2014 bends the field so the loops meander like real terrain
@@ -323,6 +340,7 @@ var TopoField = class {
     };
     this.render = () => {
       if (this.paused || document.hidden || this.contextLost) return;
+      this.beforeRender?.();
       const p = this.live;
       const gl = this.gl;
       if (!this.panReady) this.tickPan(0);
@@ -363,6 +381,9 @@ var TopoField = class {
         [r, g, b] = parseColor(p.color);
         alpha = p.opacity;
       }
+      gl.uniform1i(this.uHollowCount, this.hollowCount || 0);
+      gl.uniform1f(this.uHollowRange, this.hollowRange || 0);
+      if (this.hollowCount) gl.uniform3fv(this.uHollowSources, this.hollowSources);
       gl.uniform2f(this.uRes, this.width, this.height);
       gl.uniform1f(this.uTime, this.clock);
       gl.uniform2f(this.uSeed, this.seedX, this.seedY);
@@ -579,6 +600,9 @@ var TopoField = class {
     const u = (n) => gl.getUniformLocation(program, n);
     this.program = program;
     this.buffer = buffer;
+    this.uHollowCount = u("uHollowCount");
+    this.uHollowRange = u("uHollowRange");
+    this.uHollowSources = u("uHollowSources[0]");
     this.uRes = u("uRes");
     this.uTime = u("uTime");
     this.uSeed = u("uSeed");
