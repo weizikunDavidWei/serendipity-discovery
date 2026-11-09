@@ -14,7 +14,7 @@ async function open(path,width=1440,fixture=false){if(frame)frame.remove();sessi
  window.requestAnimationFrame=fn=>actualRAF(time=>{if(last&&window.testFrames.length<180)window.testFrames.push(time-last);last=time;fn(time);});
  </scr`+`ipt>`;frame.srcdoc=html.replace('<head>','<head><base href="'+new URL('../',location.href).href+'">'+bootstrap);}else frame.src='../'+path;await loaded;await wait(()=>frame.contentDocument.querySelector(path.startsWith('admin')?'#workspace:not([hidden])':'.orb'));if(fixture)frame.scrollIntoView({block:'start'});return frame.contentWindow;}
 function click(w,s){w.document.querySelector(s).click();}
-async function confirmShuffle(w){click(w,'#shuffle');const grip=w.document.querySelector('.slide-grip');for(const key of ['End','Enter'])grip.dispatchEvent(new w.KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));await wait(()=>w.document.querySelector('.slide-panel').hidden);}
+async function confirmShuffle(w){const grip=w.document.querySelector('.slide-grip');for(const key of ['End','Enter'])grip.dispatchEvent(new w.KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));await wait(()=>w.document.querySelector('#shuffle').dataset.phase==='ready'&&w.document.querySelector('.slide-grip').getAttribute('aria-valuenow')==='0');}
 function fill(w,s,value){const input=w.document.querySelector(s);input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}));}
 function submit(w,s){w.document.querySelector(s).dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}
 const status=w=>w.document.querySelector('#admin-status').textContent;

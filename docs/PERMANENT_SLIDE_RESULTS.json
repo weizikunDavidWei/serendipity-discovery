@@ -1,0 +1,93 @@
+{
+  "results": [
+    {
+      "name": "one permanent rail, no refresh button or popup",
+      "ok": true
+    },
+    {
+      "name": "no visible text or icons",
+      "ok": true
+    },
+    {
+      "name": "correct row and right alignment",
+      "ok": true
+    },
+    {
+      "name": "thin rail, round thumb, 44px hit target",
+      "ok": true
+    },
+    {
+      "name": "light pure inverted colors",
+      "ok": true
+    },
+    {
+      "name": "dark pure inverted colors",
+      "ok": true
+    },
+    {
+      "name": "direct partial drag returns and preserves scene",
+      "ok": true
+    },
+    {
+      "name": "endpoint without release does not reset",
+      "ok": true
+    },
+    {
+      "name": "release commits exactly once",
+      "ok": true
+    },
+    {
+      "name": "new topics after full slide",
+      "ok": true
+    },
+    {
+      "name": "control remains present and text free after commit",
+      "ok": true
+    },
+    {
+      "name": "refresh restores exact scene",
+      "ok": true
+    },
+    {
+      "name": "keyboard End is not confirmation",
+      "ok": true
+    },
+    {
+      "name": "Escape cancels without hiding rail",
+      "ok": true
+    },
+    {
+      "name": "keyboard explicit confirmation works",
+      "ok": true
+    },
+    {
+      "name": "spring returns with motion enabled",
+      "ok": true
+    },
+    {
+      "name": "lost focus cannot commit at endpoint",
+      "ok": true
+    },
+    {
+      "name": "orb and random search retained",
+      "ok": true
+    },
+    {
+      "name": "mobile same row, no overflow",
+      "ok": true
+    },
+    {
+      "name": "touch cancel preserves scene",
+      "ok": true
+    },
+    {
+      "name": "direct touch slide commits",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "errors": []
+}

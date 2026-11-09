@@ -232,8 +232,8 @@ Created with curiosity. Built for discovery.
 
 ## 探索确认与刷新保护（2026-11-08）
 
-「换一阵风」现在需要滑动到终点并松手；未完成会回弹，Escape或点击外部可取消。键盘用方向键/End移至终点，再按Enter或空格确认。页面没有新增“仅重排”按钮。只有完成确认才主动换掉当前主题；失败保留旧场景并允许重试。
+右上角的常驻无文字滑轨已完整替代旧「换一阵风」按钮。直接抓住圆点滑到终点并松手；未完成会回弹，Escape、失焦或点击外部可取消。键盘用方向键/End移至终点，再按Enter或空格确认。页面没有新增“仅重排”按钮。只有完成确认才主动换掉当前主题；失败保留旧场景并允许重试。
 
 普通刷新尽量恢复当前标签页的主题、圆球尺寸/位置和最近关键词去重记录。现场仅存于sessionStorage，不会更新公开数据或跨设备同步；普通新标签页独立开始。窗口变化会适配原主题的位置和尺寸；记录损坏或存储不可用时安全降级。个人视觉设置仍沿用localStorage。
 
-详情及测试范围见 [滑动确认与现场恢复](docs/SLIDE_COMMIT.md)。本地测试可运行 `tests/slide-commit.cjs`（需已有Node、Playwright、Chrome）；产品运行仍无构建或第三方运行依赖。
+详情及测试范围见 [常驻机械滑轨](docs/PERMANENT_SLIDE.md) 与 [现场恢复](docs/SLIDE_COMMIT.md)。本地测试可运行 `tests/slide-commit.cjs`（需已有Node、Playwright、Chrome）；产品运行仍无构建或第三方运行依赖。

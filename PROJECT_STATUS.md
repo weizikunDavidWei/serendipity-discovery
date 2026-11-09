@@ -2,7 +2,7 @@
 
 更新日期：2026-11-08（America/Toronto）
 
-状态：**已完成 Slide Commit 探索重置确认与当前标签页现场恢复；Chrome专项35项通过，Safari实际鼠标/键盘/刷新检查通过。原套件8项历史词库基准失败仍单独记录。**
+状态：**已修复为右上角唯一、常驻、无文字机械滑轨；Chrome22项专项通过。场景恢复保留，旧套件8项历史失败单独记录。**
 
 公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
 正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)
@@ -162,3 +162,11 @@
 - Chrome35项专项通过，包含CDP触摸模拟；Safari桌面实际原生鼠标半程/完整滑动、键盘确认/Escape和Cmd-R恢复已观察通过。手机/平板与Edge真机未实测。
 - 原准星10项、Hollow14项、等高线21项、字体/坐标15项通过；旧完整套件仍54通过/8个相同历史失败。详见docs/SLIDE_COMMIT.md及实际结果。
 - 词库、管理代码、物理求解/拖动公式、搜索算法、背景shader及SVG均未改动。仅在场景调度中接入确认与保存。
+
+
+## 常驻无文字滑轨定向修复（2026-11-08）
+
+- 删除预点击按钮及左侧展开层，原控制行内只保留148×18px滑轨（移动112px）、12px正圆与44px实际命中区；纯黑白自动反转，所有文案仅供读屏。
+- 直接拖动到终点释放才换组，半程/取消/失焦保留场景，原位弹簧复位；键盘仍需明确确认。空闲时不暂停圆球。
+- Chrome22项专项通过，已查看桌面明暗和移动完整页面。原回归54通过/8个相同旧失败，准星10项通过；Safari/Edge与实体触屏本轮未实测。
+- 详情与实际输出见docs/PERMANENT_SLIDE.md。随机算法、物理引擎、场景存储、词库和视觉背景shader未修改。

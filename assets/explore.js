@@ -10,6 +10,7 @@ import { readScene, writeScene } from './scene-session.js';
 const field = document.querySelector('#field');
 const status = document.querySelector('#status');
 const shuffleButton = document.querySelector('#shuffle');
+shuffleButton.disabled = true;
 const surprise = document.querySelector('#surprise');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 let data, world, shown = [], topics = [], recent = [], nodes = [];
@@ -242,6 +243,6 @@ loadPublic().then(d => {
   const saved = readScene(data);let restored = false;
   if(saved){try{commitScene(prepareSaved(saved));recent=saved.recent;saveScene(true);restored=true;}catch{/* invalid/unusable: fresh initialization below */}}
   if(!restored)createScene(chooseTopics());
-  field.setAttribute('aria-busy', 'false'); shuffleButton.disabled = false; surprise.disabled = false;
+  field.setAttribute('aria-busy', 'false'); shuffleButton.disabled = false; slide.setEnabled(true); surprise.disabled = false;
   status.textContent = storageAvailable ? (restored?'已恢复当前标签页的探索现场。':'不记录兴趣，只保留好奇。') : '浏览器无法保存现场；刷新后可能重新开始探索。';
 }).catch(e => { field.setAttribute('aria-busy', 'false'); showError(e); });
