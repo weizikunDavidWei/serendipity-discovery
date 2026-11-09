@@ -128,3 +128,10 @@
 - 修复上游pause后可能被观察器重启的问题；关闭或透明度0停止GPU绘制、后台暂停、reduced-motion静态；不反复初始化，页面退出清理。
 - Chrome真实页面21项专项检查通过；7项额外生命周期检查通过，120帧间隔中位16.7ms。检查桌面/移动尺寸/管理页截图。Safari、Edge及移动真机本轮未实测。详细记录见 docs/TOPOLINES.md。
 - 关键词数据库与admin.js、物理、布局、搜索及SVG代码未改动。
+
+## 字体力度与准星边缘坐标（2026-11-08）
+
+- 默认粗体800/品牌900；后台可选原始细字体，个人偏好跨标签页及刷新保持，公开默认由visual-defaults.json控制。
+- 准星横线左端显示Y、竖线下端显示X，视口左下原点、CSS像素单位，支持窗口缩放和不同DPI；未重新加入圆球直径。
+- Chrome15项专项通过，1440/3840/800视口及390px移动布局、粗细切换持久化/边缘数字/关闭与reduced-motion均覆盖。等高线21项回归通过；Safari/Edge及真实硬件未实测。
+- 说明与实际输出：docs/TYPOGRAPHY_COORDINATES.md / TYPOGRAPHY_COORDINATES_RESULTS.json。

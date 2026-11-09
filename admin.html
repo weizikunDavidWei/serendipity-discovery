@@ -7,6 +7,7 @@
 <h2 id="visual-heading">视觉设置</h2><p class="muted">个人偏好仅保存在当前浏览器。公开默认值在 data/visual-defaults.json，通过仓库部署更新；这里的调整不会同步至其他设备或访客。</p>
 <div class="visual-options"><label for="terrain-opacity">等高线透明度 <output id="terrain-opacity-value" for="terrain-opacity">22%</output><input id="terrain-opacity" type="range" min="0" max="100" step="1" value="22"></label>
 <label for="toggle-style">首页开关样式<select id="toggle-style"><option value="text">文字模式</option><option value="compact">紧凑模式 · 图标＋ON/OFF</option><option value="minimal">极简模式 · 图标＋状态点</option></select></label>
+<label for="font-weight">字体力度<select id="font-weight"><option value="regular">细字体 · 原始字重</option><option value="bold">粗字体 · 重工业</option></select></label>
 <label class="visual-enabled"><input id="terrain-enabled" type="checkbox" checked> 启用等高线</label><button id="visual-reset" type="button">恢复默认</button></div>
 <div id="terrain-preview" class="terrain-preview" aria-label="等高线实时预览"><div class="visual-toggle-preview"><button id="preview-crosshair" type="button" tabindex="-1" aria-disabled="true"></button><button id="preview-terrain" type="button" tabindex="-1" aria-disabled="true"></button></div></div>
 <p id="visual-save-status" class="muted" role="status">默认透明度 22%；支持减少动态效果，预览不影响词库草稿。</p></section>

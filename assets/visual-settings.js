@@ -1,5 +1,5 @@
 const KEY = 'serendipity.visual.preferences.v1';
-const fallback = {schemaVersion:1,topolines:{enabled:true,speed:.005,scale:2.29,levels:10,lineWidth:1.7,warp:.12,opacity:.22,maxDpr:1.25},toggleStyle:'text'};
+const fallback = {schemaVersion:1,topolines:{enabled:true,speed:.005,scale:2.29,levels:10,lineWidth:1.7,warp:.12,opacity:.22,maxDpr:1.25},toggleStyle:'text',fontWeight:'bold'};
 export let defaults = fallback;
 try {
   const r = await fetch(new URL('../data/visual-defaults.json',import.meta.url));
@@ -8,21 +8,24 @@ try {
   if(d.schemaVersion===1) defaults={...fallback, ...d,topolines:{...fallback.topolines,...d.topolines}};
 } catch { /* Offline: use the same bundled public defaults. */ }
 function sanitize(p) {
-  return {opacity:typeof p?.opacity==='number'&&Number.isFinite(p.opacity)?Math.min(1,Math.max(0,p.opacity)):defaults.topolines.opacity,
+  return {fontWeight:['regular','bold'].includes(p?.fontWeight)?p.fontWeight:defaults.fontWeight,opacity:typeof p?.opacity==='number'&&Number.isFinite(p.opacity)?Math.min(1,Math.max(0,p.opacity)):defaults.topolines.opacity,
     enabled:typeof p?.enabled==='boolean'?p.enabled:defaults.topolines.enabled,
     toggleStyle:['text','compact','minimal'].includes(p?.toggleStyle)?p.toggleStyle:defaults.toggleStyle};
 }
 function read(){try{return sanitize(JSON.parse(localStorage.getItem(KEY)))}catch{return sanitize(null)}}
 let current=read();
+function applyTypography(){document.documentElement.dataset.fontWeight=current.fontWeight;}
+applyTypography();
 export const preferences=()=>({...current});
 export function savePreferences(p,reset=false){
   current=sanitize(reset?null:{...current,...p});
+  applyTypography();
   let saved=true;
   try {localStorage.setItem(KEY,JSON.stringify(current))}catch{saved=false}
   window.dispatchEvent(new CustomEvent('visual-preferences',{detail:preferences()}));
   return saved;
 }
-window.addEventListener('storage',e=>{if(e.key===KEY||e.key===null){current=read();window.dispatchEvent(new Event('visual-preferences'));}});
+window.addEventListener('storage',e=>{if(e.key===KEY||e.key===null){current=read();applyTypography();window.dispatchEvent(new Event('visual-preferences'));}});
 const paths={crosshair:'M8 1v14M1 8h14M5 5h6v6H5z',topolines:'M1 12c3-8 8-8 14 0M2 8c3-6 7-6 12 0M4 4c2-3 5-3 8 0'};
 export function renderToggle(button,label,on,kind){
   const style=current.toggleStyle;

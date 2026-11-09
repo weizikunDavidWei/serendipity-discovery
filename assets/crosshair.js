@@ -2,6 +2,10 @@ import {renderToggle} from './visual-settings.js';
 // Native adaptation inspired by React Bits Crosshair (reactbits.dev).
 // Read-only geometry: never changes the physics world or captures input.
 export const CROSSHAIR = Object.freeze({ proximity: 18, padding: 7, smoothing: 0.045 });
+// Coordinates use CSS viewport pixels, independent of devicePixelRatio and display scaling.
+export function viewportCoordinates(x,y,width,height){
+  return {x:Math.round(Math.max(0,Math.min(width,x))),y:Math.round(Math.max(0,Math.min(height,height-y)))};
+}
 export function pickOrb(elements, x, y) {
   let best = null, distance = Infinity;
   for (const element of elements) {
@@ -19,9 +23,10 @@ export function initCrosshair() {
   try { enabled = localStorage.getItem(storageKey) !== 'false'; } catch { /* private browsing */ }
   const overlay = document.createElement('div'); overlay.className = 'crosshair';
   overlay.setAttribute('aria-hidden', 'true');
-  overlay.innerHTML = '<i class="crosshair-h"></i><i class="crosshair-v"></i><i class="crosshair-dot"></i><div class="crosshair-lock"><i></i><i></i><i></i><i></i></div>';
+  overlay.innerHTML = '<i class="crosshair-h"></i><i class="crosshair-v"></i><i class="crosshair-dot"></i><div class="crosshair-lock"><i></i><i></i><i></i><i></i></div><span class="crosshair-coordinate crosshair-coordinate-y"></span><span class="crosshair-coordinate crosshair-coordinate-x"></span>';
   document.body.append(overlay);
   const h = overlay.children[0], v = overlay.children[1], dot = overlay.children[2], lock = overlay.children[3];
+  const readY=overlay.children[4],readX=overlay.children[5];
   const allowed = () => enabled && fine.matches && !reduce.matches && !document.hidden;
   function hide() {
     visible = false; cancelAnimationFrame(raf); raf = 0; last = 0;
@@ -36,6 +41,11 @@ export function initCrosshair() {
     x += (tx - x) * follow; y += (ty - y) * follow;
     h.style.transform = `translateY(${y}px)`; v.style.transform = `translateX(${x}px)`;
     dot.style.transform = `translate(${tx}px,${ty}px)`;
+    const coords=viewportCoordinates(x,y,innerWidth,innerHeight);
+    readY.textContent=String(coords.y);readX.textContent=String(coords.x);
+    // Keep readouts wholly on screen, including at origin and upper/right limits.
+    readY.style.top=Math.max(8,Math.min(innerHeight-20,y+6))+'px';
+    readX.style.left=Math.max(8,Math.min(innerWidth-56,x+6))+'px';
     // Resolve every frame, including a stationary pointer over a drifting orb.
     const target = pickOrb(document.querySelectorAll('.orb'), tx, ty);
     lock.hidden = !target;

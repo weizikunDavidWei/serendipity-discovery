@@ -30,3 +30,8 @@
 #crosshair-toggle,#topolines-toggle,.visual-toggle-preview button{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1px;display:inline-flex;align-items:center;justify-content:flex-end;gap:7px}
 .edge-controls button .toggle-state{font:inherit;margin:0;transform:none;vertical-align:baseline}
 #crosshair-toggle svg,#topolines-toggle svg,.visual-toggle-preview svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1;flex-shrink:0}
+/* Weight is a personal choice; regular restores all original component weights. */
+html[data-font-weight=bold] body :is(button,a,input,select,textarea,p,span,summary,label,h1,h2,output,div){font-weight:800!important}
+html[data-font-weight=bold] .wordmark{font-weight:900!important}
+.crosshair-coordinate{position:absolute;display:block;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums;line-height:12px;letter-spacing:1px;color:currentColor;white-space:nowrap}
+.crosshair-coordinate-y{left:max(8px,env(safe-area-inset-left))}.crosshair-coordinate-x{bottom:max(8px,env(safe-area-inset-bottom))}

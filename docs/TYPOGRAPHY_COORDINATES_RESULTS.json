@@ -1,0 +1,62 @@
+[
+  {
+    "name": "default bold",
+    "ok": true
+  },
+  {
+    "name": "coordinate math including 4K",
+    "ok": true
+  },
+  {
+    "name": "readouts 1440",
+    "ok": true
+  },
+  {
+    "name": "edge labels inside 1440",
+    "ok": true
+  },
+  {
+    "name": "readouts 3840",
+    "ok": true
+  },
+  {
+    "name": "edge labels inside 3840",
+    "ok": true
+  },
+  {
+    "name": "readouts 800",
+    "ok": true
+  },
+  {
+    "name": "edge labels inside 800",
+    "ok": true
+  },
+  {
+    "name": "regular across tabs",
+    "ok": true
+  },
+  {
+    "name": "regular persisted",
+    "ok": true
+  },
+  {
+    "name": "bold across tabs",
+    "ok": true
+  },
+  {
+    "name": "off hides readings",
+    "ok": true
+  },
+  {
+    "name": "reduced hides readings",
+    "ok": true
+  },
+  {
+    "name": "bold mobile no overflow",
+    "ok": true
+  },
+  {
+    "name": "admin mobile no overflow",
+    "ok": true
+  }
+]
