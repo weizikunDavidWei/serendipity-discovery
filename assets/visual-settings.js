@@ -1,5 +1,5 @@
 const KEY = 'serendipity.visual.preferences.v1';
-const fallback = {schemaVersion:1,topolines:{enabled:true,speed:.005,scale:2.29,levels:10,lineWidth:1.7,warp:.12,opacity:.22,maxDpr:1.25},toggleStyle:'text',fontWeight:'bold',hollowEnabled:true,hollowSize:.5};
+const fallback = {schemaVersion:1,topolines:{enabled:true,speed:.005,scale:2.29,levels:10,lineWidth:1.7,warp:.12,opacity:.22,maxDpr:1.25},toggleStyle:'text',fontWeight:'bold',hollowEnabled:true,hollowSize:.01};
 export let defaults = fallback;
 try {
   const r = await fetch(new URL('../data/visual-defaults.json',import.meta.url));

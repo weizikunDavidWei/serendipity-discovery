@@ -63,9 +63,9 @@ const base=process.env.TEST_URL||'http://localhost:8765/';
   const stability=await page.evaluate(()=>{
     const f=directionFixture,g=f.field.gl,c=f.field.canvas;
     function snapshot(){f.render();const pixels=new Uint8Array(c.width*c.height*4);g.readPixels(0,0,c.width,c.height,g.RGBA,g.UNSIGNED_BYTE,pixels);return pixels;}
-    f.scene([[600,410,150]]);f.settings.hollowSize=.5;f.settings.hollowEnabled=false;
+    f.scene([[600,410,150]]);f.settings.hollowSize=1;f.settings.hollowEnabled=false;
     const off=snapshot();f.settings.hollowEnabled=true;const on=snapshot();
-    const extent=150*(.35+2.65*.5);let farChanged=0,nearChanged=0;
+    const extent=150*.5*(.35+2.65*1);let farChanged=0,nearChanged=0;
     for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){
       const d=Math.hypot(x+.5-600,c.height-y-.5-410),i=(y*c.width+x)*4+3;
       if(off[i]===on[i])continue;

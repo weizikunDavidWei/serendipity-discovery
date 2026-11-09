@@ -175,7 +175,8 @@ void main() {
     float distance = length(delta);
     float radius = max(source.z, 0.00001);
     // Range only: coreRatio/compression does not depend on the slider.
-    float extent = radius * (0.35 + 2.65 * uHollowRange);
+    // Halve the physical range; the UI remains 0–100%. Compression stays fixed.
+    float extent = radius * 0.5 * (0.35 + 2.65 * uHollowRange);
     float weight = 1.0 - smoothstep(0.0, extent, max(0.0, distance - radius));
     float core = radius * coreRatio;
     float sampleRadius = sqrt(max(0.0, (distance - radius) * (distance + radius)) + core * core);

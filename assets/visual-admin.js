@@ -1,4 +1,4 @@
-import {preferences,savePreferences,renderToggle} from './visual-settings.js';
+import {defaults,preferences,savePreferences,renderToggle} from './visual-settings.js';
 import {mountTerrain} from './topolines.js';
 const range=document.querySelector('#terrain-opacity'), style=document.querySelector('#toggle-style'), output=document.querySelector('#terrain-opacity-value');
 mountTerrain(document.querySelector('#terrain-preview'));
@@ -11,5 +11,5 @@ document.querySelector('#terrain-enabled').addEventListener('change',e=>save({en
 document.querySelector('#visual-reset').addEventListener('click',()=>save({},true));
 document.querySelector('#hollow-enabled').addEventListener('change',e=>save({hollowEnabled:e.target.checked}));
 document.querySelector('#hollow-size').addEventListener('input',e=>save({hollowSize:Number(e.target.value)/100}));
-document.querySelector('#hollow-reset').addEventListener('click',()=>save({hollowEnabled:true,hollowSize:.5}));
+document.querySelector('#hollow-reset').addEventListener('click',()=>save({hollowEnabled:true,hollowSize:defaults.hollowSize}));
 window.addEventListener('visual-preferences',sync);sync();
