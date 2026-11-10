@@ -54,5 +54,5 @@ export function bindRubberSegment(root,{items,value,onChange}){
   for(const type of ['pointercancel','lostpointercapture'])on(root,type,e=>{if(drag?.id===e.pointerId)cancel()});
   on(window,'blur',cancel);on(window,'pagehide',cancel);on(window,'pageshow',measure);on(document,'visibilitychange',()=>{if(document.hidden)cancel()});on(motion,'change',cancel);
   const observer=new ResizeObserver(measure);observer.observe(root);document.fonts?.ready.then(()=>{if(!destroyed)measure()});aria();measure();
-  return {setValue(id){const next=items.findIndex(item=>item.id===id);if(next<0||next===index)return;release();index=next;aria();animateTo(index,{click:true})},destroy(){destroyed=true;stop();release();observer.disconnect();listeners.forEach(remove=>remove());root.replaceChildren()}};
+  return {setLabel(id,label){const i=items.findIndex(item=>item.id===id);if(i<0)return;buttons[i].textContent=label;thumb.children[i].textContent=label},setValue(id){const next=items.findIndex(item=>item.id===id);if(next<0||next===index)return;release();index=next;aria();animateTo(index,{click:true})},destroy(){destroyed=true;stop();release();observer.disconnect();listeners.forEach(remove=>remove());root.replaceChildren()}};
 }

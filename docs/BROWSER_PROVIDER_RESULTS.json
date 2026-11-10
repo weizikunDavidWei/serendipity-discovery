@@ -1,0 +1,451 @@
+{
+  "results": [
+    {
+      "name": "five choices and Google default",
+      "ok": true
+    },
+    {
+      "name": "three segments retained",
+      "ok": true
+    },
+    {
+      "name": "google label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "google both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "google scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "google accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "bing label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "bing both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "bing scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "bing accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "yandex label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "yandex both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "yandex scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "yandex accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "baidu label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "baidu both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "baidu scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "baidu accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "keyword draft history and visual preferences untouched",
+      "ok": true
+    },
+    {
+      "name": "existing objects retained while provider changes",
+      "ok": true
+    },
+    {
+      "name": "special characters round-trip for all five providers",
+      "ok": true
+    },
+    {
+      "name": "admin preference persists",
+      "ok": true
+    },
+    {
+      "name": "front preference and selection persist",
+      "ok": true
+    },
+    {
+      "name": "scene restores through reload",
+      "ok": true
+    },
+    {
+      "name": "changing browser provider preserves bilibili selection",
+      "ok": true
+    },
+    {
+      "name": "bilibili and YouTube stay independent",
+      "ok": true
+    },
+    {
+      "name": "returning to browser immediately uses 小红书",
+      "ok": true
+    },
+    {
+      "name": "light Chinese label fits",
+      "ok": true
+    },
+    {
+      "name": "dark Chinese label fits",
+      "ok": true
+    },
+    {
+      "name": "mobile Chinese label and admin fit",
+      "ok": true
+    },
+    {
+      "name": "legacy Google selection migrates to configured browser",
+      "ok": true
+    },
+    {
+      "name": "invalid provider safely falls back to Google",
+      "ok": true
+    },
+    {
+      "name": "invalid write rejected",
+      "ok": true
+    },
+    {
+      "name": "storage failure reported without claiming saved",
+      "ok": true
+    },
+    {
+      "name": "no page errors",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "date": "2026-11-09",
+  "browser": "Installed Chrome; Playwright and CDP touch simulation for pointer regression",
+  "platformRegression": {
+    "results": [
+      {
+        "name": "default bilibili",
+        "ok": true
+      },
+      {
+        "name": "special character adapters",
+        "ok": true
+      },
+      {
+        "name": "youtube checked immediately",
+        "ok": true
+      },
+      {
+        "name": "youtube all search entrances",
+        "ok": true
+      },
+      {
+        "name": "youtube scene unchanged",
+        "ok": true
+      },
+      {
+        "name": "browser checked immediately",
+        "ok": true
+      },
+      {
+        "name": "browser all search entrances",
+        "ok": true
+      },
+      {
+        "name": "browser scene unchanged",
+        "ok": true
+      },
+      {
+        "name": "bilibili checked immediately",
+        "ok": true
+      },
+      {
+        "name": "bilibili all search entrances",
+        "ok": true
+      },
+      {
+        "name": "bilibili scene unchanged",
+        "ok": true
+      },
+      {
+        "name": "same orb canvas crosshair objects",
+        "ok": true
+      },
+      {
+        "name": "platform restored on refresh",
+        "ok": true
+      },
+      {
+        "name": "scene restored on refresh",
+        "ok": true
+      },
+      {
+        "name": "accessible labels match mode",
+        "ok": true
+      },
+      {
+        "name": "keyboard Home bilibili",
+        "ok": true
+      },
+      {
+        "name": "keyboard next YouTube",
+        "ok": true
+      },
+      {
+        "name": "drag paints immediately without animation lag",
+        "ok": true
+      },
+      {
+        "name": "stationary release snaps nearest slot",
+        "ok": true
+      },
+      {
+        "name": "rapid switches settle consistently",
+        "ok": true
+      },
+      {
+        "name": "light fits beside arrow",
+        "ok": true
+      },
+      {
+        "name": "dark fits beside arrow",
+        "ok": true
+      },
+      {
+        "name": "touch drag to Google",
+        "ok": true
+      },
+      {
+        "name": "touch cancel retains current mode",
+        "ok": true
+      },
+      {
+        "name": "mobile no overlap or scroll",
+        "ok": true
+      },
+      {
+        "name": "320px slots fit text",
+        "ok": true
+      },
+      {
+        "name": "running world velocities clock and objects unaffected by switching",
+        "ok": true
+      },
+      {
+        "name": "physics keeps advancing after switching",
+        "ok": true
+      },
+      {
+        "name": "cross-tab selection stays synchronized",
+        "ok": true
+      },
+      {
+        "name": "invalid saved platform safely defaults to bilibili",
+        "ok": true
+      },
+      {
+        "name": "768x1024 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "701x900 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "844x390 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "1024x768 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "no JS errors",
+        "ok": true
+      }
+    ],
+    "errors": []
+  },
+  "pointerRegression": {
+    "results": [
+      {
+        "name": "crosshair lines and dot use latest pointer immediately",
+        "ok": true,
+        "details": {
+          "x": 600,
+          "y": 420,
+          "dot": 600
+        }
+      },
+      {
+        "name": "regrab during click animation has normal width and follows 30px",
+        "ok": true,
+        "details": {
+          "l": 140.65625,
+          "r": 226,
+          "w": 85.33333333333333
+        }
+      },
+      {
+        "name": "crosshair follows while control captures and stops pointer events",
+        "ok": true
+      },
+      {
+        "name": "first pixel paints without a visual deadzone",
+        "ok": true,
+        "details": {
+          "l": 1,
+          "r": 86.328125,
+          "w": 85.33333333333333
+        }
+      },
+      {
+        "name": "click settles within 320ms",
+        "ok": true,
+        "details": {
+          "settleMs": 231
+        }
+      },
+      {
+        "name": "coordinate readouts match current pointer",
+        "ok": true,
+        "details": {
+          "x": "900",
+          "y": "400"
+        }
+      },
+      {
+        "name": "rapid reversal keeps thumb and crosshair at input position",
+        "ok": true,
+        "details": {
+          "maxThumbErrorPx": 0,
+          "maxCursorErrorPx": 0.0040283203125
+        }
+      },
+      {
+        "name": "cancelled capture preserves platform",
+        "ok": true
+      },
+      {
+        "name": "touch paints first movement directly",
+        "ok": true
+      },
+      {
+        "name": "touch restores ordinary pointer without crosshair",
+        "ok": true
+      },
+      {
+        "name": "touch cancellation restores selected slot without changing mode",
+        "ok": true
+      },
+      {
+        "name": "minor click jitter does not flick to another platform",
+        "ok": true
+      },
+      {
+        "name": "no page errors",
+        "ok": true,
+        "details": []
+      }
+    ],
+    "errors": []
+  },
+  "externalPopups": {
+    "results": [
+      {
+        "provider": "google",
+        "finalOrigin": "https://www.google.com",
+        "finalPath": "/sorry/index",
+        "title": "https://www.google.com/search?q=%E6%9F%94%E6%80%A7%E9%93%B0%E9%93%BE&sei=6mryaoqUMsS4mLQPxKS8-Qc",
+        "navigation": "loaded",
+        "loginOrVerification": true
+      },
+      {
+        "provider": "bing",
+        "finalOrigin": "https://www.bing.com",
+        "finalPath": "/search",
+        "title": "水锤效应 - Search",
+        "navigation": "loaded",
+        "loginOrVerification": false
+      },
+      {
+        "provider": "yandex",
+        "finalOrigin": "https://yandex.com",
+        "finalPath": "/showcaptcha",
+        "title": "Are you not a robot?",
+        "navigation": "loaded",
+        "loginOrVerification": true
+      },
+      {
+        "provider": "xiaohongshu",
+        "finalOrigin": "http://www.xiaohongshu.com",
+        "finalPath": "/search_result",
+        "title": "气蚀 - 小红书搜索",
+        "navigation": "loaded",
+        "loginOrVerification": false
+      },
+      {
+        "provider": "baidu",
+        "finalOrigin": "https://wappass.baidu.com",
+        "finalPath": "/static/captcha/tuxing_v2.html",
+        "title": "百度安全验证",
+        "navigation": "loaded",
+        "loginOrVerification": true
+      }
+    ],
+    "searchTargets": [
+      "https://www.google.com/search",
+      "https://www.google.com/search",
+      "https://www.bing.com/search",
+      "https://www.bing.com/search",
+      "https://yandex.com/search/",
+      "https://www.xiaohongshu.com/search_result",
+      "https://www.xiaohongshu.com/search_result",
+      "https://www.baidu.com/s"
+    ]
+  },
+  "notTested": [
+    "Safari this change",
+    "Edge",
+    "physical iOS/iPadOS or Android devices"
+  ]
+}
