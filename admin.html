@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>词库管理 · SERENDIPITY</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/admin.css"><script type="module" src="assets/admin.js"></script><script type="module" src="assets/visual-admin.js"></script><script type="module" src="assets/browser-admin.js?v=20261109-browser2"></script></head>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>词库管理 · SERENDIPITY</title><link rel="stylesheet" href="assets/style.css?v=20261109-eggs1"><link rel="stylesheet" href="assets/admin.css?v=20261109-eggs1"><script type="module" src="assets/admin.js"></script><script type="module" src="assets/visual-admin.js?v=20261109-eggs1"></script><script type="module" src="assets/browser-admin.js?v=20261109-browser2"></script><script type="module" src="assets/egg-admin.js?v=20261109-eggs1"></script></head>
 <body class="admin"><header class="masthead"><a class="wordmark" href="./">SERENDIPITY<span class="brand-dot">™</span></a><a href="./">返回探索 ↗</a></header>
 <main><div class="admin-title"><div><p class="eyebrow">LOCAL WORKSPACE / 001</p><h1>词库工作台</h1></div><span id="stats" class="mono">正在加载…</span></div>
 <aside class="notice"><strong>本地草稿 ≠ 线上已发布数据</strong><p>编辑仅保存在当前浏览器。导出 keywords.json，替换仓库中的 data/keywords.json 并部署，才会更新所有访客的公开词库。清理浏览器数据会丢失草稿，请定期导出备份。</p></aside>
@@ -17,6 +17,16 @@
 <div class="hollow-options"><h3>空间扭曲</h3><label><input id="hollow-enabled" type="checkbox" checked> <span id="hollow-state">空间扭曲 / ON</span></label><label for="hollow-size">吸积盘大小 <output id="hollow-size-value" for="hollow-size">1%</output><input id="hollow-size" type="range" min="0" max="100" step="1" value="1"></label><button id="hollow-reset" type="button">恢复默认</button><p class="muted">只改变圆球周围的影响范围；0% 无额外影响。设置仅保存当前浏览器。</p></div>
 <div id="terrain-preview" class="terrain-preview" aria-label="等高线实时预览"><div class="preview-orb" data-hollow-orb aria-hidden="true">Aa</div><div class="preview-orb small" data-hollow-orb aria-hidden="true"></div><div class="visual-toggle-preview"><button id="preview-crosshair" type="button" tabindex="-1" aria-disabled="true"></button><button id="preview-terrain" type="button" tabindex="-1" aria-disabled="true"></button></div></div>
 <p id="visual-save-status" class="muted" role="status">默认透明度 22%；支持减少动态效果，预览不影响词库草稿。</p></section>
+<details class="developer-settings"><summary>开发者模式</summary>
+<label><input id="egg-developer" type="checkbox"> 启用彩蛋开发者编辑</label>
+<fieldset id="egg-controls" disabled><legend>空洞彩蛋</legend>
+<label><input id="egg-enabled" type="checkbox" checked> 启用空白区域连续点击彩蛋</label>
+<label for="egg-clicks">触发所需连续点击次数<input id="egg-clicks" type="text" inputmode="numeric" pattern="[1-9][0-9]*" value="5" autocomplete="off" aria-describedby="egg-settings-help"></label>
+<p id="egg-settings-help" class="muted">最低1次，不设次数上限；相邻点击间隔500毫秒。关闭生成不删除已有空洞，每个场景最多30个。</p>
+<label for="egg-stage">编辑播报节点<select id="egg-stage"></select></label>
+<label for="egg-message">播报文案<textarea id="egg-message" rows="3" maxlength="300"></textarea></label>
+<button id="egg-defaults" type="button">恢复彩蛋默认值</button></fieldset>
+<p id="egg-save-status" role="status" class="muted">仅保存当前浏览器的个人开发者偏好，不更新其他访客或公开配置。</p></details>
 <div id="workspace" hidden>
 <div class="toolbar"><button id="export-json" class="solid">导出 JSON</button><button id="export-csv">导出 CSV</button><label class="file-button">导入 JSON / CSV<input id="import" type="file" accept=".json,.csv,application/json,text/csv"></label><button id="validate">校验数据</button><button id="dedupe">全库去重</button><button id="restore-public">恢复公开版本</button></div>
 <div class="backup-bar"><label for="backups">导入前历史备份</label><select id="backups"><option value="">暂无备份</option></select><button id="restore-backup">恢复所选备份</button></div>

@@ -1,4 +1,5 @@
 import { CONFIG, gap } from './config.js';
+import {growBody} from './egg-geometry.js?v=20261109-eggs1';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 function limit(body, max) {
@@ -33,6 +34,7 @@ export class World {
     const p = this.options;
     this.time += dt;
     for (const b of this.bodies) {
+      growBody(b,dt);
       if (b.drag) {
         const dx = b.drag.x - b.x, dy = b.drag.y - b.y;
         const response = 1 - Math.exp(-p.dragResponse * dt);
@@ -68,6 +70,7 @@ export class World {
           const b = this.bodies[j];
           const dx = b.x - a.x, dy = b.y - a.y;
           const target = a.r + b.r + gap(a, b);
+          if(Math.abs(dx)>=target||Math.abs(dy)>=target)continue;
           const distance = Math.hypot(dx, dy);
           if (distance >= target) continue;
           const nx = distance > 0.0001 ? dx / distance : 1;

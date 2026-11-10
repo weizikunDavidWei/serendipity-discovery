@@ -71,7 +71,7 @@ var FRAG = `
 precision highp float;
 
 uniform int uHollowCount;
-uniform vec3 uHollowSources[9]; // aspect-correct centers and radii
+uniform vec3 uHollowSources[39]; // aspect-correct centers and radii
 uniform float uHollowRange;
 uniform vec2  uRes;
 uniform float uTime;
@@ -168,15 +168,19 @@ void main() {
   const float coreRatio = 0.18;
   vec2 domainOffset = vec2(0.0);
   float totalWeight = 0.0;
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < 39; i++) {
     if (i >= uHollowCount) break;
     vec3 source = uHollowSources[i];
     vec2 delta = stN - source.xy;
-    float distance = length(delta);
     float radius = max(source.z, 0.00001);
     // Range only: coreRatio/compression does not depend on the slider.
     // Halve the physical range; the UI remains 0–100%. Compression stays fixed.
     float extent = radius * 0.5 * (0.35 + 2.65 * uHollowRange);
+    float reach=radius+extent;
+    if(abs(delta.x)>reach||abs(delta.y)>reach)continue;
+    float distanceSquared=dot(delta,delta);
+    if(distanceSquared>reach*reach)continue;
+    float distance=sqrt(distanceSquared);
     float weight = 1.0 - smoothstep(0.0, extent, max(0.0, distance - radius));
     float core = radius * coreRatio;
     float sampleRadius = sqrt(max(0.0, (distance - radius) * (distance + radius)) + core * core);

@@ -1,0 +1,981 @@
+
+=== platforms ===
+{
+  "results": [
+    {
+      "name": "default bilibili",
+      "ok": true
+    },
+    {
+      "name": "special character adapters",
+      "ok": true
+    },
+    {
+      "name": "youtube checked immediately",
+      "ok": true
+    },
+    {
+      "name": "youtube all search entrances",
+      "ok": true
+    },
+    {
+      "name": "youtube scene unchanged",
+      "ok": true
+    },
+    {
+      "name": "browser checked immediately",
+      "ok": true
+    },
+    {
+      "name": "browser all search entrances",
+      "ok": true
+    },
+    {
+      "name": "browser scene unchanged",
+      "ok": true
+    },
+    {
+      "name": "bilibili checked immediately",
+      "ok": true
+    },
+    {
+      "name": "bilibili all search entrances",
+      "ok": true
+    },
+    {
+      "name": "bilibili scene unchanged",
+      "ok": true
+    },
+    {
+      "name": "same orb canvas crosshair objects",
+      "ok": true
+    },
+    {
+      "name": "platform restored on refresh",
+      "ok": true
+    },
+    {
+      "name": "scene restored on refresh",
+      "ok": true
+    },
+    {
+      "name": "accessible labels match mode",
+      "ok": true
+    },
+    {
+      "name": "keyboard Home bilibili",
+      "ok": true
+    },
+    {
+      "name": "keyboard next YouTube",
+      "ok": true
+    },
+    {
+      "name": "drag paints immediately without animation lag",
+      "ok": true
+    },
+    {
+      "name": "stationary release snaps nearest slot",
+      "ok": true
+    },
+    {
+      "name": "rapid switches settle consistently",
+      "ok": true
+    },
+    {
+      "name": "light fits beside arrow",
+      "ok": true
+    },
+    {
+      "name": "dark fits beside arrow",
+      "ok": true
+    },
+    {
+      "name": "touch drag to Google",
+      "ok": true
+    },
+    {
+      "name": "touch cancel retains current mode",
+      "ok": true
+    },
+    {
+      "name": "mobile no overlap or scroll",
+      "ok": true
+    },
+    {
+      "name": "320px slots fit text",
+      "ok": true
+    },
+    {
+      "name": "running world velocities clock and objects unaffected by switching",
+      "ok": true
+    },
+    {
+      "name": "physics keeps advancing after switching",
+      "ok": true
+    },
+    {
+      "name": "cross-tab selection stays synchronized",
+      "ok": true
+    },
+    {
+      "name": "invalid saved platform safely defaults to bilibili",
+      "ok": true
+    },
+    {
+      "name": "768x1024 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "701x900 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "844x390 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "1024x768 responsive spacing",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "errors": []
+}
+
+=== pointer-follow ===
+{
+  "results": [
+    {
+      "name": "crosshair lines and dot use latest pointer immediately",
+      "ok": true,
+      "details": {
+        "x": 600,
+        "y": 420,
+        "dot": 600
+      }
+    },
+    {
+      "name": "regrab during click animation has normal width and follows 30px",
+      "ok": true,
+      "details": {
+        "l": 140.65625,
+        "r": 226,
+        "w": 85.33333333333333
+      }
+    },
+    {
+      "name": "crosshair follows while control captures and stops pointer events",
+      "ok": true
+    },
+    {
+      "name": "first pixel paints without a visual deadzone",
+      "ok": true,
+      "details": {
+        "l": 1,
+        "r": 86.328125,
+        "w": 85.33333333333333
+      }
+    },
+    {
+      "name": "click settles within 320ms",
+      "ok": true,
+      "details": {
+        "settleMs": 210
+      }
+    },
+    {
+      "name": "coordinate readouts match current pointer",
+      "ok": true,
+      "details": {
+        "x": "900",
+        "y": "400"
+      }
+    },
+    {
+      "name": "rapid reversal keeps thumb and crosshair at input position",
+      "ok": true,
+      "details": {
+        "maxThumbErrorPx": 0,
+        "maxCursorErrorPx": 0.0040283203125
+      }
+    },
+    {
+      "name": "cancelled capture preserves platform",
+      "ok": true
+    },
+    {
+      "name": "touch paints first movement directly",
+      "ok": true
+    },
+    {
+      "name": "touch restores ordinary pointer without crosshair",
+      "ok": true
+    },
+    {
+      "name": "touch cancellation restores selected slot without changing mode",
+      "ok": true
+    },
+    {
+      "name": "minor click jitter does not flick to another platform",
+      "ok": true
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "details": []
+    }
+  ],
+  "errors": []
+}
+
+=== hollow ===
+{
+  "results": [
+    {
+      "name": "default on / 1%",
+      "ok": true
+    },
+    {
+      "name": "actual geometry pixels change",
+      "ok": true
+    },
+    {
+      "name": "OFF restores exact deterministic field",
+      "ok": true
+    },
+    {
+      "name": "all ball centers and scaled radii",
+      "ok": true
+    },
+    {
+      "name": "admin default 1%",
+      "ok": true
+    },
+    {
+      "name": "slider live across tabs",
+      "ok": true
+    },
+    {
+      "name": "exact85% label",
+      "ok": true
+    },
+    {
+      "name": "persisted",
+      "ok": true
+    },
+    {
+      "name": "OFF removes all sources",
+      "ok": true
+    },
+    {
+      "name": "zero no sources",
+      "ok": true
+    },
+    {
+      "name": "reset1%",
+      "ok": true
+    },
+    {
+      "name": "dragging and moving sources track",
+      "ok": true
+    },
+    {
+      "name": "mobile fits",
+      "ok": true
+    },
+    {
+      "name": "one canvas",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "pixelComparison": {
+    "changed": 147051,
+    "restoreDiff": 0
+  },
+  "errors": []
+}
+
+=== hollow-direction ===
+{
+  "results": [
+    {
+      "name": "tangential contours r=205 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=205 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=205 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=205 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=205 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-01",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-02",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-03",
+      "ok": true
+    },
+    {
+      "name": "tangential contours r=84 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "compressed spacing r=84 hollow-direction-04",
+      "ok": true
+    },
+    {
+      "name": "outer terrain pixel-identical",
+      "ok": true
+    },
+    {
+      "name": "rim terrain actually changes",
+      "ok": true
+    },
+    {
+      "name": "slider changes range only",
+      "ok": true
+    },
+    {
+      "name": "close sources have no ordering seam",
+      "ok": true
+    },
+    {
+      "name": "subpixel motion changes continuously",
+      "ok": true
+    },
+    {
+      "name": "OFF / zero baseline identical",
+      "ok": true
+    },
+    {
+      "name": "one renderer / no GL error",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "gradients": [
+    {
+      "radius": 205,
+      "seed": "hollow-direction-01",
+      "off": {
+        "alignment": 0.633499320164078,
+        "radialSlope": 2.407671686465925,
+        "samples": 767
+      },
+      "on": {
+        "alignment": 0.9266110275735041,
+        "radialSlope": 6.49661563020949,
+        "samples": 767
+      }
+    },
+    {
+      "radius": 205,
+      "seed": "hollow-direction-02",
+      "off": {
+        "alignment": 0.48767989585484095,
+        "radialSlope": 1.4327862041723876,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.9228268174362623,
+        "radialSlope": 5.110059809207842,
+        "samples": 766
+      }
+    },
+    {
+      "radius": 205,
+      "seed": "hollow-direction-03",
+      "off": {
+        "alignment": 0.7019292155989065,
+        "radialSlope": 2.9106279489084876,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.941953347957592,
+        "radialSlope": 9.590985477145564,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 205,
+      "seed": "hollow-direction-04",
+      "off": {
+        "alignment": 0.6097816533300862,
+        "radialSlope": 2.753657398594427,
+        "samples": 767
+      },
+      "on": {
+        "alignment": 0.9519635936434266,
+        "radialSlope": 10.534350056884714,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-01",
+      "off": {
+        "alignment": 0.6379787570472458,
+        "radialSlope": 2.1226451281801,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.901365803900951,
+        "radialSlope": 7.985451918642876,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-02",
+      "off": {
+        "alignment": 0.7029627220069474,
+        "radialSlope": 1.7577956563398172,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.9238490348742013,
+        "radialSlope": 5.178530320154841,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-03",
+      "off": {
+        "alignment": 0.7216084335088143,
+        "radialSlope": 2.4699868852137006,
+        "samples": 768
+      },
+      "on": {
+        "alignment": 0.9492661466953977,
+        "radialSlope": 12.031603428320862,
+        "samples": 768
+      }
+    },
+    {
+      "radius": 84,
+      "seed": "hollow-direction-04",
+      "off": {
+        "alignment": 0.7291668761589405,
+        "radialSlope": 2.8346133623733083,
+        "samples": 767
+      },
+      "on": {
+        "alignment": 0.9600473826940932,
+        "radialSlope": 7.588232081924634,
+        "samples": 768
+      }
+    }
+  ],
+  "stability": {
+    "farChanged": 0,
+    "nearChanged": 22707,
+    "rangeOnly": true,
+    "orderMax": 0,
+    "largestMean": 0.5801953125,
+    "zeroDiff": 0,
+    "glError": 0,
+    "canvases": 1
+  },
+  "errors": []
+}
+
+=== topolines ===
+{
+  "results": [
+    {
+      "name": "WebGL draws",
+      "ok": true
+    },
+    {
+      "name": "default 22%",
+      "ok": true
+    },
+    {
+      "name": "dark white",
+      "ok": true
+    },
+    {
+      "name": "light black",
+      "ok": true
+    },
+    {
+      "name": "OFF stops GPU even on resize",
+      "ok": true
+    },
+    {
+      "name": "OFF persists",
+      "ok": true
+    },
+    {
+      "name": "OFF lazy no canvas",
+      "ok": true
+    },
+    {
+      "name": "Crosshair lock retained",
+      "ok": true
+    },
+    {
+      "name": "drag no accidental search",
+      "ok": true
+    },
+    {
+      "name": "search retained",
+      "ok": true
+    },
+    {
+      "name": "exact slider label",
+      "ok": true
+    },
+    {
+      "name": "live across tabs",
+      "ok": true
+    },
+    {
+      "name": "shared compact",
+      "ok": true
+    },
+    {
+      "name": "shared minimal",
+      "ok": true
+    },
+    {
+      "name": "shared text",
+      "ok": true
+    },
+    {
+      "name": "admin preference retained",
+      "ok": true
+    },
+    {
+      "name": "reset22%",
+      "ok": true
+    },
+    {
+      "name": "reduced motion static",
+      "ok": true
+    },
+    {
+      "name": "mobile no overflow",
+      "ok": true
+    },
+    {
+      "name": "single canvas",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "errors": []
+}
+
+=== slide-commit ===
+{
+  "results": [
+    {
+      "name": "one permanent rail, no refresh button or popup",
+      "ok": true
+    },
+    {
+      "name": "no visible text or icons",
+      "ok": true
+    },
+    {
+      "name": "correct row and right alignment",
+      "ok": true
+    },
+    {
+      "name": "thin rail, round thumb, 44px hit target",
+      "ok": true
+    },
+    {
+      "name": "light pure inverted colors",
+      "ok": true
+    },
+    {
+      "name": "dark pure inverted colors",
+      "ok": true
+    },
+    {
+      "name": "direct partial drag returns and preserves scene",
+      "ok": true
+    },
+    {
+      "name": "endpoint without release does not reset",
+      "ok": true
+    },
+    {
+      "name": "release commits exactly once",
+      "ok": true
+    },
+    {
+      "name": "new topics after full slide",
+      "ok": true
+    },
+    {
+      "name": "control remains present and text free after commit",
+      "ok": true
+    },
+    {
+      "name": "refresh restores exact scene",
+      "ok": true
+    },
+    {
+      "name": "keyboard End is not confirmation",
+      "ok": true
+    },
+    {
+      "name": "Escape cancels without hiding rail",
+      "ok": true
+    },
+    {
+      "name": "keyboard explicit confirmation works",
+      "ok": true
+    },
+    {
+      "name": "spring returns with motion enabled",
+      "ok": true
+    },
+    {
+      "name": "lost focus cannot commit at endpoint",
+      "ok": true
+    },
+    {
+      "name": "orb and random search retained",
+      "ok": true
+    },
+    {
+      "name": "mobile same row, no overflow",
+      "ok": true
+    },
+    {
+      "name": "touch cancel preserves scene",
+      "ok": true
+    },
+    {
+      "name": "direct touch slide commits",
+      "ok": true
+    },
+    {
+      "name": "no JS errors",
+      "ok": true
+    }
+  ],
+  "errors": []
+}
+
+=== browser-providers ===
+{
+  "results": [
+    {
+      "name": "five choices and Google default",
+      "ok": true
+    },
+    {
+      "name": "three segments retained",
+      "ok": true
+    },
+    {
+      "name": "google label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "google both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "google scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "google accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "bing label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "bing both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "bing scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "bing accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "yandex label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "yandex both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "yandex scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "yandex accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "xiaohongshu accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "baidu label and inverted copy synchronized",
+      "ok": true
+    },
+    {
+      "name": "baidu both search entrances use encoded adapter",
+      "ok": true
+    },
+    {
+      "name": "baidu scene and selected segment unchanged",
+      "ok": true
+    },
+    {
+      "name": "baidu accessible search labels",
+      "ok": true
+    },
+    {
+      "name": "keyword draft history and visual preferences untouched",
+      "ok": true
+    },
+    {
+      "name": "existing objects retained while provider changes",
+      "ok": true
+    },
+    {
+      "name": "special characters round-trip for all five providers",
+      "ok": true
+    },
+    {
+      "name": "admin preference persists",
+      "ok": true
+    },
+    {
+      "name": "front preference and selection persist",
+      "ok": true
+    },
+    {
+      "name": "scene restores through reload",
+      "ok": true
+    },
+    {
+      "name": "changing browser provider preserves bilibili selection",
+      "ok": true
+    },
+    {
+      "name": "bilibili and YouTube stay independent",
+      "ok": true
+    },
+    {
+      "name": "returning to browser immediately uses 小红书",
+      "ok": true
+    },
+    {
+      "name": "light Chinese label fits",
+      "ok": true
+    },
+    {
+      "name": "dark Chinese label fits",
+      "ok": true
+    },
+    {
+      "name": "mobile Chinese label and admin fit",
+      "ok": true
+    },
+    {
+      "name": "legacy Google selection migrates to configured browser",
+      "ok": true
+    },
+    {
+      "name": "invalid provider safely falls back to Google",
+      "ok": true
+    },
+    {
+      "name": "invalid write rejected",
+      "ok": true
+    },
+    {
+      "name": "storage failure reported without claiming saved",
+      "ok": true
+    },
+    {
+      "name": "pageshow restores provider without replacing the scene",
+      "ok": true
+    },
+    {
+      "name": "visibility resume resyncs platform setting",
+      "ok": true
+    },
+    {
+      "name": "restored browse mode remains independent of browser provider",
+      "ok": true
+    },
+    {
+      "name": "configuration changes never trigger a search",
+      "ok": true
+    },
+    {
+      "name": "label changes during captured drag preserve width position and capture",
+      "ok": true
+    },
+    {
+      "name": "drag remains immediate after a label change",
+      "ok": true
+    },
+    {
+      "name": "older cached module interfaces cannot disable the new setting",
+      "ok": true
+    },
+    {
+      "name": "no page errors",
+      "ok": true
+    }
+  ],
+  "errors": []
+}
+
+=== crosshair ===
+REGRESSION 首页交互与回归验收
+
+仅在独立的本地测试服务运行。测试会临时编辑本地草稿，结束后恢复原存储。
+
+运行验收
+54 项通过 / 8 项失败 · 测试前存储已恢复
+PASS · 5 圆圈 × 20 种子：不规则布局、巨大与小圆同屏、留白有效
+PASS · 7 圆圈 × 20 种子：不规则布局、巨大与小圆同屏、留白有效
+PASS · 9 圆圈 × 20 种子：不规则布局、巨大与小圆同屏、留白有效
+PASS · 面积质量：大圆撞小圆，动量守恒且小圆反应明显
+PASS · 同尺寸正面碰撞：对称速度交换，恢复系数有效
+PASS · 紧密聚集、同心初始值：接触求解不会产生 NaN 或持续重叠
+PASS · 快速拖动大圆穿过小圆群：连续推进、连锁碰撞、释放速度受限
+PASS · 拖向边角控件：圆圈仍在可操作边界内
+PASS · 固定时间步：30 / 60 / 120Hz 轨迹一致，后台大时间差受限
+PASS · 长期稳定：9 圈模拟 5 分钟，无越界、速度失控、数量增长
+PASS · 390×844 自适应布置：5 圈 × 10 种子，不强塞重叠
+PASS · 320×568 自适应布置：5 圈 × 10 种子，不强塞重叠
+PASS · 768×1024 自适应布置：5 圈 × 10 种子，不强塞重叠
+PASS · 844×390 自适应布置：5 圈 × 10 种子，不强塞重叠
+PASS · 释放轨迹：不同事件频率都按 CSS px/s 正确估计方向和速度
+PASS · 真实稀疏事件：同毫秒和 1ms 移动仍有受控释放速度
+PASS · 核心验收：松手后滑行超过150px并依次撞开三个小圆
+PASS · 轨迹只使用最近窗口，反向拖动按最近方向释放，样本数量有界
+PASS · 静止、重复时间、过期释放、异常间隔和无效数据不产生异常甩动
+PASS · 释放修复：控制器已停下仍能获得真实甩速；慢拖与快甩力度不同且限速
+PASS · 释放后继续移动再自然衰减，不瞬停也不持续高速漂移
+PASS · 取消只停止当前拖动物体，不甩动、不清零其他圆圈；reduced-motion 无释放惯性
+PASS · 释放惯性仍能向其他圆传递动量并在边界反弹
+PASS · 连续多方向甩动：限速、间隙、边界和有限数值保持稳定
+PASS · mouse 真实页面事件：按轨迹释放继续前进，拖动不搜索
+PASS · touch 真实页面事件：按轨迹释放继续前进，拖动不搜索
+PASS · pen 真实页面事件：按轨迹释放继续前进，拖动不搜索
+PASS · 真实页面 held：不产生意外释放速度
+PASS · 真实页面 cancel：不产生意外释放速度
+PASS · 真实页面 blur：不产生意外释放速度
+PASS · 真实页面 reduced：不产生意外释放速度
+PASS · 真实页面 click：不产生意外释放速度
+FAIL · 初始词库：16 个领域 / 240 个关键词，全库无重复 — 主题数量
+PASS · 中文及特殊字符 URL 编码往返正确
+PASS · 拒绝空值、重复、无效 ID 和控制字符；不执行 HTML
+PASS · CSV 引号、逗号、中文和公式前缀安全往返；拒绝破损格式
+PASS · 随机索引有效且 Fisher–Yates 保留全部元素
+PASS · 桌面 1440：5–9 个不同圆圈，无重叠、越界或文字溢出
+PASS · 浅色模式：白底黑圆白字
+PASS · 实时切换深色：黑底白圆黑字
+PASS · 标志与版式：™、大型↘入口、无旧Hero或网格
+PASS · 矢量箭头：无 Emoji 字符或字体依赖，固定原轮廓，按钮独立命名
+PASS · 手机、平板和横屏尺寸模拟：SVG 和原字符按钮的点击区域一致
+PASS · SVG currentColor 随浅深色切换，点击 SVG 与按钮仍同步探索
+PASS · 换组、同步中文新窗口、近期去重与完全随机
+PASS · 鼠标与触摸：小幅移动可点击，拖动后抑制搜索，键盘点击保留
+PASS · 视口缩放恢复：1440 → 390 → 1440，边界重算
+PASS · 768px 响应式：圆圈无重叠、越界、文字溢出
+PASS · 390px 响应式：圆圈无重叠、越界、文字溢出
+PASS · 320px 响应式：圆圈无重叠、越界、文字溢出
+PASS · reduced-motion：真正停止模拟，实时恢复和停止，后台不追帧
+PASS · 动画采样与重复换组：对象数量有界，窗口无滚动条
+PASS · 管理页创建、重命名主题
+PASS · 管理页增改删词条及注入防护
+FAIL · 批量粘贴：跳过全库和批内重复；搜索及统计 — 统计失败
+FAIL · 自动保存草稿：刷新后恢复；首页公开数据独立 — 草稿数据丢失
+FAIL · 管理页 JSON / CSV 导出可重新校验 — JSON 内容
+FAIL · JSON 文件导入、替换前备份、历史恢复 — 导入失败
+FAIL · 无效 JSON 导入保持原草稿 — 草稿被改变
+FAIL · CSV 文件导入、校验、去重、恢复公开版本 — CSV导入失败
+FAIL · 管理页删除主题及备份恢复 — 删除失败
+PASS · 管理页 390px 手机布局可用，无水平溢出
+
+5 分钟 / 36,000 固定步的求解耗时：258ms（不含浏览器绘制；非 FPS 测量）；实际 rAF 样本 99，中位间隔 16.7ms（非跨设备性能保证）
+CROSSHAIR [{"name":"reduced motion hidden","ok":true},{"name":"no diameter readout","ok":true},{"name":"pointer visible","ok":true},{"name":"whole orb brackets","ok":true},{"name":"moving target follows","ok":true},{"name":"off restores cursor","ok":true},{"name":"preference retained","ok":true},{"name":"dark theme","ok":true},{"name":"drag no search","ok":true},{"name":"search retained","ok":true}]

@@ -1,5 +1,5 @@
 import {defaults,preferences,savePreferences,renderToggle} from './visual-settings.js';
-import {mountTerrain} from './topolines.js';
+import {mountTerrain} from './topolines.js?v=20261109-eggs1';
 const range=document.querySelector('#terrain-opacity'), style=document.querySelector('#toggle-style'), output=document.querySelector('#terrain-opacity-value');
 mountTerrain(document.querySelector('#terrain-preview'));
 function sync(){const p=preferences();document.querySelector('#hollow-enabled').checked=p.hollowEnabled;document.querySelector('#hollow-state').textContent='空间扭曲 / '+(p.hollowEnabled?'ON':'OFF');document.querySelector('#hollow-size').value=Math.round(p.hollowSize*100);document.querySelector('#hollow-size-value').value=Math.round(p.hollowSize*100)+'%';range.value=Math.round(p.opacity*100);output.value=range.value+'%';style.value=p.toggleStyle;document.querySelector('#font-weight').value=p.fontWeight;document.querySelector('#terrain-enabled').checked=p.enabled;

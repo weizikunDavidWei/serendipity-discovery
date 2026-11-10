@@ -3,11 +3,17 @@ import {getSearchProvider} from './mode-controller.js?v=20261109-browser2';
 import './visual-settings.js';
 import { loadPublic, shuffle, randomIndex } from './data.js';
 import { CONFIG } from './config.js';
-import { World } from './physics.js';
+import { World } from './physics.js?v=20261109-eggs1';
 import { bindDrag } from './interaction.js';
 import { arrange, countLimit } from './layout.js';
 import { bindSlideCommit } from './slide-commit.js';
-import { readScene, writeScene } from './scene-session.js';
+import { readScene, writeScene } from './scene-session.js?v=20261109-eggs1';
+import {eggPreferences,EGG_LIMIT,RESET_THRESHOLD} from './egg-settings.js?v=20261109-eggs1';
+import {eggPlacement} from './egg-geometry.js?v=20261109-eggs1';
+import {bindEggInput} from './egg-input.js?v=20261109-eggs1';
+import {createBroadcast} from './egg-broadcast.js?v=20261109-eggs1';
+import {openConfirmedSearch} from './search-launch.js?v=20261109-eggs1';
+import {setHollowBodies} from './hollow-field.js?v=20261109-eggs1';
 
 const field = document.querySelector('#field');
 const status = document.querySelector('#status');
@@ -15,13 +21,14 @@ const shuffleButton = document.querySelector('#shuffle');
 shuffleButton.disabled = true;
 const surprise = document.querySelector('#surprise');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
+let worldResetPendingExploration=false;
 let data, world, shown = [], topics = [], recent = [], nodes = [];
 let raf = 0, lastTime = null, active = null, keyboardHold = false;
 let resizeTimer = 0, transitionTimer = 0, shuffling = false;
 let pointerMode = true, confirmationHold = false, lastSaved = 0, storageAvailable = true;
 function saveScene(force = false) {
   if (!world || (!force && performance.now() - lastSaved < 1000)) return;
-  lastSaved = performance.now();storageAvailable = writeScene(world, topics, recent);
+  lastSaved = performance.now();storageAvailable = writeScene(world, topics, recent, {worldResetPendingExploration});
 }
 
 function pick(words) {
@@ -34,10 +41,14 @@ function pick(words) {
   saveScene(true);
   return word;
 }
-function explore(words) {
+function explore(words,normalTopic=false) {
   // Keep window.open in the original trusted click, without an await or timer.
   const word = pick(words);
-  window.open(searchURL(word,getSearchProvider()), '_blank', 'noopener,noreferrer');
+  const url=searchURL(word,getSearchProvider());
+  if(worldResetPendingExploration&&normalTopic){
+    if(!openConfirmedSearch(url)){status.textContent='浏览器未打开搜索，请允许新标签页后重试。';return}
+    worldResetPendingExploration=false;updateBroadcast();saveScene(true);
+  }else window.open(url, '_blank', 'noopener,noreferrer');
   status.textContent = '已打开「' + word + '」 · 在 '+platformInfo(getSearchProvider()).label+' 偶然发现';
 }
 function geometry() {
@@ -50,8 +61,10 @@ function geometry() {
 }
 function draw() {
   world.bodies.forEach((body, i) => {
+    if(body.egg)nodes[i].style.width=nodes[i].style.height=body.r*2+'px';
     nodes[i].style.transform = `translate3d(${(body.x - body.r).toFixed(2)}px,${(body.y - body.r).toFixed(2)}px,0)`;
   });
+  setHollowBodies(world.bodies);
   if(motion.matches)document.dispatchEvent(new Event('orb-geometry'));
   saveScene();
 }
@@ -82,7 +95,7 @@ function wire(button, body, topic) {
   let controller;
   controller = bindDrag(button,body,{
     getWorld:()=>world, reduced:()=>motion.matches,
-    explore:()=>explore(topic.keywords),
+    explore:()=>{if(topic)explore(topic.keywords,true)},
     claim:()=>{if(active)return false;active={button,controller};pointerMode=true;keyboardHold=false;start();return true;},
     releaseClaim:()=>{active=null;},
     wake:()=>{pointerMode=true;keyboardHold=false;start();},
@@ -118,6 +131,10 @@ function prepareScene(nextTopics, previous = [], restored = null) {
   });
   return { world: nextWorld, topics: nextTopicsVisible, nodes: nextNodes, fragment };
 }
+function makeEggNode(body){const button=document.createElement('button');button.type='button';button.className='orb egg-orb';button.dataset.egg='';button.setAttribute('aria-label','空洞球体，可拖动');button.style.width=button.style.height=body.r*2+'px';wire(button,body,null);return button}
+function eggCount(){return world?.bodies.filter(b=>b.egg).length||0}
+const broadcast=createBroadcast(document.querySelector('#gesture-hint'),status,()=>{if(world){world.obstacles=geometry().boxes;if(motion.matches){world.solve(false);draw();}}});
+function updateBroadcast(immediate=false){broadcast.render(eggCount(),worldResetPendingExploration,immediate)}
 function commitScene(next) {
   cancelDrag(); stop();
   world = next.world; topics = next.topics; nodes = next.nodes;
@@ -134,16 +151,30 @@ function usable(scene) {
     obstacles.every(box=>Math.hypot(a.x-Math.max(box.x,Math.min(box.x+box.width,a.x)),a.y-Math.max(box.y,Math.min(box.y+box.height,a.y)))>=a.r+7));
 }
 function prepareSaved(saved) {
-  const {width,height} = geometry();
-  const same = Math.abs(width-saved.width)<1 && Math.abs(height-saved.height)<1;
-  const scale = same ? 1 : Math.min(1,width/saved.width,height/saved.height);
-  const bodies = saved.bodies.map(b=>({...b,x:b.x*width/saved.width,y:b.y*height/saved.height,r:Math.max(24,b.r*scale),vx:b.vx*scale,vy:b.vy*scale}));
-  const candidate = prepareScene(saved.topics,[],{bodies,time:saved.time});
-  if (usable(candidate)) return candidate;
-  // If controls or the viewport no longer fit, retain the same topics and use
-  // the existing packing algorithm; only genuinely unfit targets may be reduced.
-  return prepareScene(saved.topics,bodies.map(b=>({x:b.x,y:b.y})));
+  const {width,height}=geometry(),same=Math.abs(width-saved.width)<1&&Math.abs(height-saved.height)<1;
+  const scale=same?1:Math.min(1,width/saved.width,height/saved.height);
+  const bodies=saved.bodies.map(b=>({...b,x:b.x*width/saved.width,y:b.y*height/saved.height,r:Math.max(24,b.r*scale),vx:b.vx*scale,vy:b.vy*scale}));
+  let candidate=prepareScene(saved.topics,[],{bodies,time:saved.time});
+  if(!usable(candidate))candidate=prepareScene(saved.topics,bodies.map(b=>({x:b.x,y:b.y})));
+  for(const old of saved.eggs||[]){
+    let body={...old,egg:true,r:Math.max(5,old.r*scale),x:old.x*width/saved.width,y:old.y*height/saved.height,vx:old.vx*scale,vy:old.vy*scale};
+    if(!same){const place=eggPlacement(body,candidate.world.bodies,candidate.world.bounds,candidate.world.obstacles,Math.random,body.r);if(!place)continue;body={...body,x:place.x,y:place.y,r:place.r}}
+    if(motion.matches)body.vx=body.vy=0;
+    candidate.world.bodies.push(body);const node=makeEggNode(body);candidate.nodes.push(node);candidate.fragment.append(node);
+  }
+  candidate.world.solve(false,36);return candidate;
 }
+function spawnEgg(clientX,clientY){
+  if(!world||shuffling||eggCount()>=EGG_LIMIT)return false;
+  const rect=field.getBoundingClientRect(),place=eggPlacement({x:clientX-rect.left,y:clientY-rect.top},world.bodies,world.bounds,geometry().boxes);
+  if(!place)return false;
+  const body={x:place.x,y:place.y,r:motion.matches?place.r:1.5,vx:motion.matches?0:(Math.random()-.5)*12,vy:motion.matches?0:(Math.random()-.5)*12,phase:Math.random()*Math.PI*2,egg:true};
+  if(!motion.matches)body.growth={from:1.5,target:place.r,elapsed:0};
+  const node=makeEggNode(body);world.bodies.push(body);nodes.push(node);field.append(node);
+  worldResetPendingExploration=false;updateBroadcast();draw();saveScene(true);document.dispatchEvent(new CustomEvent('egg-scene-change',{detail:{count:eggCount()}}));start();return true;
+}
+const eggInput=bindEggInput(field,{settings:eggPreferences,spawn:spawnEgg,ready:()=>!!world&&!shuffling&&!confirmationHold&&!field.classList.contains('is-resizing')});
+window.addEventListener('egg-preferences',()=>updateBroadcast());
 function chooseTopics() {
   const { width, height } = geometry();
   const limit = Math.min(data.topics.length, countLimit(width, height));
@@ -171,7 +202,10 @@ async function shuffleScene(signal) {
     const actual = geometry();
     if (next.world.bounds.width !== actual.width || next.world.bounds.height !== actual.height) next = prepareScene(next.topics);
     field.classList.remove('is-resizing');
-    commitScene(next);
+    const special=eggCount()>=RESET_THRESHOLD;
+    worldResetPendingExploration=special||worldResetPendingExploration;
+    eggInput.reset();commitScene(next);updateBroadcast();saveScene(true);
+    document.dispatchEvent(new CustomEvent('egg-scene-change',{detail:{count:0}}));
     field.classList.add('is-entering');
     status.textContent = '新的方向，新的偶然。';
   } finally {
@@ -185,9 +219,9 @@ function resizeScene() {
   const { width, height } = geometry();
   if (Math.abs(width - world.bounds.width) < 1 && Math.abs(height - world.bounds.height) < 1) return;
   const old = nodes.map(n => n.style.transform);
-  const saved = {width:world.bounds.width,height:world.bounds.height,time:world.time,topics,bodies:world.bodies.map(b=>({...b}))};
+  const saved = {width:world.bounds.width,height:world.bounds.height,time:world.time,topics,bodies:world.bodies.filter(b=>!b.egg).map(b=>({...b})),eggs:world.bodies.filter(b=>b.egg).map(b=>({...b,r:b.growth?.target||b.r}))};
   field.classList.remove('is-entering');
-  commitScene(prepareSaved(saved));
+  commitScene(prepareSaved(saved));updateBroadcast(true);
   stop();
   if (!motion.matches) {
     const targets = nodes.map(n => n.style.transform);
@@ -213,7 +247,7 @@ const slide = bindSlideCommit({trigger:shuffleButton,onConfirm:shuffleScene,
 document.querySelector('.edge-brand').addEventListener('click',e=>{
   if(e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey){e.preventDefault();slide.close({focus:true});}
 });
-function updateSearchLabels(){nodes.forEach((node,i)=>node.setAttribute('aria-label','探索'+topics[i].name+'，在新标签页打开 '+platformInfo(getSearchProvider()).label));surprise.setAttribute('aria-label','完全随机探索，在新标签页打开 '+platformInfo(getSearchProvider()).label);}
+function updateSearchLabels(){nodes.slice(0,topics.length).forEach((node,i)=>node.setAttribute('aria-label','探索'+topics[i].name+'，在新标签页打开 '+platformInfo(getSearchProvider()).label));surprise.setAttribute('aria-label','完全随机探索，在新标签页打开 '+platformInfo(getSearchProvider()).label);}
 window.addEventListener('search-platform-change',updateSearchLabels);window.addEventListener('browser-provider-change',updateSearchLabels);updateSearchLabels();
 surprise.addEventListener('click', () => explore(data.topics.flatMap(t => t.keywords)));
 document.addEventListener('pointerdown',()=>{pointerMode=true;keyboardHold=false;start();},{capture:true});
@@ -245,8 +279,9 @@ window.addEventListener('pageshow', start);
 loadPublic().then(d => {
   data = d;
   const saved = readScene(data);let restored = false;
-  if(saved){try{commitScene(prepareSaved(saved));recent=saved.recent;saveScene(true);restored=true;}catch{/* invalid/unusable: fresh initialization below */}}
-  if(!restored)createScene(chooseTopics());
+  if(saved){try{worldResetPendingExploration=saved.worldResetPendingExploration;commitScene(prepareSaved(saved));recent=saved.recent;saveScene(true);restored=true;}catch{/* invalid/unusable: fresh initialization below */}}
+  if(!restored){worldResetPendingExploration=false;createScene(chooseTopics());}
+  updateBroadcast(true);document.dispatchEvent(new CustomEvent('egg-scene-change',{detail:{count:eggCount()}}));
   field.setAttribute('aria-busy', 'false'); shuffleButton.disabled = false; slide.setEnabled(true); surprise.disabled = false;
   status.textContent = storageAvailable ? (restored?'已恢复当前标签页的探索现场。':'不记录兴趣，只保留好奇。') : '浏览器无法保存现场；刷新后可能重新开始探索。';
 }).catch(e => { field.setAttribute('aria-busy', 'false'); showError(e); });

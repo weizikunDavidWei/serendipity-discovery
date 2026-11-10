@@ -2,7 +2,7 @@
 
 更新日期：2026-11-09（America/Toronto）
 
-状态：**已修复为右上角唯一、常驻、无文字机械滑轨；Chrome22项专项通过。场景恢复保留，旧套件8项历史失败单独记录。**
+状态：**已完成隐藏空洞、7球重置结局与后台开发者设置；Chrome44项新检查、186项专项回归通过，Safari关键链路已实测。旧套件8项历史失败单独记录。**
 
 公开仓库：[https://github.com/weizikunDavidWei/serendipity-discovery](https://github.com/weizikunDavidWei/serendipity-discovery)
 正式网站：[https://weizikundavidwei.github.io/serendipity-discovery/](https://weizikundavidwei.github.io/serendipity-discovery/)
@@ -213,3 +213,11 @@
 - 复用现有键与storage通知，补pageshow/重新可见时同步模式与服务。Chrome配置46项、三平台35项、跟手13项通过，含拖动中改标签不丢捕获、不变宽、不延迟。
 - 补macOS Safari原生选择/同步/模式独立/刷新恢复实测。小红书实际进入保留关键词的搜索页并要求登录；必应搜索页加载，Google/Yandex/百度进入平台验证，未宣称验证过受限结果内容。
 - 关键词、物理、主页样式、其他视觉/交互模块不改。Edge与移动真机未实测；详见docs/BROWSER_PLATFORM_ACCEPTANCE.md和BROWSER_PROVIDER_RESULTS.json。发布状态以本次交付报告为准。
+## 空洞生成彩蛋、新艾利都结局与开发者设置（2026-11-09）
+
+- 原仓库仅有背景扭曲，本轮按附件补齐5连击空白球、30上限、共享World的460ms非线性生长与惯性碰撞、15节点灾害播报。中间未提供原文的节点为原创可编辑文案，指定首/末/结局原文保留。
+- 成功Slide Commit前至少7个空洞时启用独立worldResetPendingExploration；重置清空彩蛋但保留指定结局。只在正常主题球被接受的新标签搜索后结束；半程、失败、拖动、空白点击、完全随机不结束，新空洞接管。兼容原会话记录与刷新。
+- 后台开发者模式支持生成开关、任意正整数次数、所有播报和结局文本编辑/默认恢复，仅当前浏览器保存。关键词与原管理脚本不改。
+- 单Shader支持39源，采用模型几何与远距跳过；16彩蛋以上背景DPR上限0.9，重置恢复。满载39对象样本中位16.7ms、P95约16.8ms，1200步约105ms，无穿透。
+- Chrome核心38项、满载6项与相关专项186项通过；旧通用54通过/8个相同历史基准失败。Safari原生7球→实际拖满重置→刷新→主题新标签结束已观察通过。移动触摸为CDP模拟，Edge及移动/触控板/高刷硬件未实测。
+- 细节和真实结果见docs/EASTER_EGGS.md、EASTER_EGG_RESULTS.json、EASTER_EGG_REGRESSION.txt。推送和公开部署结果以本次交付记录为准。

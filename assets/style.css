@@ -55,3 +55,7 @@ html[data-font-weight=bold] .wordmark{font-weight:900!important}
 @media(min-width:701px) and (max-width:820px){.edge-note{bottom:max(84px,calc(env(safe-area-inset-bottom) + 56px))}}
 @media(max-width:350px){.platform-option,.platform-copy{font-size:9px}}
 @media(max-height:480px){.explore{--platform-arrow:64px}.platform-switch{bottom:max(14px,env(safe-area-inset-bottom))}.edge-note{bottom:68px}}
+/* Hidden event uses the original quiet edge note, never a new front-end control. */
+.edge-note[data-broadcast] #status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.edge-note[data-broadcast] #gesture-hint{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden;overflow-wrap:anywhere}
+.egg-orb{display:block}

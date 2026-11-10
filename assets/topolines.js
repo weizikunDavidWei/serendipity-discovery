@@ -1,10 +1,10 @@
-import {attachHollow} from './hollow-field.js';
-import {TopoField} from './vendor/topolines-0.3.0.js';
+import {attachHollow} from './hollow-field.js?v=20261109-eggs1';
+import {TopoField} from './vendor/topolines-0.3.0.js?v=20261109-eggs1';
 import {defaults,preferences,savePreferences,renderToggle} from './visual-settings.js';
 export function mountTerrain(host) {
   const dark=matchMedia('(prefers-color-scheme: dark)');
   const seed=Array.from(crypto.getRandomValues(new Uint32Array(2))).join('-');
-  let field=null,clock=0,disposed=false;
+  let field=null,clock=0,disposed=false,dense=host.id==='topolines-background'&&document.querySelectorAll('#field .egg-orb').length>=16;
   function sync(){
     if(disposed)return;
     const p=preferences(),active=p.enabled&&p.opacity>0;
@@ -16,15 +16,16 @@ export function mountTerrain(host) {
       attachHollow(field,host,preferences);
       host.dataset.supported='true';field.setClock(clock);
     }
-    field.setOptions({opacity:p.opacity,color:dark.matches?'#ffffff':'#000000'});field.play();if(!field.running)field.render();
+    field.setOptions({maxDpr:dense?Math.min(.9,defaults.topolines.maxDpr):defaults.topolines.maxDpr,opacity:p.opacity,color:dark.matches?'#ffffff':'#000000'});field.play();if(!field.running)field.render();
   }
   const geometry=()=>{const p=preferences();if(p.hollowEnabled&&p.hollowSize>0&&field&&!field.running&&!field.paused&&!document.hidden)field.render();};
   document.addEventListener('orb-geometry',geometry);
+  const density=e=>{if(host.id!=='topolines-background')return;const next=e.detail.count>=16;if(next!==dense){dense=next;sync();field?.resize()}};document.addEventListener('egg-scene-change',density);
   function suspend(){if(field){clock=field.clock;field.destroy();field=null;}}
   dark.addEventListener('change',sync);window.addEventListener('visual-preferences',sync);
   document.addEventListener('visibilitychange',sync);window.addEventListener('pagehide',suspend);window.addEventListener('pageshow',sync);
   sync();
-  return {sync, get field(){return field;},destroy(){document.removeEventListener('orb-geometry',geometry);disposed=true;suspend();dark.removeEventListener('change',sync);window.removeEventListener('visual-preferences',sync);document.removeEventListener('visibilitychange',sync);window.removeEventListener('pagehide',suspend);window.removeEventListener('pageshow',sync);}};
+  return {sync, get field(){return field;},destroy(){document.removeEventListener('egg-scene-change',density);document.removeEventListener('orb-geometry',geometry);disposed=true;suspend();dark.removeEventListener('change',sync);window.removeEventListener('visual-preferences',sync);document.removeEventListener('visibilitychange',sync);window.removeEventListener('pagehide',suspend);window.removeEventListener('pageshow',sync);}};
 }
 const host=document.querySelector('#topolines-background');
 if(host){

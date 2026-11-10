@@ -1,0 +1,290 @@
+{
+  "date": "2026-11-09",
+  "core": {
+    "results": [
+      {
+        "name": "milestones retain most recent announcement",
+        "ok": true
+      },
+      {
+        "name": "four blank clicks do not spawn",
+        "ok": true
+      },
+      {
+        "name": "fifth pointerup creates exactly one blank body",
+        "ok": true
+      },
+      {
+        "name": "blank body has no visible text or search binding",
+        "ok": true
+      },
+      {
+        "name": "clicking egg cannot search",
+        "ok": true
+      },
+      {
+        "name": "500ms gap resets sequence",
+        "ok": true
+      },
+      {
+        "name": "UI interaction resets partial clicks",
+        "ok": true
+      },
+      {
+        "name": "six eggs exist independently of topic count",
+        "ok": true
+      },
+      {
+        "name": "six then reset returns baseline",
+        "ok": true
+      },
+      {
+        "name": "half-slide preserves seven eggs and no ending",
+        "ok": true
+      },
+      {
+        "name": "failed reset preserves old eggs and no pending event",
+        "ok": true
+      },
+      {
+        "name": "seven successful reset clears all eggs and persists independent ending",
+        "ok": true
+      },
+      {
+        "name": "dragging a topic cannot end the pending event",
+        "ok": true
+      },
+      {
+        "name": "random exploration and isolated background click do not end event",
+        "ok": true
+      },
+      {
+        "name": "refresh restores ending with zero eggs",
+        "ok": true
+      },
+      {
+        "name": "blocked popup retains ending",
+        "ok": true
+      },
+      {
+        "name": "accepted topic search ends event and restores baseline",
+        "ok": true
+      },
+      {
+        "name": "new hole supersedes pending ending with disaster text",
+        "ok": true
+      },
+      {
+        "name": "cap reaches thirty",
+        "ok": true
+      },
+      {
+        "name": "cap adds no DOM physics or shader objects",
+        "ok": true
+      },
+      {
+        "name": "refresh restores thirty without replaying growth",
+        "ok": true
+      },
+      {
+        "name": "thirty reset has same ending and clean world",
+        "ok": true
+      },
+      {
+        "name": "real new tab launch clears pending in original page",
+        "ok": true
+      },
+      {
+        "name": "confirmed search does not send a referrer",
+        "ok": true
+      },
+      {
+        "name": "new search tab has no opener",
+        "ok": true
+      },
+      {
+        "name": "developer click threshold applies cross-tab",
+        "ok": true
+      },
+      {
+        "name": "developer off stops generation without deleting existing eggs",
+        "ok": true
+      },
+      {
+        "name": "editable disaster copy applies",
+        "ok": true
+      },
+      {
+        "name": "custom copy stays literal and cannot inject HTML",
+        "ok": true
+      },
+      {
+        "name": "arbitrary positive integer threshold persists without a numeric cap",
+        "ok": true
+      },
+      {
+        "name": "developer can edit the ending announcement",
+        "ok": true
+      },
+      {
+        "name": "custom ending text and event survive reload together",
+        "ok": true
+      },
+      {
+        "name": "nonlinear growth finishes with synchronized collision and visual radii",
+        "ok": true,
+        "details": [
+          {
+            "r": 1.5,
+            "visual": 1.5,
+            "growing": true
+          },
+          {
+            "r": 21.515270110935884,
+            "visual": 21.51525,
+            "growing": true
+          },
+          {
+            "r": 37.70195064665684,
+            "visual": 37.70195,
+            "growing": true
+          },
+          {
+            "r": 48.00867642854629,
+            "visual": 48.0087,
+            "growing": true
+          },
+          {
+            "r": 54.61656230539115,
+            "visual": 54.6165,
+            "growing": true
+          },
+          {
+            "r": 56.47698594410032,
+            "visual": 56.477,
+            "growing": true
+          },
+          {
+            "r": 56.709540209369614,
+            "visual": 56.7095,
+            "growing": true
+          },
+          {
+            "r": 56.60249768154131,
+            "visual": 56.6025,
+            "growing": false
+          }
+        ]
+      },
+      {
+        "name": "mobile restores eggs without overlap or boundaries lost",
+        "ok": true
+      },
+      {
+        "name": "mobile text does not overlap platform control",
+        "ok": true
+      },
+      {
+        "name": "touch background taps cannot masquerade as mouse Easter clicks",
+        "ok": true
+      },
+      {
+        "name": "touch can drag and release an existing blank ball",
+        "ok": true
+      },
+      {
+        "name": "no page errors",
+        "ok": true,
+        "details": []
+      }
+    ],
+    "errors": []
+  },
+  "performance": {
+    "results": [
+      {
+        "name": "thirty eggs share original World",
+        "ok": true
+      },
+      {
+        "name": "all bodies are shader sources",
+        "ok": true
+      },
+      {
+        "name": "ten simulated seconds stable with bounded objects and contacts",
+        "ok": true,
+        "details": {
+          "bodies": 39,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.799999999999727,
+          "maxMs": 16.800000000000182,
+          "solver1200StepsMs": 104.89999999850988,
+          "maxPenetrationPx": 0,
+          "canvas": 1
+        }
+      },
+      {
+        "name": "egg drag retains capped release motion without search",
+        "ok": true
+      },
+      {
+        "name": "reduced motion stops all thirty eggs",
+        "ok": true
+      },
+      {
+        "name": "mobile keeps thirty and separates them",
+        "ok": true,
+        "details": {
+          "eggs": 30,
+          "maxPenetrationPx": 0,
+          "inBounds": true
+        }
+      }
+    ],
+    "timing": {
+      "bodies": 39,
+      "medianMs": 16.699999999999818,
+      "p95Ms": 16.799999999999727,
+      "maxMs": 16.800000000000182,
+      "solver1200StepsMs": 104.89999999850988,
+      "maxPenetrationPx": 0,
+      "canvas": 1
+    },
+    "mobile": {
+      "eggs": 30,
+      "maxPenetrationPx": 0,
+      "inBounds": true
+    }
+  },
+  "regressionPassed": {
+    "platforms": 35,
+    "pointer-follow": 13,
+    "hollow": 15,
+    "hollow-direction": 24,
+    "topolines": 21,
+    "slide-commit": 22,
+    "browser-providers": 46,
+    "crosshair": 10
+  },
+  "regressionTotal": 186,
+  "legacy": {
+    "passed": 54,
+    "failed": 8,
+    "reason": "unchanged old keyword-count and chained admin baselines"
+  },
+  "safari": {
+    "method": "Native macOS Safari CUA",
+    "verified": [
+      "developer threshold 1 and reset to default5",
+      "seven real generated eggs",
+      "full mouse slide produces ending",
+      "Cmd-R preserves ending",
+      "topic click opens external tab and restores original hint"
+    ]
+  },
+  "notTested": [
+    "Edge",
+    "physical mobile/tablet/touchpad/high-refresh hardware",
+    "long-duration heap profile"
+  ]
+}
