@@ -1,7 +1,7 @@
 import {renderToggle} from './visual-settings.js';
 // Native adaptation inspired by React Bits Crosshair (reactbits.dev).
 // Read-only geometry: never changes the physics world or captures input.
-export const CROSSHAIR = Object.freeze({ proximity: 18, padding: 7, smoothing: 0.045 });
+export const CROSSHAIR = Object.freeze({ proximity: 18, padding: 7 });
 // Coordinates use CSS viewport pixels, independent of devicePixelRatio and display scaling.
 export function viewportCoordinates(x,y,width,height){
   return {x:Math.round(Math.max(0,Math.min(width,x))),y:Math.round(Math.max(0,Math.min(height,height-y)))};
@@ -19,7 +19,7 @@ export function initCrosshair() {
   const toggle = document.querySelector('#crosshair-toggle');
   const fine = matchMedia('(any-pointer: fine)'), reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const storageKey = 'serendipity.crosshair.enabled';
-  let enabled = true, visible = false, raf = 0, last = 0, x = 0, y = 0, tx = 0, ty = 0;
+  let enabled = true, visible = false, raf = 0, tx = 0, ty = 0;
   try { enabled = localStorage.getItem(storageKey) !== 'false'; } catch { /* private browsing */ }
   const overlay = document.createElement('div'); overlay.className = 'crosshair';
   overlay.setAttribute('aria-hidden', 'true');
@@ -29,23 +29,24 @@ export function initCrosshair() {
   const readY=overlay.children[4],readX=overlay.children[5];
   const allowed = () => enabled && fine.matches && !reduce.matches && !document.hidden;
   function hide() {
-    visible = false; cancelAnimationFrame(raf); raf = 0; last = 0;
+    visible = false; cancelAnimationFrame(raf); raf = 0;
     overlay.hidden = true; lock.hidden = true;
     document.documentElement.classList.remove('crosshair-active');
   }
-  function frame(time) {
+  // The custom cursor replaces the system cursor: its position must never be
+  // spring-smoothed. Paint from the input event; keep moving-target work in rAF.
+  function paintPointer() {
+    h.style.transform = `translateY(${ty}px)`; v.style.transform = `translateX(${tx}px)`;
+    dot.style.transform = `translate(${tx}px,${ty}px)`;
+    const coords=viewportCoordinates(tx,ty,innerWidth,innerHeight);
+    if(readY.textContent!==String(coords.y))readY.textContent=String(coords.y);
+    if(readX.textContent!==String(coords.x))readX.textContent=String(coords.x);
+    readY.style.top=Math.max(8,Math.min(innerHeight-20,ty+6))+'px';
+    readX.style.left=Math.max(8,Math.min(innerWidth-56,tx+6))+'px';
+  }
+  function frame() {
     raf = 0;
     if (!visible || !allowed()) { hide(); return; }
-    const dt = last ? Math.min(.05, (time - last) / 1000) : .016; last = time;
-    const follow = 1 - Math.exp(-dt / CROSSHAIR.smoothing);
-    x += (tx - x) * follow; y += (ty - y) * follow;
-    h.style.transform = `translateY(${y}px)`; v.style.transform = `translateX(${x}px)`;
-    dot.style.transform = `translate(${tx}px,${ty}px)`;
-    const coords=viewportCoordinates(x,y,innerWidth,innerHeight);
-    readY.textContent=String(coords.y);readX.textContent=String(coords.x);
-    // Keep readouts wholly on screen, including at origin and upper/right limits.
-    readY.style.top=Math.max(8,Math.min(innerHeight-20,y+6))+'px';
-    readX.style.left=Math.max(8,Math.min(innerWidth-56,x+6))+'px';
     // Resolve every frame, including a stationary pointer over a drifting orb.
     const target = pickOrb(document.querySelectorAll('.orb'), tx, ty);
     lock.hidden = !target;
@@ -60,7 +61,8 @@ export function initCrosshair() {
   function move(event) {
     if (event.pointerType !== 'mouse' || !allowed()) { hide(); return; }
     tx = event.clientX; ty = event.clientY;
-    if (!visible) { x = tx; y = ty; visible = true; overlay.hidden = false; document.documentElement.classList.add('crosshair-active'); }
+    if (!visible) { visible = true; overlay.hidden = false; document.documentElement.classList.add('crosshair-active'); }
+    paintPointer();
     if (!raf) raf = requestAnimationFrame(frame);
   }
   function sync() {
@@ -69,10 +71,12 @@ export function initCrosshair() {
     if (!allowed()) hide();
   }
   toggle.addEventListener('click', () => { enabled = !enabled; try { localStorage.setItem(storageKey, String(enabled)); } catch {} hide(); sync(); });
-  document.addEventListener('pointermove', move, { passive: true });
-  document.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') hide(); }, { passive: true });
+  // Observe captured drags as well; controls may stop bubbling their events.
+  document.addEventListener('pointermove', move, { passive: true, capture: true });
+  document.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') hide(); }, { passive: true, capture: true });
   document.addEventListener('pointerout', e => { if (!e.relatedTarget) hide(); });
   document.addEventListener('keydown', hide);
+  window.addEventListener('resize', () => { if(visible && allowed())paintPointer(); });
   window.addEventListener('blur', hide); window.addEventListener('pagehide', hide);
   document.addEventListener('visibilitychange', hide);
   fine.addEventListener('change', sync); reduce.addEventListener('change', sync);

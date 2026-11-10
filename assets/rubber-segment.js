@@ -1,6 +1,6 @@
 // Native RubberSegment-inspired two-edge spring. Pointermove paints immediately;
 // only click travel and release settling use animation frames.
-export const RUBBER=Object.freeze({deadzone:4,slop:10,flick:140,maxVelocity:2000,projection:.075,handoff:85,stiffness:900,damping:48});
+export const RUBBER=Object.freeze({deadzone:2,slop:10,flick:140,maxVelocity:2000,projection:.075,handoff:32,stiffness:1800,damping:76});
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export function bindRubberSegment(root,{items,value,onChange}){
   root.setAttribute('role','radiogroup');root.setAttribute('aria-label','搜索平台');
@@ -32,14 +32,16 @@ export function bindRubberSegment(root,{items,value,onChange}){
   function sample(e){const last=drag.hist[drag.hist.length-1];if(last&&last[1]===e.clientX)return;drag.hist.push([e.timeStamp,e.clientX]);drag.hist=drag.hist.filter(([t])=>e.timeStamp-t<=110).slice(-16)}
   function velocity(d,now){const recent=d.hist.filter(([t])=>now-t<=100),a=recent[0],b=recent[recent.length-1];if(!a||!b||now-b[0]>70)return 0;return clamp((b[1]-a[1])/Math.max(8,b[0]-a[0])*1000,-RUBBER.maxVelocity,RUBBER.maxVelocity)}
   buttons.forEach((b,i)=>{
-    on(b,'pointerdown',e=>{if(drag||e.button!==0||!e.isPrimary)return;e.stopPropagation();e.preventDefault();const rect=root.getBoundingClientRect(),x=e.clientX-rect.left-1;
-      const onThumb=x>=left&&x<=right;stop();drag={id:e.pointerId,slot:i,start:e.clientX,initialLeft:left,initialRight:right,onThumb,live:false,hist:[[e.timeStamp,e.clientX]],max:0};b.focus({preventScroll:true});
+    on(b,'pointerdown',e=>{if(drag||e.button!==0||!e.isPrimary)return;e.stopPropagation();e.preventDefault();
+      // Selected slot remains grabbable even while its visual is travelling.
+      // Interrupting a stretched animation must not become a wide, stuck drag.
+      const onThumb=i===index;stop();if(onThumb){const s=slots[index];paint(s.l,s.r)}drag={id:e.pointerId,slot:i,start:e.clientX,initialLeft:left,initialRight:right,onThumb,live:false,hist:[[e.timeStamp,e.clientX]],max:0};b.focus({preventScroll:true});
       if(!onThumb)b.dataset.pressed='';try{b.setPointerCapture(e.pointerId)}catch{release();jump()}
     });
     on(b,'click',e=>{if(e.detail!==0&&performance.now()<suppressUntil){e.preventDefault();return}select(i,{click:true})});
     on(b,'keydown',e=>{let next=index;if(['ArrowRight','ArrowDown'].includes(e.key))next=Math.min(items.length-1,index+1);else if(['ArrowLeft','ArrowUp'].includes(e.key))next=Math.max(0,index-1);else if(e.key==='Home')next=0;else if(e.key==='End')next=items.length-1;else if(e.key==='Enter'||e.key===' ')next=i;else if(e.key==='Escape'){release();jump();return}else return;e.preventDefault();e.stopPropagation();release();select(next,{click:!motion.matches});buttons[next].focus({preventScroll:true})});
   });
-  function move(e){if(!drag||drag.id!==e.pointerId)return;e.stopPropagation();sample(e);const dx=e.clientX-drag.start;drag.max=Math.max(drag.max,Math.abs(dx));if(!drag.onThumb)return;if(!drag.live&&Math.abs(dx)<RUBBER.deadzone)return;drag.live=true;root.dataset.held='';if(e.cancelable)e.preventDefault();
+  function move(e){if(!drag||drag.id!==e.pointerId)return;e.stopPropagation();sample(e);const dx=e.clientX-drag.start;drag.max=Math.max(drag.max,Math.abs(dx));if(!drag.onThumb)return;if(Math.abs(dx)>=RUBBER.deadzone)drag.live=true;if(drag.live)root.dataset.held='';if(e.cancelable)e.preventDefault();
     const w=drag.initialRight-drag.initialLeft,l=drag.initialLeft+dx,max=width-w;
     if(l<0&&!motion.matches){const over=-l;paint(0,w-over*w*.55/(w+.55*over))}else if(l>max&&!motion.matches){const over=l-max;paint(max+over*w*.55/(w+.55*over),width)}else{const bounded=clamp(l,0,max);paint(bounded,bounded+w)}
   }

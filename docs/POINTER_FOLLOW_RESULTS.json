@@ -1,0 +1,401 @@
+{
+  "results": [
+    {
+      "name": "crosshair lines and dot use latest pointer immediately",
+      "ok": true,
+      "details": {
+        "x": 600,
+        "y": 420,
+        "dot": 600
+      }
+    },
+    {
+      "name": "regrab during click animation has normal width and follows 30px",
+      "ok": true,
+      "details": {
+        "l": 140.65625,
+        "r": 226,
+        "w": 85.33333333333333
+      }
+    },
+    {
+      "name": "crosshair follows while control captures and stops pointer events",
+      "ok": true
+    },
+    {
+      "name": "first pixel paints without a visual deadzone",
+      "ok": true,
+      "details": {
+        "l": 1,
+        "r": 86.328125,
+        "w": 85.33333333333333
+      }
+    },
+    {
+      "name": "click settles within 320ms",
+      "ok": true,
+      "details": {
+        "settleMs": 214
+      }
+    },
+    {
+      "name": "coordinate readouts match current pointer",
+      "ok": true,
+      "details": {
+        "x": "900",
+        "y": "400"
+      }
+    },
+    {
+      "name": "rapid reversal keeps thumb and crosshair at input position",
+      "ok": true,
+      "details": {
+        "maxThumbErrorPx": 0,
+        "maxCursorErrorPx": 0.0040283203125
+      }
+    },
+    {
+      "name": "cancelled capture preserves platform",
+      "ok": true
+    },
+    {
+      "name": "touch paints first movement directly",
+      "ok": true
+    },
+    {
+      "name": "touch restores ordinary pointer without crosshair",
+      "ok": true
+    },
+    {
+      "name": "touch cancellation restores selected slot without changing mode",
+      "ok": true
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "details": []
+    }
+  ],
+  "errors": [],
+  "date": "2026-11-09",
+  "baseline": {
+    "results": [
+      {
+        "name": "crosshair lines and dot use latest pointer immediately",
+        "ok": false,
+        "details": {
+          "x": 255.01600646972656,
+          "y": 371.7019958496094,
+          "dot": 600
+        }
+      },
+      {
+        "name": "regrab during click animation has normal width and follows 30px",
+        "ok": false,
+        "details": {
+          "l": 0,
+          "r": 85.328125,
+          "w": 85.33333333333333
+        }
+      },
+      {
+        "name": "first pixel paints without a visual deadzone",
+        "ok": false,
+        "details": {
+          "l": 0,
+          "r": 85.328125,
+          "w": 85.33333333333333
+        }
+      },
+      {
+        "name": "click settles within 320ms",
+        "ok": true,
+        "details": {
+          "settleMs": 248
+        }
+      },
+      {
+        "name": "coordinate readouts match current pointer",
+        "ok": false,
+        "details": {
+          "x": "762",
+          "y": "467"
+        }
+      },
+      {
+        "name": "no page errors",
+        "ok": true,
+        "details": []
+      }
+    ],
+    "errors": []
+  },
+  "platformRegression": {
+    "results": [
+      {
+        "name": "default bilibili",
+        "ok": true
+      },
+      {
+        "name": "special character adapters",
+        "ok": true
+      },
+      {
+        "name": "youtube checked immediately",
+        "ok": true
+      },
+      {
+        "name": "youtube all search entrances",
+        "ok": true
+      },
+      {
+        "name": "youtube scene unchanged",
+        "ok": true
+      },
+      {
+        "name": "google checked immediately",
+        "ok": true
+      },
+      {
+        "name": "google all search entrances",
+        "ok": true
+      },
+      {
+        "name": "google scene unchanged",
+        "ok": true
+      },
+      {
+        "name": "bilibili checked immediately",
+        "ok": true
+      },
+      {
+        "name": "bilibili all search entrances",
+        "ok": true
+      },
+      {
+        "name": "bilibili scene unchanged",
+        "ok": true
+      },
+      {
+        "name": "same orb canvas crosshair objects",
+        "ok": true
+      },
+      {
+        "name": "platform restored on refresh",
+        "ok": true
+      },
+      {
+        "name": "scene restored on refresh",
+        "ok": true
+      },
+      {
+        "name": "accessible labels match mode",
+        "ok": true
+      },
+      {
+        "name": "keyboard Home bilibili",
+        "ok": true
+      },
+      {
+        "name": "keyboard next YouTube",
+        "ok": true
+      },
+      {
+        "name": "drag paints immediately without animation lag",
+        "ok": true
+      },
+      {
+        "name": "stationary release snaps nearest slot",
+        "ok": true
+      },
+      {
+        "name": "rapid switches settle consistently",
+        "ok": true
+      },
+      {
+        "name": "light fits beside arrow",
+        "ok": true
+      },
+      {
+        "name": "dark fits beside arrow",
+        "ok": true
+      },
+      {
+        "name": "touch drag to Google",
+        "ok": true
+      },
+      {
+        "name": "touch cancel retains current mode",
+        "ok": true
+      },
+      {
+        "name": "mobile no overlap or scroll",
+        "ok": true
+      },
+      {
+        "name": "320px slots fit text",
+        "ok": true
+      },
+      {
+        "name": "running world velocities clock and objects unaffected by switching",
+        "ok": true
+      },
+      {
+        "name": "physics keeps advancing after switching",
+        "ok": true
+      },
+      {
+        "name": "cross-tab selection stays synchronized",
+        "ok": true
+      },
+      {
+        "name": "invalid saved platform safely defaults to bilibili",
+        "ok": true
+      },
+      {
+        "name": "768x1024 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "701x900 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "844x390 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "1024x768 responsive spacing",
+        "ok": true
+      },
+      {
+        "name": "no JS errors",
+        "ok": true
+      }
+    ],
+    "errors": []
+  },
+  "coordinateRegression": [
+    {
+      "name": "default bold",
+      "ok": true
+    },
+    {
+      "name": "coordinate math including 4K",
+      "ok": true
+    },
+    {
+      "name": "readouts 1440",
+      "ok": true
+    },
+    {
+      "name": "edge labels inside 1440",
+      "ok": true
+    },
+    {
+      "name": "readouts 3840",
+      "ok": true
+    },
+    {
+      "name": "edge labels inside 3840",
+      "ok": true
+    },
+    {
+      "name": "readouts 800",
+      "ok": true
+    },
+    {
+      "name": "edge labels inside 800",
+      "ok": true
+    },
+    {
+      "name": "regular across tabs",
+      "ok": true
+    },
+    {
+      "name": "regular persisted",
+      "ok": true
+    },
+    {
+      "name": "bold across tabs",
+      "ok": true
+    },
+    {
+      "name": "off hides readings",
+      "ok": true
+    },
+    {
+      "name": "reduced hides readings",
+      "ok": true
+    },
+    {
+      "name": "bold mobile no overflow",
+      "ok": true
+    },
+    {
+      "name": "admin mobile no overflow",
+      "ok": true
+    }
+  ],
+  "safari": {
+    "method": "native macOS Safari via CUA",
+    "checks": [
+      "Google to bilibili real drag switches correctly",
+      "crosshair and coordinate visible at released pointer",
+      "full page appearance retained"
+    ],
+    "limits": "not an instrumented input-to-photon latency measurement"
+  },
+  "notTested": [
+    "Edge",
+    "iOS/iPadOS physical devices",
+    "high refresh rate hardware"
+  ],
+  "crosshairRegression": [
+    {
+      "name": "reduced motion hidden",
+      "ok": true
+    },
+    {
+      "name": "no diameter readout",
+      "ok": true
+    },
+    {
+      "name": "pointer visible",
+      "ok": true
+    },
+    {
+      "name": "whole orb brackets",
+      "ok": true
+    },
+    {
+      "name": "moving target follows",
+      "ok": true
+    },
+    {
+      "name": "off restores cursor",
+      "ok": true
+    },
+    {
+      "name": "preference retained",
+      "ok": true
+    },
+    {
+      "name": "dark theme",
+      "ok": true
+    },
+    {
+      "name": "drag no search",
+      "ok": true
+    },
+    {
+      "name": "search retained",
+      "ok": true
+    }
+  ],
+  "legacyRegression": {
+    "passed": 54,
+    "failed": 8,
+    "note": "unchanged historical keyword-count and chained admin assertions"
+  }
+}
