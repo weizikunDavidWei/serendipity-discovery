@@ -1,6 +1,6 @@
 // Native RubberSegment-inspired two-edge spring. Pointermove paints immediately;
 // only click travel and release settling use animation frames.
-export const RUBBER=Object.freeze({deadzone:2,slop:10,flick:140,maxVelocity:2000,projection:.075,handoff:32,stiffness:1800,damping:76});
+export const RUBBER=Object.freeze({deadzone:4,slop:10,flick:140,maxVelocity:2000,projection:.075,handoff:32,stiffness:1800,damping:76});
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export function bindRubberSegment(root,{items,value,onChange}){
   root.setAttribute('role','radiogroup');root.setAttribute('aria-label','搜索平台');

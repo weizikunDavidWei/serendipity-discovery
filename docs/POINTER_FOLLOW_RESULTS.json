@@ -35,7 +35,7 @@
       "name": "click settles within 320ms",
       "ok": true,
       "details": {
-        "settleMs": 214
+        "settleMs": 231
       }
     },
     {
@@ -68,6 +68,10 @@
     },
     {
       "name": "touch cancellation restores selected slot without changing mode",
+      "ok": true
+    },
+    {
+      "name": "minor click jitter does not flick to another platform",
       "ok": true
     },
     {
@@ -397,5 +401,10 @@
     "passed": 54,
     "failed": 8,
     "note": "unchanged historical keyword-count and chained admin assertions"
+  },
+  "clickJitterRegression": {
+    "reproducedWith2pxThreshold": true,
+    "correctedThresholdPx": 4,
+    "visualFollowStartsAtPx": 1
   }
 }
