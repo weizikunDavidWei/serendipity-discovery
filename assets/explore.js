@@ -1,5 +1,5 @@
-import {searchURL,platformInfo} from './search-platforms.js';
-import {getSearchProvider} from './mode-controller.js';
+import {searchURL,platformInfo} from './search-platforms.js?v=20261109-browser2';
+import {getSearchProvider} from './mode-controller.js?v=20261109-browser2';
 import './visual-settings.js';
 import { loadPublic, shuffle, randomIndex } from './data.js';
 import { CONFIG } from './config.js';

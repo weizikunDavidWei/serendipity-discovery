@@ -1,5 +1,5 @@
-import {BROWSER_PROVIDERS} from './search-platforms.js';
-import {getBrowserProvider,saveBrowserProvider} from './browser-preferences.js';
+import {BROWSER_PROVIDERS} from './search-platforms.js?v=20261109-browser2';
+import {getBrowserProvider,saveBrowserProvider} from './browser-preferences.js?v=20261109-browser2';
 const select=document.querySelector('#browser-provider'),status=document.querySelector('#browser-save-status');
 for(const provider of BROWSER_PROVIDERS){const option=document.createElement('option');option.value=provider.id;option.textContent=provider.label;select.append(option)}
 function sync(){select.value=getBrowserProvider()}

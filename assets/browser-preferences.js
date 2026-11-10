@@ -1,4 +1,4 @@
-import {isBrowserProvider} from './search-platforms.js';
+import {isBrowserProvider} from './search-platforms.js?v=20261109-browser2';
 export const BROWSER_KEY = 'serendipity.search.browser-provider.v1';
 function read(){try{const id=localStorage.getItem(BROWSER_KEY);return isBrowserProvider(id)?id:'google'}catch{return 'google'}}
 let current=read();
@@ -16,3 +16,9 @@ export function saveBrowserProvider(id){
   return saved;
 }
 window.addEventListener('storage',e=>{if(e.key===BROWSER_KEY||e.key===null)apply(read())});
+
+// Safari may restore a frozen page after settings changed elsewhere. Re-read
+// persisted preferences without rebuilding the scene or the control.
+const resync=()=>apply(read());
+window.addEventListener('pageshow',resync);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)resync()});

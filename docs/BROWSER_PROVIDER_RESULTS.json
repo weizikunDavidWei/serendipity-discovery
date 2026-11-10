@@ -153,13 +153,40 @@
       "ok": true
     },
     {
+      "name": "pageshow restores provider without replacing the scene",
+      "ok": true
+    },
+    {
+      "name": "visibility resume resyncs platform setting",
+      "ok": true
+    },
+    {
+      "name": "restored browse mode remains independent of browser provider",
+      "ok": true
+    },
+    {
+      "name": "configuration changes never trigger a search",
+      "ok": true
+    },
+    {
+      "name": "label changes during captured drag preserve width position and capture",
+      "ok": true
+    },
+    {
+      "name": "drag remains immediate after a label change",
+      "ok": true
+    },
+    {
+      "name": "older cached module interfaces cannot disable the new setting",
+      "ok": true
+    },
+    {
       "name": "no page errors",
       "ok": true
     }
   ],
   "errors": [],
   "date": "2026-11-09",
-  "browser": "Installed Chrome; Playwright and CDP touch simulation for pointer regression",
   "platformRegression": {
     "results": [
       {
@@ -342,7 +369,7 @@
         "name": "click settles within 320ms",
         "ok": true,
         "details": {
-          "settleMs": 231
+          "settleMs": 228
         }
       },
       {
@@ -389,63 +416,124 @@
     ],
     "errors": []
   },
-  "externalPopups": {
+  "externalChrome": {
     "results": [
       {
         "provider": "google",
-        "finalOrigin": "https://www.google.com",
-        "finalPath": "/sorry/index",
-        "title": "https://www.google.com/search?q=%E6%9F%94%E6%80%A7%E9%93%B0%E9%93%BE&sei=6mryaoqUMsS4mLQPxKS8-Qc",
-        "navigation": "loaded",
-        "loginOrVerification": true
+        "keyword": "大卫画家",
+        "constructedURLCorrect": true,
+        "documentLoaded": true,
+        "landing": {
+          "origin": "https://www.google.com",
+          "path": "/sorry/index",
+          "queryMatches": false
+        },
+        "title": "Verification page showing the requested search URL",
+        "searchPageLoaded": false,
+        "searchInputMatches": false,
+        "accessGate": true,
+        "resultNodes": 0,
+        "resultsContentVerified": false,
+        "note": "Result node count is diagnostic; content relevance is not certified."
       },
       {
         "provider": "bing",
-        "finalOrigin": "https://www.bing.com",
-        "finalPath": "/search",
-        "title": "水锤效应 - Search",
-        "navigation": "loaded",
-        "loginOrVerification": false
+        "keyword": "夏尔丹",
+        "constructedURLCorrect": true,
+        "documentLoaded": true,
+        "landing": {
+          "origin": "https://www.bing.com",
+          "path": "/search",
+          "queryMatches": true
+        },
+        "title": "夏尔丹 - Search",
+        "searchPageLoaded": true,
+        "searchInputMatches": true,
+        "accessGate": false,
+        "resultNodes": 10,
+        "resultsContentVerified": false,
+        "note": "Result node count is diagnostic; content relevance is not certified."
       },
       {
         "provider": "yandex",
-        "finalOrigin": "https://yandex.com",
-        "finalPath": "/showcaptcha",
+        "keyword": "博斯",
+        "constructedURLCorrect": true,
+        "documentLoaded": true,
+        "landing": {
+          "origin": "https://yandex.com",
+          "path": "/showcaptcha",
+          "queryMatches": false
+        },
         "title": "Are you not a robot?",
-        "navigation": "loaded",
-        "loginOrVerification": true
+        "searchPageLoaded": false,
+        "searchInputMatches": false,
+        "accessGate": true,
+        "resultNodes": 0,
+        "resultsContentVerified": false,
+        "note": "Result node count is diagnostic; content relevance is not certified."
       },
       {
         "provider": "xiaohongshu",
-        "finalOrigin": "http://www.xiaohongshu.com",
-        "finalPath": "/search_result",
-        "title": "气蚀 - 小红书搜索",
-        "navigation": "loaded",
-        "loginOrVerification": false
+        "keyword": "洛兰",
+        "constructedURLCorrect": true,
+        "documentLoaded": true,
+        "landing": {
+          "origin": "http://www.xiaohongshu.com",
+          "path": "/website-login/error",
+          "queryMatches": false
+        },
+        "title": "安全限制",
+        "searchPageLoaded": false,
+        "searchInputMatches": false,
+        "accessGate": true,
+        "resultNodes": 0,
+        "resultsContentVerified": false,
+        "note": "Result node count is diagnostic; content relevance is not certified.",
+        "classificationBasis": "Observed 安全限制 page title"
       },
       {
         "provider": "baidu",
-        "finalOrigin": "https://wappass.baidu.com",
-        "finalPath": "/static/captcha/tuxing_v2.html",
+        "keyword": "鲁伊斯达尔",
+        "constructedURLCorrect": true,
+        "documentLoaded": true,
+        "landing": {
+          "origin": "https://wappass.baidu.com",
+          "path": "/static/captcha/tuxing_v2.html",
+          "queryMatches": false
+        },
         "title": "百度安全验证",
-        "navigation": "loaded",
-        "loginOrVerification": true
+        "searchPageLoaded": false,
+        "searchInputMatches": false,
+        "accessGate": true,
+        "resultNodes": 0,
+        "resultsContentVerified": false,
+        "note": "Result node count is diagnostic; content relevance is not certified."
       }
-    ],
-    "searchTargets": [
-      "https://www.google.com/search",
-      "https://www.google.com/search",
-      "https://www.bing.com/search",
-      "https://www.bing.com/search",
-      "https://yandex.com/search/",
-      "https://www.xiaohongshu.com/search_result",
-      "https://www.xiaohongshu.com/search_result",
-      "https://www.baidu.com/s"
     ]
   },
+  "safariManual": {
+    "initialFailure": "SyntaxError: Importing binding name 'isBrowserProvider' is not found.",
+    "fix": "versioned entry points and matching search-module imports; ordinary reload enabled the select",
+    "verified": [
+      "小红书 label updates while bilibili mode remains selected",
+      "browser slot selection updates orb and random-arrow accessible names",
+      "百度 update synchronizes without a homepage reload",
+      "Cmd-R restores 百度 and the same topic names",
+      "Google label synchronizes again; original bilibili/Google test preferences restored"
+    ],
+    "xiaohongshu": {
+      "requestedKeyword": "包豪斯",
+      "landingPath": "/search_result",
+      "queryPreserved": true,
+      "searchInputMatches": true,
+      "title": "包豪斯 - 小红书搜索",
+      "loginRequired": true,
+      "resultContentsVerified": false
+    }
+  },
   "notTested": [
-    "Safari this change",
-    "Edge",
-    "physical iOS/iPadOS or Android devices"
+    "Edge this release",
+    "physical mobile/touch hardware",
+    "precise hardware input-to-photon latency"
   ]
 }
